@@ -18,6 +18,10 @@ public class UsersController {
         this.usersService = usersService;
     }
 
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login() {
+        return "login";
+    }
 
 
     @RequestMapping("/user/list")
