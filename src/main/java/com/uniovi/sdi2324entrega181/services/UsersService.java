@@ -5,6 +5,8 @@ import com.uniovi.sdi2324entrega181.repositories.UsersRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -33,12 +35,20 @@ public class UsersService {
         return users;
     }
 
+    public void setUserBorrado(boolean borrado,Long id){
+        usersRepository.updateBorrado(borrado,id);
+    }
+
+    public User getUserByEmail(String email){
+        return usersRepository.findByEmail(email);
+    }
+
     public User getUser(Long id) {
         return usersRepository.findById(id).get();
     }
 
     public void addUser(User user) {
-        user.setPassword(user.getPassword());
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         usersRepository.save(user);
     }
 
@@ -56,6 +66,10 @@ public class UsersService {
             usersRepository.save(originalUser);
         }
 
+    }
+
+    public void borrarTodo(){
+        usersRepository.borrarTodos();
     }
 
 
