@@ -5,6 +5,8 @@ import com.uniovi.sdi2324entrega181.services.RolesService;
 import com.uniovi.sdi2324entrega181.services.SecurityService;
 import com.uniovi.sdi2324entrega181.services.UsersService;
 import com.uniovi.sdi2324entrega181.validators.SignUpFormValidator;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Controller
 public class UsersController {
@@ -62,8 +66,10 @@ public class UsersController {
 
 
     @RequestMapping("/user/list")
-    public String getList(Model model) {
-        model.addAttribute("usersList", usersService.getUsers());
+    public String getList(Model model, Pageable pageable) {
+        Page<User> users = usersService.getUsers(pageable);
+        model.addAttribute("usersList", users.getContent());
+        model.addAttribute("page", users);
         return "user/list";
     }
 
