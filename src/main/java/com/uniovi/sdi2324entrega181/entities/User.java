@@ -18,6 +18,8 @@ public class User {
 
     private String role;
 
+    private Boolean borrado=false;
+
     public User(String email, String name, String lastName) {
         super();
         this.email = email;
@@ -26,6 +28,14 @@ public class User {
     }
 
     public User() { }
+
+    public boolean getBorrado(){
+        return this.borrado;
+    }
+
+    public void setBorrado(boolean borrado){
+        this.borrado=borrado;
+    }
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }

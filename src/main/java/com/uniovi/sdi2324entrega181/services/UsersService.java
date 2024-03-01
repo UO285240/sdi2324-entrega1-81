@@ -35,6 +35,10 @@ public class UsersService {
         return users;
     }
 
+    public void setUserBorrado(boolean borrado,Long id){
+        usersRepository.updateBorrado(borrado,id);
+    }
+
     public User getUserByEmail(String email){
         return usersRepository.findByEmail(email);
     }
@@ -62,6 +66,10 @@ public class UsersService {
             usersRepository.save(originalUser);
         }
 
+    }
+
+    public void borrarTodo(){
+        usersRepository.borrarTodos();
     }
 
 }

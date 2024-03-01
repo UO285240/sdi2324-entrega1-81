@@ -112,4 +112,21 @@ public class UsersController {
         return "redirect:/user/details/"+id;
     }
 
+    @RequestMapping(value = "/user/{id}/borrado", method = RequestMethod.GET)
+    public String setBorradoTrue(@PathVariable Long id) {
+        usersService.setUserBorrado(true, id);
+        return "redirect:/user/list";
+    }
+    @RequestMapping(value = "/user/{id}/noBorrado", method = RequestMethod.GET)
+    public String setBorradoFalse(@PathVariable Long id) {
+        usersService.setUserBorrado(false, id);
+        return "redirect:/user/list";
+    }
+
+    @RequestMapping(value= "/user/borrarSeleccionados")
+    public String borrarTodo(){
+        usersService.borrarTodo();
+        return "redirect:/user/list";
+    }
+
 }

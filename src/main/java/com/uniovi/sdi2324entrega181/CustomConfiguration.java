@@ -47,7 +47,7 @@ public class CustomConfiguration implements WebMvcConfigurer {
     }
 
 
-}
+
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
