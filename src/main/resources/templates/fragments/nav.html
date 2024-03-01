@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
     <a class="navbar-brand" href="#"></a>
     <img src="/images/student-48.png" alt="logo"/>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar"
@@ -18,6 +18,14 @@
                     <a class="dropdown-item" href="/user/list">Ver usuarios</a>
                     <a class="dropdown-item" href="/user/add">Agregar usuario</a>
                 </div>
+            </li>
+
+
+            <li sec:authorize="isAuthenticated()" class="nav-item">
+                <a class="nav-link" href="/logout">
+                    <i class='fas fa-sign-out-alt' style='font-size:16px'></i>
+                    <span>Desconectar</span>
+                </a>
             </li>
 
         </ul>

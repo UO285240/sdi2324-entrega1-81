@@ -8,45 +8,39 @@
     <h2>Usuarios</h2>
     <p>Los usuarios que actualmente figuran en el sistema son los
         siguientes:</p>
+
+    <!-- botón para actualizar -->
+    <button type="button" id="updateButton" class="btn btn-primary">Actualizar</button>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        $( "#updateButton" ).click(function() {
+            let numberPage = [[${param.page}]];
+            let urlUpdate = '/user/list/update';
+            if (numberPage != null ){
+                urlUpdate += "?page="+numberPage[0];
+            }
+            $("#usersTable").load(urlUpdate);
+        });
+        /*]]>*/
+    </script>
+
+
     <form class="form-inline" action="/user/list">
         <div class="form-group"><input name="searchText" type="text" class="form-control" size="50"
                                        placeholder="Buscar por nombre, apellidos o email del usuario" th:value="${searchText}"></div>
         <button type="submit" class="btn btn-primary">Buscar</button>
     </form>
     <div class="table-responsive">
-        <table class="table table-hover" th:fragment="usersTable" id="usersTable ">
-            <thead>
-            <tr>
-                <th scope="col">Email</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Apellidos</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="user : ${usersList}">
-                <td th:text="${user.email}">71888888X</td>
-                <td th:text="${user.name}">Nombre del alumno</td>
-                <td th:text="${user.lastName}">Apellidos del alumno</td>
-                <td><a th:href="${'/user/details/' + user.id}">detalles</a></td>
-                <td><a th:href="${'/user/edit/' + user.id}">modificar</a></td>
-                <td><a th:href="${'/user/delete/' + user.id}">eliminar</a></td>
-                <td><div th:if="${user.borrado}">
-                    <a th:href="${'/user/'+user.id+'/noBorrado'}">Borrar</a>
-                </div>
-                    <div th:unless="${user.borrado}">
-                        <a th:href="${'/user/'+user.id+'/borrado'}">No borrar</a>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
+        <table class="table table-hover">
+            <table class="table table-hover" th:fragment="usersTable" id="usersTable" th:replace="fragments/users_table" />
+            <footer th:replace="fragments/pagination"/>
         </table>
         <form action="/user/borrarSeleccionados" method="get">
             <button type="submit">Borrar</button>
         </form>
     </div>
+
+    <div th:if="${#lists.isEmpty(usersList)}"> No hay usuarios </div>
     <footer th:replace="fragments/pagination"/>
 </div>
 <footer th:replace="fragments/footer"/>

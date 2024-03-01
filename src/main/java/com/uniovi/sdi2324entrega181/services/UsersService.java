@@ -4,19 +4,23 @@ import com.uniovi.sdi2324entrega181.entities.User;
 import com.uniovi.sdi2324entrega181.repositories.UsersRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Service
 public class UsersService {
-
 
     private final UsersRepository usersRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -35,6 +39,24 @@ public class UsersService {
         return users;
     }
 
+
+    /** En función del rol del usuario, devolverá:
+     *  USUARIO_ESTANDAR -> todos los usuarios de la aplicación (excepto Administrador y el usuario
+     *  USUARIO_ADMIN -> todos los usuarios de la aplicación
+     * */
+    public Page<User> getUsersForUser(Pageable pageable, User user) {
+        Page<User> users = new PageImpl<>(new LinkedList<>());
+
+        if (user.getRole().equals("USUARIO_ESTANDAR")) {
+            users = usersRepository.findAllByStandardUser(pageable, user.getId(), "USUARIO_ESTANDAR");}
+
+        if (user.getRole().equals("USUARIO_ADMIN")) {
+            users = getUsers(pageable); }
+
+        return users;
+    }
+
+
     public void setUserBorrado(boolean borrado,Long id){
         usersRepository.updateBorrado(borrado,id);
     }
@@ -46,6 +68,11 @@ public class UsersService {
     public User getUser(Long id) {
         return usersRepository.findById(id).get();
     }
+
+    public User getUserByEmail(String email){
+        return usersRepository.findByEmail(email);
+    }
+
 
     public void addUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));

@@ -9,6 +9,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Service;;
+
 @Service
 public class SecurityService {
     private static final Logger logger = LoggerFactory.getLogger(SecurityService.class);
@@ -37,4 +39,5 @@ public class SecurityService {
             logger.debug(String.format("Auto login %s successfully!", dni));
         }
     }
+
 }

@@ -3,10 +3,15 @@ package com.uniovi.sdi2324entrega181.controllers;
 import com.uniovi.sdi2324entrega181.entities.User;
 import com.uniovi.sdi2324entrega181.services.RolesService;
 import com.uniovi.sdi2324entrega181.services.SecurityService;
+import com.uniovi.sdi2324entrega181.services.SecurityService;
 import com.uniovi.sdi2324entrega181.services.UsersService;
 import com.uniovi.sdi2324entrega181.validators.SignUpFormValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,10 +20,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.security.Principal;
+
 @Controller
 public class UsersController {
 
     private final UsersService usersService;
+    private final SecurityService securityService;
+
     private final SecurityService securityService;
     private final SignUpFormValidator signUpFormValidator;
 
@@ -75,6 +84,22 @@ public class UsersController {
 
         return "user/list";
     }
+
+    /**
+     * Actualiza la tabla de usuarios del sistema
+     */
+    @RequestMapping("/user/list/update")
+    public String updateList(Model model, Pageable pageable, Principal principal) {
+        String email = principal.getName(); // email del usuario autenticado
+        User user = usersService.getUserByEmail(email);
+
+        Page<User> users = usersService.getUsersForUser(pageable, user);
+
+        model.addAttribute("usersList", users.getContent());
+        return "user/list :: usersTable";
+    }
+
+
 
     @RequestMapping(value = "/user/add")
     public String getUser(Model model) {
