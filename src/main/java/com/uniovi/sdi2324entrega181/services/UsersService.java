@@ -47,6 +47,10 @@ public class UsersService {
         usersRepository.deleteById(id);
     }
 
+    public void saveUser(User user){
+        usersRepository.save(user);
+    }
+
     public void updateUser(User user, Long id) {
 
         User originalUser = getUser(id);

@@ -75,15 +75,20 @@ public class UsersController {
 
     @RequestMapping(value = "/user/edit/{id}")
     public String getEdit(Model model, @PathVariable Long id) {
-        model.addAttribute("user", usersService.getUser(id));
+        User user = usersService.getUser(id);
+        model.addAttribute("user", user);
         return "user/edit";
     }
-
-    @RequestMapping(value="/user/edit/{id}", method=RequestMethod.POST)
-    public String setEdit(@ModelAttribute User user, @PathVariable Long id){
-        user.setId(id);
-        usersService.addUser(user);
-        return "redirect:/user/details/"+id;
+    @RequestMapping(value = "/user/edit/{id}", method = RequestMethod.POST)
+    public String setEdit(@PathVariable Long id, @ModelAttribute User user) {
+        //usersService.addUser(user);
+        User originalUser = usersService.getUser(id);
+        // modificar solo Email, nombre y apellidos
+        originalUser.setEmail(user.getEmail());
+        originalUser.setName(user.getName());
+        originalUser.setLastName(user.getLastName());
+        usersService.saveUser(originalUser);
+        return "redirect:/user/details/" + id;
     }
 
 }
