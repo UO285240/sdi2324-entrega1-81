@@ -24,5 +24,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public SpringSecurityDialect securityDialect() {
+        return new SpringSecurityDialect();
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable().
+                authorizeRequests().
+                antMatchers("/css/**", "/images/**", "/script/**", "/", "/signup", "/login/**").permitAll()
+                .anyRequest().authenticated().
+                and().
+                formLogin().
+                loginPage("/login").
+                permitAll().
+                defaultSuccessUrl("/home").
+                and().
+                logout().
+                permitAll();
+    }
+
+
+
 
 }
