@@ -28,6 +28,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -36,6 +38,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/css/**", "/images/**", "/script/**", "/", "/signup", "/login/**").permitAll()
 
                 .antMatchers("/user/add").authenticated()
+
+                .antMatchers("/user/list").hasRole("USUARIO_ADMIN")
 
                 .anyRequest().authenticated()
                 .and()
@@ -46,6 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .permitAll();
+
     }
 
 
@@ -54,9 +59,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public SpringSecurityDialect securityDialect() {
         return new SpringSecurityDialect();
     }
-
-
-
 
 
 

@@ -4,6 +4,7 @@ import com.uniovi.sdi2324entrega181.entities.User;
 import com.uniovi.sdi2324entrega181.services.RolesService;
 import com.uniovi.sdi2324entrega181.services.SecurityService;
 import com.uniovi.sdi2324entrega181.services.SecurityService;
+import com.uniovi.sdi2324entrega181.services.SecurityService;
 import com.uniovi.sdi2324entrega181.services.UsersService;
 import com.uniovi.sdi2324entrega181.validators.SignUpFormValidator;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +25,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.security.Principal;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.security.core.Authentication;
 
 @Controller
 public class UsersController {
@@ -28,14 +37,27 @@ public class UsersController {
     private final UsersService usersService;
     private final SecurityService securityService;
 
-    private final SecurityService securityService;
     private final SignUpFormValidator signUpFormValidator;
-
     private final RolesService rolesService;
+
 
     public UsersController(UsersService usersService,SignUpFormValidator signUpFormValidator, SecurityService securityService,
                            RolesService rolesService) {
         this.usersService = usersService;
+        this.securityService = securityService;
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login() {
+        return "login";
+    }
+
+    @RequestMapping(value = {"/home"}, method = RequestMethod.GET)
+    public String home(Model model, Pageable pageable) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        User activeUser = usersService.getUserByEmail(email);
+        return "home";
         this.securityService = securityService;
         this.signUpFormValidator = signUpFormValidator;
         this.rolesService = rolesService;
@@ -59,10 +81,6 @@ public class UsersController {
         return "redirect:home";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login() {
-        return "login";
-    }
 
     @RequestMapping(value = { "/home" }, method = RequestMethod.GET)
     public String home() {
@@ -71,6 +89,10 @@ public class UsersController {
 
 
     @RequestMapping("/user/list")
+    public String getList(Model model, Pageable pageable) {
+        Page<User> users = usersService.getUsers(pageable);
+        model.addAttribute("usersList", users.getContent());
+        model.addAttribute("page", users);
     public String getList(Model model, Pageable pageable, @RequestParam(value="", required=false) String searchText) {
         Page<User> users = usersService.getUsers(pageable);
 
@@ -129,15 +151,20 @@ public class UsersController {
 
     @RequestMapping(value = "/user/edit/{id}")
     public String getEdit(Model model, @PathVariable Long id) {
-        model.addAttribute("user", usersService.getUser(id));
+        User user = usersService.getUser(id);
+        model.addAttribute("user", user);
         return "user/edit";
     }
-
-    @RequestMapping(value="/user/edit/{id}", method=RequestMethod.POST)
-    public String setEdit(@ModelAttribute User user, @PathVariable Long id){
-        user.setId(id);
-        usersService.addUser(user);
-        return "redirect:/user/details/"+id;
+    @RequestMapping(value = "/user/edit/{id}", method = RequestMethod.POST)
+    public String setEdit(@PathVariable Long id, @ModelAttribute User user) {
+        //usersService.addUser(user);
+        User originalUser = usersService.getUser(id);
+        // modificar solo Email, nombre y apellidos
+        originalUser.setEmail(user.getEmail());
+        originalUser.setName(user.getName());
+        originalUser.setLastName(user.getLastName());
+        usersService.saveUser(originalUser);
+        return "redirect:/user/details/" + id;
     }
 
     @RequestMapping(value = "/user/{id}/borrado", method = RequestMethod.GET)
