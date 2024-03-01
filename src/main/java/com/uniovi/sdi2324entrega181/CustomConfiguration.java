@@ -35,11 +35,6 @@ public class CustomConfiguration implements WebMvcConfigurer {
     @Value("${spring.data.web.pageable.size-parameter}")
     private int size;
 
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-
-@Configuration
-public class CustomConfiguration implements WebMvcConfigurer {
 
 
     @Bean
@@ -63,8 +58,7 @@ public class CustomConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        int page = 0;
-        int size = 5;
+
         PageableHandlerMethodArgumentResolver resolver = new PageableHandlerMethodArgumentResolver();
         resolver.setFallbackPageable(PageRequest.of(page, size));
         argumentResolvers.add(resolver);
@@ -73,4 +67,3 @@ public class CustomConfiguration implements WebMvcConfigurer {
 
 
 
-}

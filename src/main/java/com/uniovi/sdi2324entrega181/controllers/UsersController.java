@@ -45,6 +45,8 @@ public class UsersController {
                            RolesService rolesService) {
         this.usersService = usersService;
         this.securityService = securityService;
+        this.signUpFormValidator = signUpFormValidator;
+        this.rolesService = rolesService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -53,14 +55,9 @@ public class UsersController {
     }
 
     @RequestMapping(value = {"/home"}, method = RequestMethod.GET)
-    public String home(Model model, Pageable pageable) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-        User activeUser = usersService.getUserByEmail(email);
+    public String home() {
+
         return "home";
-        this.securityService = securityService;
-        this.signUpFormValidator = signUpFormValidator;
-        this.rolesService = rolesService;
     }
 
 
@@ -82,17 +79,9 @@ public class UsersController {
     }
 
 
-    @RequestMapping(value = { "/home" }, method = RequestMethod.GET)
-    public String home() {
-        return "home";
-    }
 
 
     @RequestMapping("/user/list")
-    public String getList(Model model, Pageable pageable) {
-        Page<User> users = usersService.getUsers(pageable);
-        model.addAttribute("usersList", users.getContent());
-        model.addAttribute("page", users);
     public String getList(Model model, Pageable pageable, @RequestParam(value="", required=false) String searchText) {
         Page<User> users = usersService.getUsers(pageable);
 

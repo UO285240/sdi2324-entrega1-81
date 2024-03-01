@@ -81,11 +81,27 @@ public class UsersService {
         usersRepository.borrarTodos();
     }
 
+    public void setUserBorrado(boolean borrado,Long id){
+        usersRepository.updateBorrado(borrado,id);
+    }
+
 
     public Page<User> searchByEmailNameAndSurname(String text, Pageable pageable){
 
         String searchTest = "%"+text+"%";
         Page<User> users = usersRepository.searchByEmailNameAndSurname(searchTest, pageable);
+
+        return users;
+    }
+
+    public Page<User> getUsersForUser(Pageable pageable, User user) {
+        Page<User> users = new PageImpl<>(new LinkedList<>());
+
+        if (user.getRole().equals("USUARIO_ESTANDAR")) {
+            users = usersRepository.findAllByStandardUser(pageable, user.getId(), "USUARIO_ESTANDAR");}
+
+        if (user.getRole().equals("USUARIO_ADMIN")) {
+            users = getUsers(pageable); }
 
         return users;
     }
