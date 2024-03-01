@@ -2,6 +2,9 @@ package com.uniovi.sdi2324entrega181.services;
 
 import com.uniovi.sdi2324entrega181.entities.User;
 import com.uniovi.sdi2324entrega181.repositories.UsersRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -12,18 +15,18 @@ import java.util.List;
 public class UsersService {
 
     private final UsersRepository usersRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UsersService(UsersRepository usersRepository) {
+    public UsersService(UsersRepository usersRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.usersRepository = usersRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
-
     @PostConstruct
     public void init() {
     }
 
-    public List<User> getUsers() {
-        List<User> users = new ArrayList<>();
-        usersRepository.findAll().forEach(users::add);
+    public Page<User> getUsers(Pageable pageable) {
+        Page<User> users = usersRepository.findAll(pageable);
         return users;
     }
 
