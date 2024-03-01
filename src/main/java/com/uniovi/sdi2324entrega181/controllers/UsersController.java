@@ -30,6 +30,14 @@ public class UsersController {
         return "login";
     }
 
+    @RequestMapping(value = {"/home"}, method = RequestMethod.GET)
+    public String home(Model model, Pageable pageable) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        User activeUser = usersService.getUserByEmail(email);
+        return "home";
+    }
+
 
 
     @RequestMapping("/user/list")
