@@ -7,10 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class UsersController {
@@ -26,10 +23,17 @@ public class UsersController {
 
 
     @RequestMapping("/user/list")
-    public String getList(Model model, Pageable pageable) {
+    public String getList(Model model, Pageable pageable, @RequestParam(value="", required=false) String searchText) {
         Page<User> users = usersService.getUsers(pageable);
+
+        if (searchText != null && !searchText.isEmpty()){
+            users = usersService.searchByEmailNameAndSurname(searchText, pageable);
+        }
+
         model.addAttribute("usersList", users.getContent());
         model.addAttribute("page", users);
+        model.addAttribute("searchText", searchText);
+
         return "user/list";
     }
 

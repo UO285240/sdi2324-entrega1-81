@@ -58,4 +58,13 @@ public class UsersService {
 
     }
 
+
+    public Page<User> searchByEmailNameAndSurname(String text, Pageable pageable){
+
+        String searchTest = "%"+text+"%";
+        Page<User> users = usersRepository.searchByEmailNameAndSurname(searchTest, pageable);
+
+        return users;
+    }
+
 }
