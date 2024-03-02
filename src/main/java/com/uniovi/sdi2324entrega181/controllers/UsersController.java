@@ -81,11 +81,12 @@ public class UsersController {
     }
 
 
-
-
     @RequestMapping("/user/list")
-    public String getList(Model model, Pageable pageable, @RequestParam(value="", required=false) String searchText) {
-        Page<User> users = usersService.getUsers(pageable);
+    public String getList(Model model, Pageable pageable, Principal principal, @RequestParam(value="", required=false) String searchText){
+        String email = principal.getName(); //email del usuario autenticado
+        User user = usersService.getUserByEmail(email);
+        // devuelve la lista de usuarios en función del rol del usuario autentificado
+        Page<User> users = usersService.getUsersForUser(pageable, user);
 
         if (searchText != null && !searchText.isEmpty()){
             users = usersService.searchByEmailNameAndSurname(searchText, pageable);
@@ -94,9 +95,9 @@ public class UsersController {
         model.addAttribute("usersList", users.getContent());
         model.addAttribute("page", users);
         model.addAttribute("searchText", searchText);
-
         return "user/list";
     }
+
 
     /**
      * Actualiza la tabla de usuarios del sistema

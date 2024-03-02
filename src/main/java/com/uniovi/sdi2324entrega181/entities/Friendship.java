@@ -1,0 +1,58 @@
+package com.uniovi.sdi2324entrega181.entities;
+
+import javax.persistence.*;
+
+public class Friendship {
+
+
+    @Id
+    @GeneratedValue
+    private long id;
+
+    @OneToOne
+    private User sender; // el que envía la solicitud de amistad
+
+    @OneToOne
+    private User receiver; // el que recive la solicitud de amistad
+
+    private boolean accepted; // true -> amigos
+
+    public Friendship(){}
+
+    public Friendship(User sender, User receiver, boolean accepted) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.accepted = accepted;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+    public User getSender() {
+        return sender;
+    }
+
+    public void setSender(User sender) {
+        this.sender = sender;
+    }
+
+    public User getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
+    }
+
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
+    }
+}
