@@ -2,6 +2,8 @@ package com.uniovi.sdi2324entrega181.entities;
 
 import javax.persistence.*;
 
+@Entity
+@Table(name = "friendship")
 public class Friendship {
 
 

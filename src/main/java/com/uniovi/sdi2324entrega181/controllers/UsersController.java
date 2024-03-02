@@ -1,11 +1,9 @@
 package com.uniovi.sdi2324entrega181.controllers;
 
 import com.uniovi.sdi2324entrega181.entities.User;
-import com.uniovi.sdi2324entrega181.services.RolesService;
+import com.uniovi.sdi2324entrega181.services.*;
 import com.uniovi.sdi2324entrega181.services.SecurityService;
 import com.uniovi.sdi2324entrega181.services.SecurityService;
-import com.uniovi.sdi2324entrega181.services.SecurityService;
-import com.uniovi.sdi2324entrega181.services.UsersService;
 import com.uniovi.sdi2324entrega181.validators.SignUpFormValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,14 +37,16 @@ public class UsersController {
 
     private final SignUpFormValidator signUpFormValidator;
     private final RolesService rolesService;
+    private final FriendshipsService friendshipsService;
 
 
     public UsersController(UsersService usersService,SignUpFormValidator signUpFormValidator, SecurityService securityService,
-                           RolesService rolesService) {
+                           RolesService rolesService, FriendshipsService friendshipsService) {
         this.usersService = usersService;
         this.securityService = securityService;
         this.signUpFormValidator = signUpFormValidator;
         this.rolesService = rolesService;
+        this.friendshipsService = friendshipsService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -95,6 +95,12 @@ public class UsersController {
         model.addAttribute("usersList", users.getContent());
         model.addAttribute("page", users);
         model.addAttribute("searchText", searchText);
+
+        // friendships
+        model.addAttribute("friendRequests", friendshipsService.getFriendRequests(user));
+        model.addAttribute("friends", friendshipsService.getFriends(user));
+
+
         return "user/list";
     }
 
