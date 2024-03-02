@@ -16,13 +16,14 @@
         <td th:text="${user.name}">Nombre del alumno</td>
         <td th:text="${user.lastName}">Apellidos del alumno</td>
 
-        <!-- Solicitud de amistad -->
+
+        <!-------- Solicitud de amistad ------->
 
         <!-- No son amigos-->
         <td th:if="${!friendRequests.contains(user.email) && !friends.contains(user.email)}">
             <a th:href="${'/friendship/send/' + user.id}">
                 <button type="button" th:id="${user.email}"
-                        class="btn btn-success">Enviar peticion</button>
+                        class="btn btn-success">Enviar solicitud</button>
             </a>
         </td>
 
@@ -35,7 +36,6 @@
                     th:id="${user.email}"> Solicitud enviada
             </button>
         </td>
-
 
 
         <td><a th:href="${'/user/details/' + user.id}">detalles</a></td>

@@ -83,8 +83,9 @@ public class UsersController {
 
     @RequestMapping("/user/list")
     public String getList(Model model, Pageable pageable, Principal principal, @RequestParam(value="", required=false) String searchText){
-        String email = principal.getName(); //email del usuario autenticado
+        String email = principal.getName(); // email del usuario autenticado
         User user = usersService.getUserByEmail(email);
+
         // devuelve la lista de usuarios en función del rol del usuario autentificado
         Page<User> users = usersService.getUsersForUser(pageable, user);
 
@@ -99,7 +100,6 @@ public class UsersController {
         // friendships
         model.addAttribute("friendRequests", friendshipsService.getFriendRequests(user));
         model.addAttribute("friends", friendshipsService.getFriends(user));
-
 
         return "user/list";
     }

@@ -17,14 +17,14 @@ public class Friendship {
     @OneToOne
     private User receiver; // el que recive la solicitud de amistad
 
-    private boolean accepted; // true -> amigos
+    private boolean isAccepted; // true -> amigos
 
     public Friendship(){}
 
-    public Friendship(User sender, User receiver, boolean accepted) {
+    public Friendship(User sender, User receiver, boolean isAccepted) {
         this.sender = sender;
         this.receiver = receiver;
-        this.accepted = accepted;
+        this.isAccepted = isAccepted;
     }
 
     public long getId() {
@@ -51,10 +51,10 @@ public class Friendship {
     }
 
     public boolean isAccepted() {
-        return accepted;
+        return isAccepted;
     }
 
-    public void setAccepted(boolean accepted) {
-        this.accepted = accepted;
+    public void setIsAccepted(boolean isAccepted) {
+        this.isAccepted = isAccepted;
     }
 }
