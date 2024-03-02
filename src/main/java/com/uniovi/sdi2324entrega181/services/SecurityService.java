@@ -21,7 +21,7 @@ public class SecurityService {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
     }
-    public String findLoggedInDni() {
+    public String findLoggedInEmail() {
         Object userDetails = SecurityContextHolder.getContext().getAuthentication().getDetails();
         if (userDetails instanceof UserDetails) {
             return ((UserDetails) userDetails).getUsername();
