@@ -1,6 +1,8 @@
 package com.uniovi.sdi2324entrega181.entities;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "friendship")
@@ -19,12 +21,16 @@ public class Friendship {
 
     private boolean isAccepted; // true -> amigos
 
+    private LocalDate sendDate; // fecha de envío de la solicitud
+
+
     public Friendship(){}
 
-    public Friendship(User sender, User receiver, boolean isAccepted) {
+    public Friendship(User sender, User receiver, boolean isAccepted, LocalDate sendDate) {
         this.sender = sender;
         this.receiver = receiver;
         this.isAccepted = isAccepted;
+        this.sendDate = sendDate;
     }
 
     public long getId() {

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FriendshipsService {
@@ -56,5 +57,10 @@ public class FriendshipsService {
         }
 
         return friendEmails;
+    }
+
+    public boolean existsFriendship(User sender, User receiver) {
+         Optional<Friendship> friendship = friendshipsRepository.findBySenderAndReceiver(sender.getEmail(), receiver.getEmail());
+         return friendship.isPresent();
     }
 }
