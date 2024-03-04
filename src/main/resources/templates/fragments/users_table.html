@@ -1,4 +1,11 @@
 <table class="table table-hover" th:fragment="usersTable" id="marksTable" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
+
+    <div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
+         th:text="${mensaje}"
+         class="alert">
+    </div>
+
+
     <thead>
     <tr>
         <th scope="col">Email</th>
