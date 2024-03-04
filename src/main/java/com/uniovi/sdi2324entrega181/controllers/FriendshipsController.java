@@ -40,7 +40,6 @@ public class FriendshipsController {
             redirectAttrs
                     .addFlashAttribute("mensaje", "Ya existe una petición de amistad a este usuario")
                     .addFlashAttribute("clase", "warning");
-
         }
 
 
