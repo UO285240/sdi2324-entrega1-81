@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import java.security.Principal;
+
 
 
 import javax.annotation.PostConstruct;
@@ -76,13 +78,6 @@ public class UsersService {
 
     }
 
-    public void borrarTodo(){
-        usersRepository.borrarTodos();
-    }
-
-    public void setUserBorrado(boolean borrado,Long id){
-        usersRepository.updateBorrado(borrado,id);
-    }
 
 
     public Page<User> searchByEmailNameAndSurname(String text, Pageable pageable){
@@ -105,4 +100,11 @@ public class UsersService {
         return users;
     }
 
+    public void borrarPorId(List<Long> usuariosABorrar) {
+
+        for(Long id: usuariosABorrar){
+
+            usersRepository.deleteById(id);
+        }
+    }
 }
