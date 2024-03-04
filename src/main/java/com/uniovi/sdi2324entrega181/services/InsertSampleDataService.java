@@ -1,8 +1,7 @@
 package com.uniovi.sdi2324entrega181.services;
-import java.util.HashSet;
-import java.util.Set;
 import javax.annotation.PostConstruct;
 
+import com.uniovi.sdi2324entrega181.entities.Post;
 import com.uniovi.sdi2324entrega181.entities.User;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +9,12 @@ import org.springframework.stereotype.Service;
 public class InsertSampleDataService {
     private final UsersService userService;
     private final RolesService rolesService;
-    public InsertSampleDataService(UsersService usersService, RolesService rolesService) {
+    private final PostService postService;
+
+    public InsertSampleDataService(UsersService usersService, RolesService rolesService, PostService postService) {
         this.userService = usersService;
         this.rolesService = rolesService;
+        this.postService = postService;
     }
 
     @PostConstruct
@@ -94,5 +96,15 @@ public class InsertSampleDataService {
         userService.addUser(user13);
         userService.addUser(user14);
         userService.addUser(user15);
+    }
+
+
+
+
+    private void addPosts(){
+        User user1 = new User("pedro@example.com", "Pedro", "Díaz");
+        Post post1 = new Post(user1, "Título 1", "Texto del post 1");
+
+        postService.savePost(post1);
     }
 }
