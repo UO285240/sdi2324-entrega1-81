@@ -76,13 +76,7 @@ public class UsersService {
 
     }
 
-    public void borrarTodo(){
-        usersRepository.borrarTodos();
-    }
 
-    public void setUserBorrado(boolean borrado,Long id){
-        usersRepository.updateBorrado(borrado,id);
-    }
 
 
     public Page<User> searchByEmailNameAndSurname(String text, Pageable pageable){
@@ -105,5 +99,11 @@ public class UsersService {
         return users;
     }
 
+    public void borrarPorId(List<Long> usuariosABorrar) {
 
+        for(Long id: usuariosABorrar){
+
+            usersRepository.deleteById(id);
+        }
+    }
 }

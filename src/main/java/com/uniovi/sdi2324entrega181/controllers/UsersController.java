@@ -23,6 +23,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.security.Principal;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -165,20 +167,13 @@ public class UsersController {
         return "redirect:/user/details/" + id;
     }
 
-    @RequestMapping(value = "/user/{id}/borrado", method = RequestMethod.GET)
-    public String setBorradoTrue(@PathVariable Long id) {
-        usersService.setUserBorrado(true, id);
-        return "redirect:/user/list";
-    }
-    @RequestMapping(value = "/user/{id}/noBorrado", method = RequestMethod.GET)
-    public String setBorradoFalse(@PathVariable Long id) {
-        usersService.setUserBorrado(false, id);
-        return "redirect:/user/list";
-    }
 
-    @RequestMapping(value= "/user/borrarSeleccionados")
-    public String borrarTodo(){
-        usersService.borrarTodo();
+
+    @RequestMapping(value= "/user/borrarTodos",method= RequestMethod.POST)
+    public String borrarTodo(@RequestParam("usuariosABorrar") List<Long> usuariosABorrar){
+        if(usuariosABorrar!=null) {
+            usersService.borrarPorId(usuariosABorrar);
+        }
         return "redirect:/user/list";
     }
 

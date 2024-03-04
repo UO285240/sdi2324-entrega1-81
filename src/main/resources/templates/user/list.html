@@ -35,9 +35,6 @@
             <table class="table table-hover" th:fragment="usersTable" id="usersTable" th:replace="fragments/users_table" />
             <footer th:replace="fragments/pagination"/>
         </table>
-        <form action="/user/borrarSeleccionados" method="get">
-            <button type="submit">Borrar</button>
-        </form>
     </div>
 
     <div th:if="${#lists.isEmpty(usersList)}"> No hay usuarios </div>

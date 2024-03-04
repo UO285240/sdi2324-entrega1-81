@@ -28,16 +28,9 @@ public interface UsersRepository extends CrudRepository<User, Long> {
 
     Page<User> findAll(Pageable pageable);
 
-    @Modifying
-    @Transactional
-    @Query("UPDATE User SET borrado=?1 WHERE id=?2")
-    void updateBorrado(Boolean borrado,Long id);
-
-    @Modifying
-    @Transactional
-    @Query("DELETE FROM User WHERE borrado = true")
-    void borrarTodos();
 
     @Query("SELECT u FROM User u WHERE (LOWER(u.name) LIKE LOWER(?1) OR LOWER(u.lastName) LIKE LOWER(?1) OR LOWER(u.email) LIKE LOWER(?1))")
     Page<User> searchByEmailNameAndSurname(String searchtext, Pageable pageable);
+
+
 }
