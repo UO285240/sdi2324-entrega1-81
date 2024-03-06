@@ -19,6 +19,14 @@
                 </div>
             </li>
 
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="postDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="#{nav.postDropdown}"></a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/post/add" th:text="#{nav.addPost}"></a>
+                    <a class="dropdown-item" href="/post/list" th:text="#{nav.listPost}"></a>
+                </div>
+            </li>
+
         </ul>
 
         <ul class="navbar-nav justify-content-end">
