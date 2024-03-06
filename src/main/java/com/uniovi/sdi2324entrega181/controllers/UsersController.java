@@ -46,8 +46,17 @@ public class UsersController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+
+        // En el caso de que el usuario ya esté logeado, ir a user/list
+        if (email != "anonymousUser")
+            return "redirect:user/list";
+
         return "login";
+
     }
+
 
     @RequestMapping(value = {"/home"}, method = RequestMethod.GET)
     public String home(Model model, Pageable pageable) {
@@ -117,20 +126,6 @@ public class UsersController {
         return "user/list :: usersTable";
     }
 
-
-
-    @RequestMapping(value = "/user/add")
-    public String getUser(Model model) {
-        model.addAttribute("rolesList", rolesService.getRoles());
-        return "user/add";
-    }
-
-    @RequestMapping(value = "/user/add", method = RequestMethod.POST)
-    public String setUser(@ModelAttribute User user) {
-        usersService.addUser(user);
-        return "redirect:/user/list";
-
-    }
 
     @RequestMapping("/user/details/{id}")
     public String getDetail(Model model, @PathVariable Long id) {

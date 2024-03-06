@@ -41,12 +41,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
 
                 .and()
-                    .formLogin()
-                        .loginPage("/login")
-                        .permitAll()
-                        .defaultSuccessUrl("/home")
-                    .and()
-                        .logout().permitAll();
+                .formLogin()
+                .loginPage("/login")
+                .permitAll()
+                .defaultSuccessUrl("/user/list")
+                .and()
+                .logout().permitAll();
 
 
     }
