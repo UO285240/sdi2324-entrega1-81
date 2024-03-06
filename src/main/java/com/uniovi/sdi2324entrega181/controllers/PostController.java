@@ -35,7 +35,7 @@ public class PostController {
         User user = usersService.getUserByEmail(email);
         LocalDate date = LocalDate.now();
         postsService.addPost(new Post(user, title, text, date));
-        return "redirect:/user/list";
+        return "redirect:/post/list";
     }
 
 

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="fragments/head"/>
+<body>
+<nav th:replace="fragments/nav"/>
+<div class="container" style="text-align: center">
+    <h2>Bienvenido a nuestra aplicación web</h2>
+    <p>Se trata de una aplicación web de una red social para la asignatura Sistemas Distribuidos e Internet del grado
+        de Ingeniería Informática del Software de la Universidad de Oviedo
+    </p>
+    <div class="container" style="text-align: left">
+        <p>Desarrollada por:</p>
+        <ul>
+            <li>Rita Fernández-Catuxo Ortíz (UO284185)</li>
+            <li>Javier Monteserín Rodríguez (UO288524)</li>
+            <li>Rodrigo García Iglesias (UO276396)</li>
+            <li>Coral Izquierdo Muñiz (UO285240)</li>
+        </ul>
+    </div>
+
+    <!-- Botones de inicio de sesión y registro -->
+    <div class="container" style="margin-top: 20px;">
+        <a href="/login" class="btn btn-primary">Iniciar sesión</a>
+        <a href="/signup" class="btn btn-primary">Registrarse</a>
+    </div>
+
+</div>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>
