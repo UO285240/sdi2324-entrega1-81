@@ -1,27 +1,21 @@
-<table class="table table-hover" th:fragment="postsTable" id="postsTable"
-       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
+<div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
+     th:text="${mensaje}"
+     class="alert">
+</div>
 
-    <div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
-         th:text="${mensaje}"
-         class="alert">
+<div th:if="${#lists.isEmpty(postsList)}"> No hay publicaciones :(</div>
+
+<div class="row">
+    <div th:each="post : ${postsList}" class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <!-- Puedes agregar una imagen para representar la publicación aquí -->
+            <div class="card-body">
+                <h5 class="card-title" th:text="${post.title}">Título de la publicación</h5>
+                <p class="card-text" th:text="${post.text}">Texto de la publicación</p>
+                <p class="card-text" th:text="${'Autor: ' + post.user}">Autor de la publicación</p>
+                <p class="card-text" th:text="${'Fecha de publicación: ' + post.date}">Fecha de la publicación</p>
+                <!-- Puedes agregar más detalles de la publicación aquí -->
+            </div>
+        </div>
     </div>
-
-
-    <thead>
-    <tr>
-        <th scope="col">Título</th>
-        <th scope="col">Texto</th>
-        <th scope="col">Usuario</th>
-        <th scope="col">Fecha de publicación</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="post : ${postsList}">
-        <td th:text="${post.title}">Título de la publicación</td>
-        <td th:text="${post.text}">Texto de la publicación</td>
-        <td th:text="${post.user}">Autor de la publicación</td>
-        <td th:text="${post.date}">Fecha de la publicación</td>
-    </tr>
-
-    </tbody>
-</table>
+</div>
