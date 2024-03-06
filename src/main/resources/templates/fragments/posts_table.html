@@ -1,0 +1,27 @@
+<table class="table table-hover" th:fragment="postsTable" id="postsTable"
+       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
+
+    <div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
+         th:text="${mensaje}"
+         class="alert">
+    </div>
+
+
+    <thead>
+    <tr>
+        <th scope="col">Título</th>
+        <th scope="col">Texto</th>
+        <th scope="col">Usuario</th>
+        <th scope="col">Fecha de publicación</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="post : ${postsList}">
+        <td th:text="${post.title}">Título de la publicación</td>
+        <td th:text="${post.text}">Texto de la publicación</td>
+        <td th:text="${post.user}">Autor de la publicación</td>
+        <td th:text="${post.date}">Fecha de la publicación</td>
+    </tr>
+
+    </tbody>
+</table>

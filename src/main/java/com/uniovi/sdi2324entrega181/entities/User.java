@@ -77,4 +77,9 @@ public class User {
     }
 
 
+    public String toString(){
+        return getFullName();
+    }
+
+
 }

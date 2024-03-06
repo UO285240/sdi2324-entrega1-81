@@ -1,8 +1,11 @@
 package com.uniovi.sdi2324entrega181.services;
 
 import com.uniovi.sdi2324entrega181.entities.Post;
+import com.uniovi.sdi2324entrega181.entities.User;
 import com.uniovi.sdi2324entrega181.repositories.PostsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +25,13 @@ public class PostsService {
     public void addPost(Post post){
         postsRepository.save(post);
     }
+
+
+    public Page<Post> getPostsByUser(Pageable pageable, User user){
+        Page<Post> posts = postsRepository.findByUser(pageable, user.getId());
+        return posts;
+    }
+
 
 
 

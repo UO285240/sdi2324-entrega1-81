@@ -100,10 +100,20 @@ public class InsertSampleDataService {
         userService.addUser(user14);
         userService.addUser(user15);
 
-        LocalDate date1  = LocalDate.of(2024, 2, 15);
-        Post post1 = new Post(user1, "Título 1", "Texto del post 1", date1);
 
-        postsService.addPost(post1);
+        // 15 publicaciones para el usuario pedro@example.com
+        LocalDate date;
+        String title;
+        String text;
+        Post post;
+        for (int i = 1; i <= 15; i++) {
+            date = LocalDate.of(2024, 2, i);
+            title = "Título " + i;
+            text = "Texto del post " + i;
+
+            post = new Post(user1, title, text, date);
+            postsService.addPost(post);
+        }
     }
 
 
