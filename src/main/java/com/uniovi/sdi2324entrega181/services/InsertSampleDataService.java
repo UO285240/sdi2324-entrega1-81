@@ -1,18 +1,23 @@
 package com.uniovi.sdi2324entrega181.services;
-import java.util.HashSet;
-import java.util.Set;
 import javax.annotation.PostConstruct;
 
+import com.uniovi.sdi2324entrega181.entities.Post;
 import com.uniovi.sdi2324entrega181.entities.User;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 @Service
 public class InsertSampleDataService {
     private final UsersService userService;
     private final RolesService rolesService;
-    public InsertSampleDataService(UsersService usersService, RolesService rolesService) {
+    private final PostsService postsService;
+
+    public InsertSampleDataService(UsersService usersService, RolesService rolesService, PostsService postsService) {
         this.userService = usersService;
         this.rolesService = rolesService;
+        this.postsService = postsService;
     }
 
     @PostConstruct
@@ -94,5 +99,14 @@ public class InsertSampleDataService {
         userService.addUser(user13);
         userService.addUser(user14);
         userService.addUser(user15);
+
+        LocalDate date1  = LocalDate.of(2024, 2, 15);
+        Post post1 = new Post(user1, "Título 1", "Texto del post 1", date1);
+
+        postsService.addPost(post1);
     }
+
+
+
+
 }

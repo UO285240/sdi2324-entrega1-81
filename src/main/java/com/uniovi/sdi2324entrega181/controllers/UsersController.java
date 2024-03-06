@@ -3,24 +3,16 @@ package com.uniovi.sdi2324entrega181.controllers;
 import com.uniovi.sdi2324entrega181.entities.User;
 import com.uniovi.sdi2324entrega181.services.*;
 import com.uniovi.sdi2324entrega181.services.SecurityService;
-import com.uniovi.sdi2324entrega181.services.SecurityService;
 import com.uniovi.sdi2324entrega181.validators.SignUpFormValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.security.Principal;
 import java.util.List;
@@ -29,7 +21,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.security.core.Authentication;
 
 @Controller
 public class UsersController {
@@ -40,15 +31,17 @@ public class UsersController {
     private final SignUpFormValidator signUpFormValidator;
     private final RolesService rolesService;
     private final FriendshipsService friendshipsService;
+    private final PostsService postsService;
 
 
-    public UsersController(UsersService usersService,SignUpFormValidator signUpFormValidator, SecurityService securityService,
-                           RolesService rolesService, FriendshipsService friendshipsService) {
+    public UsersController(UsersService usersService, SignUpFormValidator signUpFormValidator, SecurityService securityService,
+                           RolesService rolesService, FriendshipsService friendshipsService, PostsService postsService) {
         this.usersService = usersService;
         this.securityService = securityService;
         this.signUpFormValidator = signUpFormValidator;
         this.rolesService = rolesService;
         this.friendshipsService = friendshipsService;
+        this.postsService = postsService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -97,7 +90,10 @@ public class UsersController {
 
         model.addAttribute("usersList", users.getContent());
         model.addAttribute("page", users);
-        model.addAttribute("searchText", searchText);
+        if (searchText != null)
+            model.addAttribute("searchText", searchText);
+        else
+            model.addAttribute("searchText","");
 
         // friendships
         model.addAttribute("friendRequests", friendshipsService.getFriendRequests(user));
