@@ -5,16 +5,19 @@ import com.uniovi.sdi2324entrega181.entities.Post;
 import com.uniovi.sdi2324entrega181.entities.User;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @Service
 public class InsertSampleDataService {
     private final UsersService userService;
     private final RolesService rolesService;
-    private final PostService postService;
+    private final PostsService postsService;
 
-    public InsertSampleDataService(UsersService usersService, RolesService rolesService, PostService postService) {
+    public InsertSampleDataService(UsersService usersService, RolesService rolesService, PostsService postsService) {
         this.userService = usersService;
         this.rolesService = rolesService;
-        this.postService = postService;
+        this.postsService = postsService;
     }
 
     @PostConstruct
@@ -96,15 +99,14 @@ public class InsertSampleDataService {
         userService.addUser(user13);
         userService.addUser(user14);
         userService.addUser(user15);
+
+        LocalDate date1  = LocalDate.of(2024, 2, 15);
+        Post post1 = new Post(user1, "Título 1", "Texto del post 1", date1);
+
+        postsService.addPost(post1);
     }
 
 
 
 
-    private void addPosts(){
-        User user1 = new User("pedro@example.com", "Pedro", "Díaz");
-        Post post1 = new Post(user1, "Título 1", "Texto del post 1");
-
-        postService.savePost(post1);
-    }
 }
