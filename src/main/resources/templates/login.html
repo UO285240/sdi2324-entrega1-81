@@ -4,6 +4,12 @@
 <body>
 <nav th:replace="fragments/nav"/>
 <div class="container">
+
+    <div th:if="${mensaje}">
+        <div style="height: 20px;"></div>
+        <div class="alert alert-warning" role="alert" th:text="${mensaje}"></div>
+    </div>
+
     <h2>Identifícate</h2>
     <form class="form-horizontal" method="post" action="/login" autocomplete="on">
         <div class="form-group">

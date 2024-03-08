@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UsersController {
@@ -45,7 +46,7 @@ public class UsersController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login() {
+    public String login(@RequestParam(name = "logout", required = false) String logout, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
 
@@ -53,8 +54,11 @@ public class UsersController {
         if (email != "anonymousUser")
             return "redirect:user/list";
 
-        return "login";
+        if (logout != null) {
+            model.addAttribute("mensaje", "s");
+        }
 
+        return "login";
     }
 
 

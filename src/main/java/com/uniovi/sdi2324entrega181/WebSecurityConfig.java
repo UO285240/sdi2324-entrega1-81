@@ -46,8 +46,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .defaultSuccessUrl("/user/list")
                 .and()
-                .logout().permitAll();
-
+                .logout()
+                .logoutSuccessHandler(new CustomLogoutSuccessHandler()) // Aquí configuras el LogoutSuccessHandler personalizado
+                .permitAll();
 
     }
 
