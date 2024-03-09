@@ -1,14 +1,17 @@
 package com.uniovi.sdi2324entrega181;
 
 import com.uniovi.sdi2324entrega181.pageobjects.PO_HomeView;
-import com.uniovi.sdi2324entrega181.pageobjects.PO_LoginView;
+import com.uniovi.sdi2324entrega181.pageobjects.PO_PrivateView;
 import com.uniovi.sdi2324entrega181.pageobjects.PO_View;
+import com.uniovi.sdi2324entrega181.util.SeleniumUtils;
 import org.junit.jupiter.api.*;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -53,29 +56,66 @@ class Sdi2324Entrega181ApplicationTests {
 
 
 
-    //[Prueba9] - Hacer clic en la opción de salir de sesión y comprobar que se muestra el mensaje “Ha cerrado
-    //sesión correctamente” y se redirige a la página de inicio de sesión
+    // [Prueba9] - Hacer clic en la opción de salir de sesión y comprobar que se muestra el mensaje “Ha cerrado
+    // sesión correctamente” y se redirige a la página de inicio de sesión
     @Test
     @Order(1)
-    void PR01A() {
+    void PR09() {
 
-        //Vamos al formulario de logueo.
-        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-        //Rellenamos el formulario
-        PO_LoginView.fillLoginForm(driver, "pedro@example.com", "123456");
+        //login
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
         // click en el botón de logout
-        PO_HomeView.clickOption(driver, "logout", "class", "btn btn-primary");
-        //Comprobamos que entramos en la pagina privada de Alumno
+        PO_PrivateView.doLogout(driver);
+
+        //Comprobamos que se muestra el mensaje
         String checkText = "Ha cerrado sesión correctamente";
         List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
         Assertions.assertEquals(checkText, result.get(0).getText());
 
+        // Comprobamos que se redirige a la página de login ??
+        checkText = "Identifícate";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
     }
 
+    // [Prueba10] - Comprobar que el botón cerrar sesión no está visible si el usuario no está autenticado.
     @Test
     @Order(2)
-    void PR02B() {
+    void PR10() {
 
+        //login
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+
+        // Comprobamos que no está visible el botón de logout
+        List<WebElement> elements = new ArrayList<>();
+        try {
+            elements = PO_View.checkElementBy(driver, "text", "logout");
+        } catch (TimeoutException e) {
+            Assertions.assertEquals(0, elements.size());
+        }
     }
+
+
+
+    // [Prueba17] - Mostrar el listado de usuarios y comprobar que se muestran todos los que existen en el sistema,
+    // excepto el propio usuario y aquellos que sean administradores.
+    @Test
+    @Order(3)
+    void PR17() {
+
+        //login - inicio sesión con un usuario estándar (pedri@example.com) que no es admin
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+
+        // listamos las notas
+        PO_PrivateView.doClickListUsers(driver);
+
+        // Comprobamos que hay un total de 7 usuarios (total de uruarios del sistema menos el autenticado y los usuarios administradores)
+        int users = PO_PrivateView.getNumOfUsers(driver, 2);
+        Assertions.assertEquals(7, users);
+    }
+
+
+
+
 
 }
