@@ -22,7 +22,7 @@ class Sdi2324Entrega181ApplicationTests {
 
     static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
     //static String Geckodriver = "C:\\Path\\geckodriver-v0.30.0-win64.exe";
-    static String Geckodriver = "C:\\Users\\Rita Catucho\\Desktop\\segundo cuatri\\SDI\\laboratorios\\semana06\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+    static String Geckodriver = "geckodriver-v0.30.0-win64.exe";
 
 
     static WebDriver driver = getDriver(PathFirefox, Geckodriver);
@@ -107,7 +107,7 @@ class Sdi2324Entrega181ApplicationTests {
         //login - inicio sesión con un usuario estándar (pedri@example.com) que no es admin
         PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
 
-        // listamos las notas
+        // listamos las usuarios
         PO_PrivateView.doClickListUsers(driver);
 
         // Comprobamos que hay un total de 7 usuarios (total de uruarios del sistema menos el autenticado y los usuarios administradores)
@@ -123,7 +123,7 @@ class Sdi2324Entrega181ApplicationTests {
         //login - inicio sesión con un usuario estándar (pedri@example.com) que no es admin
         PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
 
-        // listamos las notas
+        // listamos las usuarios
         PO_PrivateView.doClickListUsers(driver);
 
     }
@@ -138,7 +138,7 @@ class Sdi2324Entrega181ApplicationTests {
         //login - inicio sesión con un usuario estándar (pedri@example.com) que no es admin
         PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
 
-        // listamos las notas
+        // listamos las usuarios
         PO_PrivateView.doClickListUsers(driver);
 
         // Pedro le manda una invitación de amistad a Lucas (lucas@example.com)
