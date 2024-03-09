@@ -89,5 +89,14 @@ public class PO_PrivateView extends PO_NavView {
         return elementsList.size();
     }
 
+    /**
+     * Envía una solicitud de amistad
+     */
+    public static void sendFriendshipRequest(WebDriver driver, String receiver) {
+        //WebElement sendRequestButton = driver.findElement(By.xpath("//tr[contains(td, '" + receiver + "')]/td/a/button[contains(text(), 'Enviar solicitud')]"));
+        WebElement sendRequestButton = driver.findElement(By.id(receiver));
+        sendRequestButton.click();
+    }
+
 }
 
