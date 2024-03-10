@@ -71,4 +71,10 @@ public class FriendshipsService {
          Optional<Friendship> friendship = friendshipsRepository.findBySenderAndReceiver(sender.getEmail(), receiver.getEmail());
          return friendship.isPresent();
     }
+
+    public void borrarAmistades(List<Long> ids){
+        for(Long id: ids){
+            friendshipsRepository.borrarAmistades(id);
+        }
+    }
 }

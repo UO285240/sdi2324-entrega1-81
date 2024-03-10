@@ -2,11 +2,13 @@ package com.uniovi.sdi2324entrega181.repositories;
 
 import com.uniovi.sdi2324entrega181.entities.Friendship;
 import com.uniovi.sdi2324entrega181.entities.User;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
@@ -38,4 +40,9 @@ public interface FriendshipsRepository extends CrudRepository<Friendship, Long> 
      */
     @Query("SELECT f FROM Friendship f WHERE f.sender.email = ?1 AND f.receiver.email = ?2")
     Optional<Friendship> findBySenderAndReceiver(String sender, String receiver);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Friendship f WHERE f.sender.id = ?1 OR f.receiver.id = ?1")
+    void borrarAmistades(Long id);
 }

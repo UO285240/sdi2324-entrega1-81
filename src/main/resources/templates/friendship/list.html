@@ -6,8 +6,8 @@
 <nav th:replace="fragments/nav"/>
 
 <div class="container">
-    <h2>Amistades</h2>
-    <p>A continuación se muestran sus amigos en la red social:</p>
+    <h2 th:text="#{friendsList.friendship}"></h2>
+    <p th:text="#{friendsList.message}"></p>
 
 
     <div class="table-responsive" >
@@ -15,7 +15,7 @@
 
         <footer th:replace="fragments/pagination"></footer>
     </div>
-    <<div th:if="${#lists.isEmpty(friendshipList)}"> No tienes amigos </div>
+    <div th:if="${#lists.isEmpty(friendshipList)}" th:text="#{friendsList.noFriends}"> </div>
 
 
 

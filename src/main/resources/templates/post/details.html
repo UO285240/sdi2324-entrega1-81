@@ -7,24 +7,24 @@
 
 
 <div class="container" id="main-container">
-    <h2>Detalles del post:</h2>
+    <h2 th:text="#{postDetails.message}"></h2>
     <br>
     <div class="card">
-        <div class="card-header">Título</div>
+        <div class="card-header" th:text="#{postDetails.title}"></div>
         <div class="card-body">
             <p class="card-text"th:text="${post.title}"> Foto </p>
         </div>
     </div>
     <br>
     <div class="card">
-        <div class="card-header">Contenido</div>
+        <div class="card-header" th:text="#{postDetails.content}"></div>
         <div class="card-body">
             <p class="card-text" th:text="${post.text}">Nueva foto</p>
         </div>
     </div>
     <br>
     <div class="card">
-        <div class="card-header">Fecha</div>
+        <div class="card-header" th:text="#{postDetails.date}"></div>
         <div class="card-body">
             <p class="card-text" th:text="${post.date}">2024-03-09</p>
         </div>
