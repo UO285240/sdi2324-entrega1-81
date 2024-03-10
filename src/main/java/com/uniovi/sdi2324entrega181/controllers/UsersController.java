@@ -1,5 +1,6 @@
 package com.uniovi.sdi2324entrega181.controllers;
 
+import com.uniovi.sdi2324entrega181.entities.Post;
 import com.uniovi.sdi2324entrega181.entities.User;
 import com.uniovi.sdi2324entrega181.services.*;
 import com.uniovi.sdi2324entrega181.services.SecurityService;
@@ -130,12 +131,14 @@ public class UsersController {
         return "user/list :: usersTable";
     }
 
-
+/*
     @RequestMapping("/user/details/{id}")
     public String getDetail(Model model, @PathVariable Long id) {
         model.addAttribute("user", usersService.getUser(id));
         return "user/details";
     }
+    */
+
 
     @RequestMapping("/user/delete/{id}")
     public String deleteUser(@PathVariable Long id){
@@ -170,6 +173,16 @@ public class UsersController {
             usersService.borrarPorId(usuariosABorrar);
         }
         return "redirect:/user/list";
+    }
+
+    @RequestMapping(value= "/user/details/{id}")
+    public String getDetails(@PathVariable Long id, Model model, Pageable pageable){
+        User user = usersService.getUser(id);
+        Page<Post> posts = postsService.getPostsByUser(pageable,user);
+        model.addAttribute("user",user);
+        model.addAttribute("postsList",posts.getContent());
+        model.addAttribute("page",posts);
+        return "user/details";
     }
 
 }

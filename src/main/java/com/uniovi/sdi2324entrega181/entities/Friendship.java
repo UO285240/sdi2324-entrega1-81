@@ -63,4 +63,12 @@ public class Friendship {
     public void setIsAccepted(boolean isAccepted) {
         this.isAccepted = isAccepted;
     }
+
+    public LocalDate getSendDate() {
+        return sendDate;
+    }
+
+    public void setSendDate(LocalDate sendDate) {
+        this.sendDate = sendDate;
+    }
 }

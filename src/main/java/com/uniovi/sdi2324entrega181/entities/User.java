@@ -1,6 +1,9 @@
 package com.uniovi.sdi2324entrega181.entities;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
+
 @Entity
 @Table(name = "user")
 public class User {
@@ -19,6 +22,14 @@ public class User {
     private String role;
 
     private Boolean borrado=false;
+
+
+
+
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Post> posts;
+
 
     public User(String email, String name, String lastName) {
         super();
@@ -76,10 +87,25 @@ public class User {
         this.role = role;
     }
 
+    public Set<Post> getPosts() {
+
+
+        return posts;
+    }
+
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
+    }
+
 
     public String toString(){
         return getFullName();
     }
+
+
+
+
+
 
 
 }

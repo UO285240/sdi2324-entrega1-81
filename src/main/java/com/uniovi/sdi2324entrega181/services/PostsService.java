@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PostsService {
@@ -28,9 +29,16 @@ public class PostsService {
 
 
     public Page<Post> getPostsByUser(Pageable pageable, User user){
-        Page<Post> posts = postsRepository.findByUser(pageable, user.getId());
+        Page<Post> posts = postsRepository.findByUser(pageable, user);
         return posts;
     }
+
+    public List<Post> getLastPostByUser(User user){
+        return postsRepository.findLastByUser(user);
+    }
+
+
+
 
 
 

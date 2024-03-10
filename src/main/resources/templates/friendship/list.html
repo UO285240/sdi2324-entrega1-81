@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<head th:replace="fragments/head"/>
+<body>
+<!-- Barra de Navegación superior -->
+<nav th:replace="fragments/nav"/>
+
+<div class="container">
+    <h2>Amistades</h2>
+    <p>A continuación se muestran sus amigos en la red social:</p>
+
+
+    <div class="table-responsive" >
+        <table class="table table-hover" th:fragment="friendshipList" id="friendshipList" th:replace="fragments/friends_table" />
+
+        <footer th:replace="fragments/pagination"></footer>
+    </div>
+    <<div th:if="${#lists.isEmpty(friendshipList)}"> No tienes amigos </div>
+
+
+
+</div>
+</div>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>
