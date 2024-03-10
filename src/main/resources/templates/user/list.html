@@ -5,12 +5,11 @@
 <!-- Barra de Navegación superior -->
 <nav th:replace="fragments/nav"/>
 <div class="container">
-    <h2>Usuarios</h2>
-    <p>Los usuarios que actualmente figuran en el sistema son los
-        siguientes:</p>
+    <h2 th:text="#{usersList.title}"></h2>
+    <p th:text="#{usersList.subtitle}"></p>
 
     <!-- botón para actualizar -->
-    <button type="button" id="updateButton" class="btn btn-primary">Actualizar</button>
+    <button type="button" id="updateButton" class="btn btn-primary" th:text="#{button.update}"></button>
     <script th:inline="javascript">
         /*<![CDATA[*/
         $( "#updateButton" ).click(function() {
@@ -37,7 +36,7 @@
         </table>
     </div>
 
-    <div th:if="${#lists.isEmpty(usersList)}"> No hay usuarios </div>
+    <div th:if="${#lists.isEmpty(usersList)}" th:text="#{usersList.noUsers}"></div>
 
 </div>
 </div>

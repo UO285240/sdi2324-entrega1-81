@@ -53,6 +53,21 @@ public class PO_PrivateView extends PO_NavView {
         elements.get(0).click();
     }
 
+    /**
+     * Método para listar las publicaciones
+     */
+    static public void doClickListPosts(WebDriver driver){
+
+        //Pinchamos en la opción de menú de publicaciones: //li[contains(@id, 'post-menu')]/a
+        List<WebElement> elements = PO_View.checkElementBy(driver, "free",
+                "//*[@id='my-navbarColor02']/ul[1]/li[3]");
+        elements.get(0).click();
+
+        //Pinchamos en la opción de lista de publicaciones
+        elements = PO_View.checkElementBy(driver, "free", "//a[contains(@href, 'post/list')]");
+        elements.get(0).click();
+    }
+
 
     /**
      * Método para contar el total de usuarios en un listado con pagincación
