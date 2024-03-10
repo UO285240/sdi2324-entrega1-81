@@ -65,12 +65,9 @@ public class PostController {
     public String getDetails(Model model, @PathVariable Long id){
         User user = usersService.getUser(id);
         List<Post> posts = postsService.getLastPostByUser(user);
-        if(!posts.isEmpty()) {
-            model.addAttribute("post", posts.get(0));
-            return "/post/details";
-        }
-        else{
-            return "redirect:/friendship/list";
-        }
+        model.addAttribute("post", posts.get(0));
+        return "/post/details";
+
+
     }
 }

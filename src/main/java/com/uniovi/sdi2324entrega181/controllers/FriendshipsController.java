@@ -58,7 +58,7 @@ public class FriendshipsController {
         model.addAttribute("friendshipList", friendships.getContent());
         model.addAttribute("page",friendships);
 
-        return "/friendship/list";
+        return "friendship/list";
     }
 
 

@@ -11,6 +11,7 @@
 
     <!-- botón para actualizar -->
     <button type="button" id="updateButton" class="btn btn-primary">Actualizar</button>
+    <br>
     <script th:inline="javascript">
         /*<![CDATA[*/
         $( "#updateButton" ).click(function() {
@@ -24,7 +25,7 @@
         /*]]>*/
     </script>
 
-
+    <br>
     <form class="form-inline" action="/user/list">
         <div class="form-group"><input name="searchText" type="text" class="form-control" size="50"
                                        placeholder="Buscar por nombre, apellidos o email del usuario" th:value="${searchText}"></div>

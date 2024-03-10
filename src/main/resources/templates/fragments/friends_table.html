@@ -11,7 +11,7 @@
     </thead>
     <tbody>
     <tr th:each="friendship : ${friendshipList}" th:if="${friendship.getSender().getEmail().equals(user.getEmail())}">
-        <td th:text="${friendship.getReceiver().getEmail()}"> pedro@example.com</td>
+        <td><a th:text="${friendship.getReceiver().getEmail()}" th:href="${'/user/details/' + friendship.getReceiver().id}">pedro@example.com</a></td>
         <td th:text="${friendship.getReceiver().getName()}"> Pedro</td>
         <td th:text="${friendship.getReceiver().getLastName()}">Robles</td>
         <td th:text="${friendship.getSendDate()}">2024-03-09</td>
@@ -19,7 +19,7 @@
         <td th:if="${#lists.isEmpty(friendship.getReceiver().getPosts())}">No tiene posts</td>
     </tr>
     <tr th:each="friendship : ${friendshipList}" th:if="${friendship.getReceiver().getEmail().equals(user.getEmail())}">
-        <td th:text="${friendship.getSender().getEmail()}"> pedro@example.com</td>
+        <td ><a th:text="${friendship.getSender().getEmail()}" th:href="${'/user/details/' + friendship.getSender().id}">pedro@example.com</a></td>
         <td th:text="${friendship.getSender().getName()}"> Pedro</td>
         <td th:text="${friendship.getSender().getLastName()}">Robles</td>
         <td th:text="${friendship.getSendDate()}">2024-03-09</td>
