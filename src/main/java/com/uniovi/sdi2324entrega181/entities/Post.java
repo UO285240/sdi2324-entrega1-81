@@ -15,8 +15,11 @@ public class Post {
     private String text;
     private LocalDate date;
 
-    @OneToOne
-    private User user; // el propietario del post
+    @ManyToOne
+    @JoinColumn(name= "user_id")
+    private User user;
+
+
 
     public Post() {}
 
@@ -45,5 +48,8 @@ public class Post {
 
     public User getUser() {
         return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
     }
 }

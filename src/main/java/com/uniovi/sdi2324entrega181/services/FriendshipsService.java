@@ -3,7 +3,11 @@ package com.uniovi.sdi2324entrega181.services;
 import com.uniovi.sdi2324entrega181.entities.Friendship;
 import com.uniovi.sdi2324entrega181.entities.User;
 import com.uniovi.sdi2324entrega181.repositories.FriendshipsRepository;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +61,10 @@ public class FriendshipsService {
         }
 
         return friendEmails;
+    }
+
+    public Page<Friendship> getFriendsUser(Pageable pageable,User user){
+        return friendshipsRepository.getFriendsPageable(pageable,user.getEmail());
     }
 
     public boolean existsFriendship(User sender, User receiver) {

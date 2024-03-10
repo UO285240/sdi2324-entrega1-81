@@ -38,6 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/list").authenticated()
                 .antMatchers("/post/*").authenticated()
                 .antMatchers("/home").authenticated()
+                .antMatchers("/friendship/list").authenticated()
                 .anyRequest().authenticated()
 
                 .and()

@@ -1,12 +1,15 @@
 package com.uniovi.sdi2324entrega181.services;
 import javax.annotation.PostConstruct;
 
+import com.uniovi.sdi2324entrega181.entities.Friendship;
 import com.uniovi.sdi2324entrega181.entities.Post;
 import com.uniovi.sdi2324entrega181.entities.User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class InsertSampleDataService {
@@ -14,10 +17,14 @@ public class InsertSampleDataService {
     private final RolesService rolesService;
     private final PostsService postsService;
 
-    public InsertSampleDataService(UsersService usersService, RolesService rolesService, PostsService postsService) {
+    private final FriendshipsService friendshipsService;
+
+    public InsertSampleDataService(UsersService usersService, RolesService rolesService, PostsService postsService,
+     FriendshipsService friendshipsService) {
         this.userService = usersService;
         this.rolesService = rolesService;
         this.postsService = postsService;
+        this.friendshipsService = friendshipsService;
     }
 
     @PostConstruct
@@ -91,6 +98,27 @@ public class InsertSampleDataService {
 
 
 
+        Set<Post> pedrosPosts = new HashSet<Post>();
+
+        // 15 publicaciones para el usuario pedro@example.com
+        LocalDate date;
+        String title;
+        String text;
+        Post post;
+        for (int i = 1; i <= 15; i++) {
+            date = LocalDate.of(2024, 2, i);
+            title = "Título " + i;
+            text = "Texto del post " + i;
+
+            post = new Post(user1, title, text, date);
+            pedrosPosts.add(post);
+            //postsService.addPost(post);
+        }
+
+        user1.setPosts(pedrosPosts);
+
+
+
         userService.addUser(user1);
         userService.addUser(user2);
         userService.addUser(user3);
@@ -108,19 +136,14 @@ public class InsertSampleDataService {
         userService.addUser(user15);
 
 
-        // 15 publicaciones para el usuario pedro@example.com
-        LocalDate date;
-        String title;
-        String text;
-        Post post;
-        for (int i = 1; i <= 15; i++) {
-            date = LocalDate.of(2024, 2, i);
-            title = "Título " + i;
-            text = "Texto del post " + i;
+        Friendship fr1 = new Friendship(user1,user2,true,LocalDate.now());
+        Friendship fr2 = new Friendship(user3,user1,true,LocalDate.now());
 
-            post = new Post(user1, title, text, date);
-            postsService.addPost(post);
-        }
+        friendshipsService.saveFrienship(fr1);
+        friendshipsService.saveFrienship(fr2);
+
+
+
     }
 
 
