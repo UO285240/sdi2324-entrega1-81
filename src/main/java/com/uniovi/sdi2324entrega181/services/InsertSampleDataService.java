@@ -44,61 +44,65 @@ public class InsertSampleDataService {
         user2.setPassword("123456");
         user2.setRole(rolesService.getRoles()[0]);
 
-        User user3 = new User("maria@example.com", "María", "Rodríguez");
-        user3.setPassword("123456");
+        User user3 = new User("user02@email.com", "María", "Rodríguez");
+        user3.setPassword("Us3r@2-PASSW");
         user3.setRole(rolesService.getRoles()[0]);
 
-        User user4 = new User("marta@example.com", "Marta", "Almonte");
-        user4.setPassword("123456");
-        user4.setRole(rolesService.getRoles()[1]);
+        User user4 = new User("user03@email.com", "Marta", "Almonte");
+        user4.setPassword("Us3r@3-PASSW");
+        user4.setRole(rolesService.getRoles()[0]);
 
-        User user5 = new User("pelayo@example.com", "Pelayo", "Valdes");
-        user5.setPassword("123456");
-        user5.setRole(rolesService.getRoles()[1]);
+        User user5 = new User("user04@email.com", "Pelayo", "Valdes");
+        user5.setPassword("Us3r@4-PASSW");
+        user5.setRole(rolesService.getRoles()[0]);
 
-        User user6 = new User("john.doe@example.com", "John", "Doe");
-        user6.setPassword("123456");
+        User user6 = new User("user05@email.com", "John", "Doe");
+        user6.setPassword("Us3r@5-PASSW");
         user6.setRole(rolesService.getRoles()[0]);
 
-        User user7 = new User("jane.smith@example.com", "Jane", "Smith");
-        user7.setPassword("123456");
-        user7.setRole(rolesService.getRoles()[1]);
+        User user7 = new User("user06@email.com", "Jane", "Smith");
+        user7.setPassword("Us3r@6-PASSW");
+        user7.setRole(rolesService.getRoles()[0]);
 
-        User user8 = new User("michael.jones@example.com", "Michael", "Jones");
-        user8.setPassword("123456");
+        User user8 = new User("user07@email.com", "Michael", "Jones");
+        user8.setPassword("Us3r@7-PASSW");
         user8.setRole(rolesService.getRoles()[0]);
 
-        User user9 = new User("susan.white@example.com", "Susan", "White");
-        user9.setPassword("123456");
-        user9.setRole(rolesService.getRoles()[1]);
+        User user9 = new User("user08@email.com", "Susan", "White");
+        user9.setPassword("Us3r@8-PASSW");
+        user9.setRole(rolesService.getRoles()[0]);
 
-        User user10 = new User("david.wilson@example.com", "David", "Wilson");
-        user10.setPassword("123456");
+        User user10 = new User("user09@email.com", "David", "Wilson");
+        user10.setPassword("Us3r@9-PASSW");
         user10.setRole(rolesService.getRoles()[0]);
 
-        User user11 = new User("emily.brown@example.com", "Emily", "Brown");
-        user11.setPassword("123456");
-        user11.setRole(rolesService.getRoles()[1]);
+        User user11 = new User("user10@email.com", "Emily", "Brown");
+        user11.setPassword("Us3r@10-PASSW");
+        user11.setRole(rolesService.getRoles()[0]);
 
-        User user12 = new User("olivia.johnson@example.com", "Olivia", "Johnson");
-        user12.setPassword("123456");
+        User user12 = new User("user11@email.com", "Olivia", "Johnson");
+        user12.setPassword("Us3r@11-PASSW");
         user12.setRole(rolesService.getRoles()[0]);
 
-        User user13 = new User("ethan.moore@example.com", "Ethan", "Moore");
-        user13.setPassword("123456");
-        user13.setRole(rolesService.getRoles()[1]);
+        User user13 = new User("user12@email.com", "Ethan", "Moore");
+        user13.setPassword("Us3r@12-PASSW");
+        user13.setRole(rolesService.getRoles()[0]);
 
-        User user14 = new User("ava.taylor@example.com", "Ava", "Taylor");
-        user14.setPassword("123456");
+        User user14 = new User("user13@email.com", "Ava", "Taylor");
+        user14.setPassword("Us3r@13-PASSW");
         user14.setRole(rolesService.getRoles()[0]);
 
-        User user15 = new User("william.anderson@example.com", "William", "Anderson");
-        user15.setPassword("123456");
-        user15.setRole(rolesService.getRoles()[1]);
+        User user15 = new User("user14@email.com", "William", "Anderson");
+        user15.setPassword("Us3r@14-PASSW");
+        user15.setRole(rolesService.getRoles()[0]);
+
+        User user16 = new User("user15@email.com", "William", "Anderson");
+        user16.setPassword("Us3r@15-PASSW");
+        user16.setRole(rolesService.getRoles()[0]);
 
 
 
-        Set<Post> pedrosPosts = new HashSet<Post>();
+        Set<Post> posts = new HashSet<Post>();
 
         // 15 publicaciones para el usuario pedro@example.com
         LocalDate date;
@@ -111,11 +115,12 @@ public class InsertSampleDataService {
             text = "Texto del post " + i;
 
             post = new Post(user1, title, text, date);
-            pedrosPosts.add(post);
+            posts.add(post);
             //postsService.addPost(post);
         }
 
-        user1.setPosts(pedrosPosts);
+        user1.setPosts(posts);
+
 
 
 
@@ -134,6 +139,7 @@ public class InsertSampleDataService {
         userService.addUser(user13);
         userService.addUser(user14);
         userService.addUser(user15);
+        userService.addUser(user16);
 
 
         Friendship fr1 = new Friendship(user1,user2,true,LocalDate.now());

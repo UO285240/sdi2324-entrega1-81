@@ -99,11 +99,12 @@ public class UsersService {
         return users;
     }
 
-    public void borrarPorId(List<Long> usuariosABorrar) {
+    public void borrarPorId(List<Long> usuariosABorrar, String correo) {
 
         for(Long id: usuariosABorrar){
-
-            usersRepository.deleteById(id);
+            User principal = getUserByEmail(correo);
+            if(principal.getId() != id)
+                usersRepository.deleteById(id);
         }
     }
 }
