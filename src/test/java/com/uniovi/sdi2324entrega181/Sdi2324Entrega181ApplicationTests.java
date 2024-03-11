@@ -22,8 +22,7 @@ class Sdi2324Entrega181ApplicationTests {
 
     static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
     //static String Geckodriver = "C:\\Path\\geckodriver-v0.30.0-win64.exe";
-    static String Geckodriver = "C:\\Users\\Rita Catucho\\Desktop\\segundo cuatri\\SDI\\laboratorios\\semana06\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
-
+    static String Geckodriver = "C:\\Users\\UO284185\\Downloads\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
 
     static WebDriver driver = getDriver(PathFirefox, Geckodriver);
     static String URL = "http://localhost:8090";
@@ -141,14 +140,153 @@ class Sdi2324Entrega181ApplicationTests {
         // listamos las usuarios
         PO_PrivateView.doClickListUsers(driver);
 
-        // Pedro le manda una invitación de amistad a Lucas (lucas@example.com)
-        PO_PrivateView.sendFriendshipRequest(driver, "lucas@example.com");
+        // Pedro le manda una invitación de amistad a David (david.wilson@example.com)
+        PO_PrivateView.sendFriendshipRequest(driver, "david.wilson@example.com");
 
-        WebElement sendRequestButton = driver.findElement(By.id("lucas@example.com"));
+        WebElement sendRequestButton = driver.findElement(By.id("david.wilson@example.com"));
 
         // Verifica si el botón está deshabilitado
         Assertions.assertFalse(sendRequestButton.isEnabled(), "El botón de solicitud está habilitado después de hacer click.");
     }
+
+
+    // [Prueba32] Visualizar tres páginas (Página principal - Listado de usuarios - lista de publicaciones) en español/inglés/español
+    // (comprobando que algunas de las etiquetas cambian al idioma correspondiente)
+    @Test
+    @Order(6)
+    void PR32() { // SIN ACABAR
+
+        // --- PÁGINA PRINCIPAL --- (/index)
+
+        // inglés
+        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
+        String checkText = "Welcome to our web application"; //
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        // español
+        PO_PrivateView.changeLanguage(driver, "Spanish"); // cambiamos a español
+        checkText = "Bienvenido a nuestra aplicación web";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        // inglés
+        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
+        checkText = "Welcome to our web application";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+
+        // --- LISTADO DE USUARIOS --- (/user/list)
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456"); //login
+        PO_PrivateView.doClickListUsers(driver); // listamos los usuarios
+
+        // español
+        PO_PrivateView.changeLanguage(driver, "Spanish"); // cambiamos a español
+        checkText = "Los usuarios que actualmente figuran en el sistema son los siguientes:";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        // inglés
+        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
+        checkText = "The users currently listed in the system are the following:";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        // español
+        PO_PrivateView.changeLanguage(driver, "Spanish"); // cambiamos a español
+        checkText = "Los usuarios que actualmente figuran en el sistema son los siguientes:";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+
+        // --- LISTADO DE PUBLICACIONES --- (/post/list)
+        PO_PrivateView.doClickListPosts(driver); // listamos las publicaciones
+
+        // inglés
+        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
+        checkText = "Below are the publications you have made:";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        // español
+        PO_PrivateView.changeLanguage(driver, "Spanish"); // cambiamos a español
+        checkText = "A continuación se muestran las publicaciones que has realizado:";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+    }
+
+    // [Prueba33] Visualizar al menos tres páginas en inglés/francés (comprobando
+    // que algunas de las etiquetas cambian al idioma correspondiente).
+    //
+    // Ejemplo, Página principal/Opciones
+    // Principales de Usuario/Listado de Usuarios.
+    @Test
+    @Order(6)
+    void PR33() {
+
+        // --- PÁGINA PRINCIPAL --- (/index)
+
+        // inglés
+        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
+        String checkText = "Welcome to our web application"; //
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        // francés
+        PO_PrivateView.changeLanguage(driver, "French"); // cambiamos a francés
+        checkText = "Bienvenue sur notre application web";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        // inglés
+        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
+        checkText = "Welcome to our web application";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+
+        // --- LISTADO DE USUARIOS --- (/user/list)
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456"); //login
+        PO_PrivateView.doClickListUsers(driver); // listamos los usuarios
+
+        // español
+        PO_PrivateView.changeLanguage(driver, "French"); // cambiamos a francés
+        checkText = "Les utilisateurs actuellement répertoriés dans le système sont les suivants:";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        // inglés
+        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
+        checkText = "The users currently listed in the system are the following:";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        // español
+        PO_PrivateView.changeLanguage(driver, "French"); // cambiamos a francés
+        checkText = "Les utilisateurs actuellement répertoriés dans le système sont les suivants:";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+
+        // --- LISTADO DE PUBLICACIONES --- (/post/list)
+        PO_PrivateView.doClickListPosts(driver); // listamos las publicaciones
+
+        // inglés
+        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
+        checkText = "Below are the publications you have made:";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        // español
+        PO_PrivateView.changeLanguage(driver, "French"); // cambiamos a francés
+        checkText = "Ci-dessous les publications que vous avez réalisées:";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+    }
+
 
 
 
