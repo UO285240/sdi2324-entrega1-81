@@ -113,5 +113,21 @@ public class PO_PrivateView extends PO_NavView {
         sendRequestButton.click();
     }
 
+
+    /**
+     * Buscar un texto de búsqueda
+     */
+    public static void doSearch(WebDriver driver, String text){
+        WebElement searchText = driver.findElement(By.name("searchText"));
+        // borrar texto
+        searchText.clear();
+
+        // hacer consulta
+        searchText.sendKeys(text);
+        driver.findElement(By.cssSelector("button[type='submit'].btn.btn-primary")).click();
+
+
+    }
+
 }
 
