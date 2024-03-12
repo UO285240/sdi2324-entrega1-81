@@ -168,10 +168,11 @@ public class UsersController {
 
 
     @RequestMapping(value= "/user/borrarTodos",method= RequestMethod.POST)
-    public String borrarTodo(@RequestParam("usuariosABorrar") List<Long> usuariosABorrar){
+    public String borrarTodo(@RequestParam("usuariosABorrar") List<Long> usuariosABorrar, Principal principal){
         if(usuariosABorrar!=null) {
-            friendshipsService.borrarAmistades(usuariosABorrar);
-            usersService.borrarPorId(usuariosABorrar);
+            String correo = principal.getName();
+            friendshipsService.borrarAmistades(usuariosABorrar,correo);
+            usersService.borrarPorId(usuariosABorrar,correo);
         }
         return "redirect:/user/list";
     }

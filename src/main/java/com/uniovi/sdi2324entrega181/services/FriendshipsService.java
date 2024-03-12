@@ -17,11 +17,13 @@ import java.util.Optional;
 public class FriendshipsService {
 
     private FriendshipsRepository friendshipsRepository;
+    private UsersService usersService;
     private List<Friendship> friends; // lista con los ususarios que son amigos
 
 
-    public FriendshipsService(FriendshipsRepository friendshipsRepository){
+    public FriendshipsService(FriendshipsRepository friendshipsRepository, UsersService usersService){
         this.friendshipsRepository = friendshipsRepository;
+        this.usersService = usersService;
     }
 
 
@@ -72,9 +74,11 @@ public class FriendshipsService {
          return friendship.isPresent();
     }
 
-    public void borrarAmistades(List<Long> ids){
+    public void borrarAmistades(List<Long> ids, String correo){
         for(Long id: ids){
-            friendshipsRepository.borrarAmistades(id);
+            User principal = usersService.getUserByEmail(correo);
+            if(principal.getId() != id)
+                friendshipsRepository.borrarAmistades(id);
         }
     }
 }
