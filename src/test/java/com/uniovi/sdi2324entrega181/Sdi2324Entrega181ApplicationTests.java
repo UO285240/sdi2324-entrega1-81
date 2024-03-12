@@ -106,8 +106,30 @@ class Sdi2324Entrega181ApplicationTests {
     @Test
     @Order(1)
     void PR11() {
-        // TODO: Comprobar listado de admin y listado de usuarios
-        Assertions.assertEquals(7, 1); // da falso
+        //login - inicio sesión con un usuario estándar (pedro@example.com) que no es admin
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+
+        // listamos los usuarios
+        PO_PrivateView.doClickListUsers(driver);
+
+        boolean b = PO_PrivateView.getListAdminAppears(driver,3);
+
+        // al no ser admin, no aparecen los administradores
+        Assertions.assertFalse(b);
+
+        PO_PrivateView.doLogout(driver);
+
+        //login - inicio sesión con un usuario
+        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
+
+        // listamos los usuarios
+        PO_PrivateView.doClickListUsers(driver);
+
+        b = PO_PrivateView.getListAdminAppears(driver,3);
+
+        // al ser administrador, aparecen los admins
+        Assertions.assertTrue(b);
+
     }
 
 
