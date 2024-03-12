@@ -113,5 +113,37 @@ public class PO_PrivateView extends PO_NavView {
         sendRequestButton.click();
     }
 
+
+
+    /**
+     * Método para listar a los amigos
+     */
+    static public void doClickListFriends(WebDriver driver){
+
+        //Pinchamos en la opción de menú de usuarios: //li[contains(@id, 'users-menu')]/a
+        doClickMenuUsers(driver);
+
+        //Pinchamos en la opción de lista de usuarios
+        List<WebElement> elements = PO_View.checkElementBy(driver, "free", "//a[contains(@href, 'friendship/list')]");
+        elements.get(0).click();
+    }
+
+    static public void checkNumberOfFriends(WebDriver driver, int number){
+        List<WebElement> friendshipList = SeleniumUtils.waitLoadElementsBy(driver, "free", "//table[@id='friendshipList']//tbody/tr", PO_View.getTimeout());
+        Assertions.assertEquals(number, friendshipList.size());
+    }
+
+    static public void checkDate(WebDriver driver, String fecha){
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", fecha);
+        Assertions.assertEquals(fecha, result.get(0).getText());
+    }
+
+    static public void checkLastPost(WebDriver driver,String titulo, String xpath){
+        By enlace = By.xpath(xpath);
+        driver.findElement(enlace).click();
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", titulo);
+        Assertions.assertEquals(titulo, result.get(0).getText());
+    }
+
 }
 

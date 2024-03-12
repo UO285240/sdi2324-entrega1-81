@@ -7,6 +7,8 @@ import com.uniovi.sdi2324entrega181.services.SecurityService;
 import com.uniovi.sdi2324entrega181.validators.SignUpFormValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import org.springframework.expression.AccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -178,13 +180,20 @@ public class UsersController {
     }
 
     @RequestMapping(value= "/user/details/{id}")
-    public String getDetails(@PathVariable Long id, Model model, Pageable pageable){
+    public String getDetails(@PathVariable Long id, Model model, Pageable pageable, Principal principal) throws AccessException {
+        String email = principal.getName();
+        User user1 = usersService.getUserByEmail(email);
         User user = usersService.getUser(id);
-        Page<Post> posts = postsService.getPostsByUser(pageable,user);
-        model.addAttribute("user",user);
-        model.addAttribute("postsList",posts.getContent());
-        model.addAttribute("page",posts);
-        return "user/details";
+        if(friendshipsService.areFriends(user,user1)) {
+            Page<Post> posts = postsService.getPostsByUser(pageable, user);
+            model.addAttribute("user", user);
+            model.addAttribute("postsList", posts.getContent());
+            model.addAttribute("page", posts);
+            return "user/details";
+        }
+        else{
+            throw new AccessException("Authentication error") {};
+        }
     }
 
 }
