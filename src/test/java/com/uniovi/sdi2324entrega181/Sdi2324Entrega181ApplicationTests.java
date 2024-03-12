@@ -406,6 +406,26 @@ void PR15(){
     }
 
 
+    // [Prueba29] Mostrar el listado de publicaciones de un usuario y comprobar que se muestran todas las que
+    //existen para dicho usuario.
+    @Test
+    @Order(13)
+    void PR29() {
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+
+        // ir a la sección de añadir post
+        PO_PrivateView.doClickListPosts(driver);
+
+
+        int posts = PO_PrivateView.getPostsOfUser(driver, 3, "pedro@example.com");
+
+        Assertions.assertEquals(15, posts);
+
+
+
+    }
+
+
 
 
 

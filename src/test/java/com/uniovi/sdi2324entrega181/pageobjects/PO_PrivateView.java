@@ -102,6 +102,32 @@ public class PO_PrivateView extends PO_NavView {
         return elements;
     }
 
+
+    /**
+     * Método para contar el total de publicaciones de un usuario en un listado con paginación
+     */
+    public static int getPostsOfUser(WebDriver driver, int numOfPages, String email) {
+        int totalPosts = 0;
+
+        // Recorrer cada página
+        for (int i = 1; i <= numOfPages; i++) {
+            // Ir a la página correspondiente
+            irAPagina(driver, i);
+
+            // Contar las publicaciones de la página actual
+            List<WebElement> posts = driver.findElements(By.cssSelector(".card.mb-4.shadow-sm"));
+            for (WebElement post : posts) {
+                // Verificar si el autor del post es "pedro@example.com"
+                String author = post.findElement(By.xpath(".//p[contains(text(), 'Autor: ')]")).getText().replace("Autor: ", "").trim();
+                if (author.equals(email)) {
+                    totalPosts++;
+                }
+            }
+        }
+
+        return totalPosts;
+    }
+
     /**
      * Toma un WebDriver y un número de página y hace clic en el enlace de paginación correspondiente para ir a esa página
      */
