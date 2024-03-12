@@ -61,6 +61,26 @@ public class FriendshipsController {
         return "friendship/list";
     }
 
+    /**
+     * Devuelve la lista con las solicitudes de amistad pendientes
+     * @param model
+     * @param pageable
+     * @param principal user en sesión
+     * @return String url
+     */
+    @RequestMapping(value="/friendship/requestlist")
+    public String getReceivedPetitions(Model model, Pageable pageable, Principal principal){
+        String email = principal.getName();
+        User user = usersService.getUserByEmail(email);
+        Page<Friendship> friendships = friendshipsService.getMyReceivedPetitions(pageable, email);
+
+        model.addAttribute("user", user);
+        model.addAttribute("requestList", friendships.getContent());
+        model.addAttribute("page", friendships);
+
+        return "friendship/requestlist";
+    }
+
 
 
 }

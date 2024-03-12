@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<head th:replace="fragments/head"/>
+<body>
+<!-- Barra de Navegación superior -->
+<nav th:replace="fragments/nav"/>
+
+<div class="container">
+    <h2 th:text="#{friendsList.request}"></h2>
+
+    <div class="table-responsive" >
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col" th:text="#{friendsList.requestmessage}"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${requestList}">
+                <th scope="row" th:text="${user.getReceiver().getName() + ' '} + ${user.getReceiver().getLastName()}">Usuario</th>
+                <th scope="row" th:text="${user.getReceiver().getEmail()}">Email</th>
+                <th scope="row" th:text="${user.sendDate}">Fecha</th>
+                <th scope="row" ><a th:href="${'/friendship/accept/' + user.id}">
+                    <button type="submit" class="btn btn-primary" th:text="#{friendship.accept}"
+                            th:id="${user.getReceiver().getEmail()}"></button></a></th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${#lists.isEmpty(friendshipList)}" th:text="#{friendsList.noRequest}"> </div>
+    <footer th:replace="fragments/pagination"></footer>
+</div>
+</div>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>

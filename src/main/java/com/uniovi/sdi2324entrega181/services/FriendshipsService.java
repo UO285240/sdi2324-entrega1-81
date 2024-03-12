@@ -77,4 +77,14 @@ public class FriendshipsService {
             friendshipsRepository.borrarAmistades(id);
         }
     }
+
+    /**
+     * Devuelve una lista con todas las solicitudes pendientes de un usuario
+     * @param pageable
+     * @param email
+     * @return pageable users
+     */
+    public Page<Friendship> getMyReceivedPetitions(Pageable pageable,String email){
+        return friendshipsRepository.getReceivedPetitions(pageable,email);
+    }
 }
