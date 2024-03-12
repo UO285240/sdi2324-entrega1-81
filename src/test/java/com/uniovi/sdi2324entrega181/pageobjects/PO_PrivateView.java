@@ -203,5 +203,29 @@ public class PO_PrivateView extends PO_NavView {
         Assertions.assertEquals(titulo, result.get(0).getText());
     }
 
+
+    /**
+     * Método para comprobar si aparecen administradores en un listado paginado
+     */
+    public static boolean getListAdminAppears(WebDriver driver, int numOfPages) {
+        String adminEmail = "admin@email.com";
+
+        // Recorrer cada página
+        for (int i = 1; i <= numOfPages; i++) {
+            // Ir a la página correspondiente
+            irAPagina(driver, i);
+
+            List<WebElement> userRows = driver.findElements(By.xpath("//table[@id='usersTable']//tbody//tr"));
+            for (WebElement row : userRows) {
+                String userEmail = row.findElement(By.tagName("td")).getText();
+                if (userEmail.equals(adminEmail)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 }
 
