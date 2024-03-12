@@ -1,0 +1,31 @@
+<table class="table table-hover" th:fragment="friendshipList" id="friendshipList" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+    <thead>
+    <tr>
+        <th scope="col" th:text="#{friendsTable.email}"></th>
+        <th scope="col" th:text="#{friendsTable.name}"></th>
+        <th scope="col" th:text="#{friendsTable.lastName}"></th>
+        <th scope="col" th:text="#{friendsTable.startDate}"> </th>
+        <th scope="col" > </th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="friendship : ${friendshipList}" th:if="${friendship.getSender().getEmail().equals(user.getEmail())}">
+        <td><a th:text="${friendship.getReceiver().getEmail()}" th:href="${'/user/details/' + friendship.getReceiver().id}">pedro@example.com</a></td>
+        <td th:text="${friendship.getReceiver().getName()}"> Pedro</td>
+        <td th:text="${friendship.getReceiver().getLastName()}">Robles</td>
+        <td th:text="${friendship.getSendDate()}">2024-03-09</td>
+        <td th:unless="${#lists.isEmpty(friendship.getReceiver().getPosts())}"><a th:href="${'/post/details/' + friendship.getReceiver().id}" th:text="#{friendsTable.lastPost}"></a></td>
+        <td th:if="${#lists.isEmpty(friendship.getReceiver().getPosts())}" th:text="#{friendsTable.noPost}"></td>
+    </tr>
+    <tr th:each="friendship : ${friendshipList}" th:if="${friendship.getReceiver().getEmail().equals(user.getEmail())}">
+        <td ><a th:text="${friendship.getSender().getEmail()}" th:href="${'/user/details/' + friendship.getSender().id}">pedro@example.com</a></td>
+        <td th:text="${friendship.getSender().getName()}"> Pedro</td>
+        <td th:text="${friendship.getSender().getLastName()}">Robles</td>
+        <td th:text="${friendship.getSendDate()}">2024-03-09</td>
+        <td th:unless="${#lists.isEmpty(friendship.getSender().getPosts())}"><a th:href="${'/post/details/' + friendship.getSender().id}" th:text="#{friendsTable.lastPost}"></a></td>
+        <td th:if="${#lists.isEmpty(friendship.getSender().getPosts())}" th:text="#{friendsTable.noPost}"></td>
+
+    </tr>
+    </tbody>
+</table>

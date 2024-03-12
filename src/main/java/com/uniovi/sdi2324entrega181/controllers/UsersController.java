@@ -1,33 +1,28 @@
 package com.uniovi.sdi2324entrega181.controllers;
 
+import com.uniovi.sdi2324entrega181.entities.Post;
 import com.uniovi.sdi2324entrega181.entities.User;
 import com.uniovi.sdi2324entrega181.services.*;
-import com.uniovi.sdi2324entrega181.services.SecurityService;
 import com.uniovi.sdi2324entrega181.services.SecurityService;
 import com.uniovi.sdi2324entrega181.validators.SignUpFormValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.security.Principal;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.security.core.Authentication;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UsersController {
@@ -38,21 +33,35 @@ public class UsersController {
     private final SignUpFormValidator signUpFormValidator;
     private final RolesService rolesService;
     private final FriendshipsService friendshipsService;
+    private final PostsService postsService;
 
 
-    public UsersController(UsersService usersService,SignUpFormValidator signUpFormValidator, SecurityService securityService,
-                           RolesService rolesService, FriendshipsService friendshipsService) {
+    public UsersController(UsersService usersService, SignUpFormValidator signUpFormValidator, SecurityService securityService,
+                           RolesService rolesService, FriendshipsService friendshipsService, PostsService postsService) {
         this.usersService = usersService;
         this.securityService = securityService;
         this.signUpFormValidator = signUpFormValidator;
         this.rolesService = rolesService;
         this.friendshipsService = friendshipsService;
+        this.postsService = postsService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login() {
+    public String login(@RequestParam(name = "logout", required = false) String logout, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+
+        // En el caso de que el usuario ya esté logeado, ir a user/list
+        if (email != "anonymousUser")
+            return "redirect:user/list";
+
+        if (logout != null) {
+            model.addAttribute("mensaje", "s");
+        }
+
         return "login";
     }
+
 
     @RequestMapping(value = {"/home"}, method = RequestMethod.GET)
     public String home(Model model, Pageable pageable) {
@@ -95,7 +104,10 @@ public class UsersController {
 
         model.addAttribute("usersList", users.getContent());
         model.addAttribute("page", users);
-        model.addAttribute("searchText", searchText);
+        if (searchText != null)
+            model.addAttribute("searchText", searchText);
+        else
+            model.addAttribute("searchText","");
 
         // friendships
         model.addAttribute("friendRequests", friendshipsService.getFriendRequests(user));
@@ -119,26 +131,14 @@ public class UsersController {
         return "user/list :: usersTable";
     }
 
-
-
-    @RequestMapping(value = "/user/add")
-    public String getUser(Model model) {
-        model.addAttribute("rolesList", rolesService.getRoles());
-        return "user/add";
-    }
-
-    @RequestMapping(value = "/user/add", method = RequestMethod.POST)
-    public String setUser(@ModelAttribute User user) {
-        usersService.addUser(user);
-        return "redirect:/user/list";
-
-    }
-
+/*
     @RequestMapping("/user/details/{id}")
     public String getDetail(Model model, @PathVariable Long id) {
         model.addAttribute("user", usersService.getUser(id));
         return "user/details";
     }
+    */
+
 
     @RequestMapping("/user/delete/{id}")
     public String deleteUser(@PathVariable Long id){
@@ -165,21 +165,25 @@ public class UsersController {
         return "redirect:/user/details/" + id;
     }
 
-    @RequestMapping(value = "/user/{id}/borrado", method = RequestMethod.GET)
-    public String setBorradoTrue(@PathVariable Long id) {
-        usersService.setUserBorrado(true, id);
-        return "redirect:/user/list";
-    }
-    @RequestMapping(value = "/user/{id}/noBorrado", method = RequestMethod.GET)
-    public String setBorradoFalse(@PathVariable Long id) {
-        usersService.setUserBorrado(false, id);
+
+
+    @RequestMapping(value= "/user/borrarTodos",method= RequestMethod.POST)
+    public String borrarTodo(@RequestParam("usuariosABorrar") List<Long> usuariosABorrar){
+        if(usuariosABorrar!=null) {
+            friendshipsService.borrarAmistades(usuariosABorrar);
+            usersService.borrarPorId(usuariosABorrar);
+        }
         return "redirect:/user/list";
     }
 
-    @RequestMapping(value= "/user/borrarSeleccionados")
-    public String borrarTodo(){
-        usersService.borrarTodo();
-        return "redirect:/user/list";
+    @RequestMapping(value= "/user/details/{id}")
+    public String getDetails(@PathVariable Long id, Model model, Pageable pageable){
+        User user = usersService.getUser(id);
+        Page<Post> posts = postsService.getPostsByUser(pageable,user);
+        model.addAttribute("user",user);
+        model.addAttribute("postsList",posts.getContent());
+        model.addAttribute("page",posts);
+        return "user/details";
     }
 
 }

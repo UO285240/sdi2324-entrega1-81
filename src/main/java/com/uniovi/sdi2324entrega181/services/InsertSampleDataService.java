@@ -1,22 +1,41 @@
 package com.uniovi.sdi2324entrega181.services;
-import java.util.HashSet;
-import java.util.Set;
 import javax.annotation.PostConstruct;
 
+import com.uniovi.sdi2324entrega181.entities.Friendship;
+import com.uniovi.sdi2324entrega181.entities.Post;
 import com.uniovi.sdi2324entrega181.entities.User;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class InsertSampleDataService {
     private final UsersService userService;
     private final RolesService rolesService;
-    public InsertSampleDataService(UsersService usersService, RolesService rolesService) {
+    private final PostsService postsService;
+
+    private final FriendshipsService friendshipsService;
+
+    public InsertSampleDataService(UsersService usersService, RolesService rolesService, PostsService postsService,
+     FriendshipsService friendshipsService) {
         this.userService = usersService;
         this.rolesService = rolesService;
+        this.postsService = postsService;
+        this.friendshipsService = friendshipsService;
     }
 
     @PostConstruct
     public void init() {
+        User admin = new User("admin@email.com", "Admin", "Istrador");
+        admin.setPassword("@Dm1n1str@D0r");
+        admin.setRole(rolesService.getRoles()[1]);
+        userService.addUser(admin);
+
+
+
         User user1 = new User("pedro@example.com", "Pedro", "Díaz");
         user1.setPassword("123456");
         user1.setRole(rolesService.getRoles()[0]);
@@ -79,6 +98,27 @@ public class InsertSampleDataService {
 
 
 
+        Set<Post> pedrosPosts = new HashSet<Post>();
+
+        // 15 publicaciones para el usuario pedro@example.com
+        LocalDate date;
+        String title;
+        String text;
+        Post post;
+        for (int i = 1; i <= 15; i++) {
+            date = LocalDate.of(2024, 2, i);
+            title = "Título " + i;
+            text = "Texto del post " + i;
+
+            post = new Post(user1, title, text, date);
+            pedrosPosts.add(post);
+            //postsService.addPost(post);
+        }
+
+        user1.setPosts(pedrosPosts);
+
+
+
         userService.addUser(user1);
         userService.addUser(user2);
         userService.addUser(user3);
@@ -94,5 +134,19 @@ public class InsertSampleDataService {
         userService.addUser(user13);
         userService.addUser(user14);
         userService.addUser(user15);
+
+
+        Friendship fr1 = new Friendship(user1,user2,true,LocalDate.now());
+        Friendship fr2 = new Friendship(user3,user1,true,LocalDate.now());
+
+        friendshipsService.saveFrienship(fr1);
+        friendshipsService.saveFrienship(fr2);
+
+
+
     }
+
+
+
+
 }

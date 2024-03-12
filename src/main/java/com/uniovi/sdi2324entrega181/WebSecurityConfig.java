@@ -36,9 +36,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().authorizeRequests().antMatchers("/css/**", "/images/**", "/script/**", "/", "/signup", "/login/**").permitAll()
                 .antMatchers("/user/add").authenticated()
                 .antMatchers("/user/list").authenticated()
+                .antMatchers("/post/*").authenticated()
                 .antMatchers("/home").authenticated()
-                .anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/home").and().logout().permitAll();
+                .antMatchers("/friendship/list").authenticated()
+                .anyRequest().authenticated()
 
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .permitAll()
+                .defaultSuccessUrl("/user/list")
+                .and()
+                .logout()
+                .logoutSuccessHandler(new CustomLogoutSuccessHandler()) // Aquí configuras el LogoutSuccessHandler personalizado
+                .permitAll();
 
     }
 

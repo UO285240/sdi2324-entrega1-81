@@ -5,47 +5,51 @@
 <!-- Barra de Navegación superior -->
 <nav th:replace="fragments/nav"/>
 <div class="container">
-    <h2>Regístrate como usuario</h2>
+    <h2 th:text="#{register.title}"></h2>
     <form class="form-horizontal" method="post" action="/signup" th:object="${user}">
         <div class="form-group">
-            <label class="control-label col-sm-2" for="email">Email:</label>
+            <label class="control-label col-sm-2" for="email" th:text="#{register.email}"></label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="email" name="email" placeholder="UO999999@uniovi.es" required="true"/>
+                <input type="text" class="form-control" id="email" name="email" th:placeholder="#{register.email.placeholder}"
+                       required="true"/>
                 <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" for="name">Nombre:</label>
+            <label class="control-label col-sm-2" for="name" th:text="#{register.name}"></label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="name" name="name" placeholder="Ejemplo: Juan" required="true"/>
+                <input type="text" class="form-control" id="name" name="name" th:placeholder="#{register.name.placeholder}"
+                       required="true"/>
                 <span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" for="lastName">Apellidos:</label>
+            <label class="control-label col-sm-2" for="lastName" th:text="#{register.lastName}"></label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Ejemplo: Peréz Almonte" required="true"/>
+                <input type="text" class="form-control" id="lastName" name="lastName"
+                       th:placeholder="#{register.lastName.placeholder}" required="true"/>
                 <span class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" for="password">Password:</label>
+            <label class="control-label col-sm-2" for="password" th:text="#{register.password}"></label>
             <div class="col-sm-10">
-                <input type="password" class="form-control" id="password" name="password" placeholder="Entre el Password" />
+                <input type="password" class="form-control" id="password" name="password" th:placeholder="#{register.password.placeholder}" />
                 <span class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
             </div>
         </div>
         <div class="form-group" >
-            <label class="control-label col-sm-2" id="passwordConfirm" for="passwordConfirm">Repita el Password:</label>
+            <label class="control-label col-sm-2" id="passwordConfirm" for="passwordConfirm"
+                   th:text="#{register.passwordRepeat}"></label>
             <div class="col-sm-10">
-                <input type="password" class="form-control" name="passwordConfirm" placeholder="Repita el Password" />
+                <input type="password" class="form-control" name="passwordConfirm" th:placeholder="#{register.passwordRepeat.placeholder}" />
                 <span class="text-danger" th:if="${#fields.hasErrors('passwordConfirm')}"
                       th:errors="*{passwordConfirm}"></span>
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-primary">Enviar</button>
+                <button type="submit" th:text="#{register.send}" class="btn btn-primary" >Enviar</button>
             </div>
         </div>
     </form>
