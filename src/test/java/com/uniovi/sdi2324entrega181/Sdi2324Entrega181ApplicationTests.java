@@ -59,6 +59,7 @@ class Sdi2324Entrega181ApplicationTests {
 
 
 
+
     // [Prueba9] - Hacer clic en la opción de salir de sesión y comprobar que se muestra el mensaje “Ha cerrado
     // sesión correctamente” y se redirige a la página de inicio de sesión
     @Test
@@ -96,6 +97,15 @@ class Sdi2324Entrega181ApplicationTests {
         } catch (TimeoutException e) {
             Assertions.assertEquals(0, elements.size());
         }
+    }
+
+    // [Prueba11] - Mostrar el listado de usuarios y comprobar que se muestran todos los que existen en el sistema,
+    //incluyendo el usuario actual y los usuarios administradores.
+    @Test
+    @Order(1)
+    void PR11() {
+        // TODO: Comprobar listado de admin y listado de usuarios
+        Assertions.assertEquals(7, 1); // da falso
     }
 
 
