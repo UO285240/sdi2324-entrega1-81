@@ -81,4 +81,10 @@ public class FriendshipsService {
                 friendshipsRepository.borrarAmistades(id);
         }
     }
+
+    public boolean areFriends(User user1, User user2){
+        if(existsFriendship(user1,user2) || existsFriendship(user2,user1))
+            return true;
+        return false;
+    }
 }

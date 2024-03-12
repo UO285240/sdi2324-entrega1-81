@@ -349,11 +349,57 @@ void PR15(){
     }
 
 //[Prueba25] Mostrar el listado de amigos de un usuario. Comprobar que el listado contiene los amigos que deben ser.
+@Test
+@Order(13)
+void PR25(){
+        //Login como el usuario 7
+    PO_PrivateView.doLogin(driver, "user07@email.com", "Us3r@7-PASSW");
+    //Voy a la página de amigos
+    PO_PrivateView.doClickListFriends(driver);
+    //Compruebo que el número de amigos es el correcto
+    PO_PrivateView.checkNumberOfFriends(driver,4);
+}
 //[Prueba26] Mostrar el listado de amigos de un usuario. Comprobar que se incluye la información relacionada con la última publicación de cada usuario y la fecha de inicio de amistad.
+@Test
+@Order(14)
+void PR26(){
+    //Login como el usuario 7
+    PO_PrivateView.doLogin(driver, "user07@email.com", "Us3r@7-PASSW");
+    //Voy a la página de amigos
+    PO_PrivateView.doClickListFriends(driver);
+    //Compruebo la fecha
+    PO_PrivateView.checkDate(driver,"2024-02-03");
+    //Compruebo la última publicación
+    PO_PrivateView.checkLastPost(driver,"Título 15","/html/body/div/div/table/tbody/tr/td[5]/a");
+
+
+}
 //[Prueba30] Mostrar el perfil del usuario y comprobar que se muestran sus datos y el listado de sus publicaciones.
+@Test
+@Order(15)
+void PR30(){
+    //Login como el usuario 7
+    PO_PrivateView.doLogin(driver, "user07@email.com", "Us3r@7-PASSW");
+    //Voy a la página de amigos
+    PO_PrivateView.doClickListFriends(driver);
+    //Contar posts mirar Coral
+    By enlace = By.xpath("/html/body/div/div/table/tbody/tr/td[1]/a");
+    driver.findElement(enlace).click();
+    List<WebElement> postsList = SeleniumUtils.waitLoadElementsBy(driver, "free", "/html/body/div/div/div[1]", PO_View.getTimeout());
+    Assertions.assertEquals(5, postsList.size());
+
+
+}
 //[Prueba31] Utilizando un acceso vía URL u otra alternativa, tratar de acceder al perfil de un usuario que no sea amigo del usuario identificado en sesión. Comprobar que el sistema da un error de autorización.
 
+@Test
+@Order(16)
+void PR31(){
+    PO_PrivateView.doLogin(driver, "user07@email.com", "Us3r@7-PASSW");
+    driver.navigate().to("http://localhost:8090/user/details/1");
+   //preguntar como comprobar
 
+}
 
 
 
