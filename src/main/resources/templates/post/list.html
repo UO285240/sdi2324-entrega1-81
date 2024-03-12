@@ -14,7 +14,6 @@
             <table class="table table-hover" th:fragment="postsTable" id="postsTable" th:replace="fragments/posts_table" />
 
         </table>
-        <div th:if="${#lists.isEmpty(postsList)}"> No hay publicaciones :(</div>
         <footer th:replace="fragments/pagination"/>
     </div>
 

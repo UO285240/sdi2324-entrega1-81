@@ -98,6 +98,15 @@ class Sdi2324Entrega181ApplicationTests {
         }
     }
 
+    // [Prueba11] - Mostrar el listado de usuarios y comprobar que se muestran todos los que existen en el sistema,
+    //incluyendo el usuario actual y los usuarios administradores.
+    @Test
+    @Order(1)
+    void PR11() {
+        // TODO: Comprobar listado de admin y listado de usuarios
+        Assertions.assertEquals(7, 1); // da falso
+    }
+
 
 
     // [Prueba17] - Mostrar el listado de usuarios y comprobar que se muestran todos los que existen en el sistema,
@@ -194,7 +203,7 @@ class Sdi2324Entrega181ApplicationTests {
     @Test
     @Order(7)
     void PR21() {
-        //login - inicio sesión con un usuario estándar (pedri@example.com) que no es admin
+        //login - inicio sesión con un usuario estándar (pedro@example.com) que no es admin
         PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
 
         // listamos las usuarios
@@ -374,6 +383,75 @@ void PR26(){
 
 
 }
+
+
+    // [Prueba27] -  Ir al formulario crear publicaciones, rellenarla con datos válidos y pulsar el botón Submit.
+    //Comprobar que la publicación sale en el listado de publicaciones de dicho usuario.
+    @Test
+    @Order(13)
+    void PR27() {
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+
+        // ir a la sección de añadir post
+        PO_PrivateView.doClickAddPost(driver);
+
+        // crear publicación
+        String title = "Título de prueba 27";
+        String text = "Texto de la publicación de prueba 27";
+        PO_AddPostView.createPost(driver, title, text);
+
+        // comprobar que existe la publicación
+        boolean postCreated = PO_PostView.getPost(driver, "pedro@example.com", title, text);
+        Assertions.assertTrue(postCreated);
+
+    }
+
+
+    // [Prueba28] Ir al formulario de crear publicaciones, rellenarla con datos inválidos (campos título y
+    //descripción vacíos) y pulsar el botón Submit. Comprobar que se muestran los mensajes de campo
+    //obligatorios
+    @Test
+    @Order(13)
+    void PR28() {
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+
+        // ir a la sección de añadir post
+        PO_PrivateView.doClickAddPost(driver);
+
+        // crear publicación
+        String title = "";
+        String text = "";
+        PO_AddPostView.createPost(driver, title, text);
+
+        // TODO: REVISAR excepciones de datos inválidos
+        Assertions.assertTrue(false); // false
+
+    }
+
+
+    // [Prueba29] Mostrar el listado de publicaciones de un usuario y comprobar que se muestran todas las que
+    //existen para dicho usuario.
+    @Test
+    @Order(13)
+    void PR29() {
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+
+        // ir a la sección de añadir post
+        PO_PrivateView.doClickListPosts(driver);
+
+
+        int posts = PO_PrivateView.getPostsOfUser(driver, 3, "pedro@example.com");
+
+        Assertions.assertEquals(15, posts);
+
+
+
+    }
+
+
+
+
+
 //[Prueba30] Mostrar el perfil del usuario y comprobar que se muestran sus datos y el listado de sus publicaciones.
 @Test
 @Order(15)
