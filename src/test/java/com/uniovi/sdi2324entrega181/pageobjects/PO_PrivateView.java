@@ -70,6 +70,22 @@ public class PO_PrivateView extends PO_NavView {
 
 
     /**
+     * Método para acceder a crear las publicaciones
+     */
+    static public void doClickAddPost(WebDriver driver){
+
+        //Pinchamos en la opción de menú de publicaciones: //li[contains(@id, 'post-menu')]/a
+        List<WebElement> elements = PO_View.checkElementBy(driver, "free",
+                "//*[@id='my-navbarColor02']/ul[1]/li[3]");
+        elements.get(0).click();
+
+        //Pinchamos en la opción de lista de publicaciones
+        elements = PO_View.checkElementBy(driver, "free", "//a[contains(@href, 'post/add')]");
+        elements.get(0).click();
+    }
+
+
+    /**
      * Método para contar el total de usuarios en un listado con pagincación
      */
     public static int getNumOfUsers(WebDriver driver, int numOfPages) {

@@ -204,7 +204,7 @@ class Sdi2324Entrega181ApplicationTests {
     @Test
     @Order(7)
     void PR21() {
-        //login - inicio sesión con un usuario estándar (pedri@example.com) que no es admin
+        //login - inicio sesión con un usuario estándar (pedro@example.com) que no es admin
         PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
 
         // listamos las usuarios
@@ -360,6 +360,55 @@ void PR15(){
 
 //[Prueba25] Mostrar el listado de amigos de un usuario. Comprobar que el listado contiene los amigos que deben ser.
 //[Prueba26] Mostrar el listado de amigos de un usuario. Comprobar que se incluye la información relacionada con la última publicación de cada usuario y la fecha de inicio de amistad.
+
+
+    // [Prueba27] -  Ir al formulario crear publicaciones, rellenarla con datos válidos y pulsar el botón Submit.
+    //Comprobar que la publicación sale en el listado de publicaciones de dicho usuario.
+    @Test
+    @Order(13)
+    void PR27() {
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+
+        // ir a la sección de añadir post
+        PO_PrivateView.doClickAddPost(driver);
+
+        // crear publicación
+        String title = "Título de prueba 27";
+        String text = "Texto de la publicación de prueba 27";
+        PO_AddPostView.createPost(driver, title, text);
+
+        // comprobar que existe la publicación
+        boolean postCreated = PO_PostView.getPost(driver, "pedro@example.com", title, text);
+        Assertions.assertTrue(postCreated);
+
+    }
+
+
+    // [Prueba28] Ir al formulario de crear publicaciones, rellenarla con datos inválidos (campos título y
+    //descripción vacíos) y pulsar el botón Submit. Comprobar que se muestran los mensajes de campo
+    //obligatorios
+    @Test
+    @Order(13)
+    void PR28() {
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+
+        // ir a la sección de añadir post
+        PO_PrivateView.doClickAddPost(driver);
+
+        // crear publicación
+        String title = "";
+        String text = "";
+        PO_AddPostView.createPost(driver, title, text);
+
+        // TODO: REVISAR excepciones de datos inválidos
+        Assertions.assertTrue(false); // false
+
+    }
+
+
+
+
+
 //[Prueba30] Mostrar el perfil del usuario y comprobar que se muestran sus datos y el listado de sus publicaciones.
 //[Prueba31] Utilizando un acceso vía URL u otra alternativa, tratar de acceder al perfil de un usuario que no sea amigo del usuario identificado en sesión. Comprobar que el sistema da un error de autorización.
 
