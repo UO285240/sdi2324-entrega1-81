@@ -151,16 +151,21 @@ public class UsersController {
     public String getEdit(Model model, @PathVariable Long id) {
         User user = usersService.getUser(id);
         model.addAttribute("user", user);
+        model.addAttribute("availableRoles",rolesService.getRoles());
         return "user/edit";
     }
     @RequestMapping(value = "/user/edit/{id}", method = RequestMethod.POST)
-    public String setEdit(@PathVariable Long id, @ModelAttribute User user) {
-        //usersService.addUser(user);
+    public String setEdit(@PathVariable Long id, @ModelAttribute User user,BindingResult result) {
         User originalUser = usersService.getUser(id);
-        // modificar solo Email, nombre y apellidos
+        // modificar solo Email, nombre , apellidos y role
+        signUpFormValidator.validate(user,result);
+        if(result.hasErrors()){
+            return "user/edit";
+        }
         originalUser.setEmail(user.getEmail());
         originalUser.setName(user.getName());
         originalUser.setLastName(user.getLastName());
+        originalUser.setRole(user.getRole());
         usersService.saveUser(originalUser);
         return "redirect:/user/details/" + id;
     }
