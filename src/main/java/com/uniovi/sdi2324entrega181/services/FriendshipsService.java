@@ -3,7 +3,6 @@ package com.uniovi.sdi2324entrega181.services;
 import com.uniovi.sdi2324entrega181.entities.Friendship;
 import com.uniovi.sdi2324entrega181.entities.User;
 import com.uniovi.sdi2324entrega181.repositories.FriendshipsRepository;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
@@ -86,5 +85,21 @@ public class FriendshipsService {
         if(existsFriendship(user1,user2) || existsFriendship(user2,user1))
             return true;
         return false;
+    }
+
+    /**
+     * Devuelve una lista con los emails de todas las solicitdes de amistad que tiene el usuario
+     * (solicitudes que ha mandado él)
+     */
+    public List<String> getSentRequests(User user) {
+        return friendshipsRepository.getSentRequests(user.getEmail());
+    }
+
+    /**
+     * Devuelve una lista con lo socrreos de los usuairos que han enviado una solicitudes de amistad al usuario
+     * autenticado y aún está pendiente de aceptar
+     */
+    public List<String> getReceivedRequests(User user) {
+       return friendshipsRepository.getReceivedRequests(user.getEmail());
     }
 }

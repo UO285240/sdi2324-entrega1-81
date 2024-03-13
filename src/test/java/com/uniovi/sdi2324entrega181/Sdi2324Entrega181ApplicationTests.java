@@ -26,7 +26,8 @@ class Sdi2324Entrega181ApplicationTests {
 
     //static String Geckodriver = "C:\\Users\\javie\\OneDrive\\Escritorio\\Tercero\\SDI\\L5\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
 
-    static String Geckodriver = "C:\\Users\\UO284185\\Downloads\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+    //static String Geckodriver = "C:\\Users\\UO284185\\Downloads\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+    //static String Geckodriver = "C:\\Users\\Rita Catucho\\Desktop\\segundo cuatri\\SDI\\laboratorios\\semana06\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
 
     static WebDriver driver = getDriver(PathFirefox, Geckodriver);
     static String URL = "http://localhost:8090";
@@ -224,9 +225,9 @@ class Sdi2324Entrega181ApplicationTests {
     // [Prueba21] Desde el listado de usuarios de la aplicación, enviar una invitación de amistad a un usuario.
     // Comprobar que la solicitud de amistad aparece en el listado de invitaciones (punto siguiente).
     @Test
-    @Order(7)
+    @Order(4)
     void PR21() {
-        //login - inicio sesión con un usuario estándar (pedro@example.com) que no es admin
+        //login - inicio sesión con un usuario estándar (pedri@example.com) que no es admin
         PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
 
         // listamos las usuarios
