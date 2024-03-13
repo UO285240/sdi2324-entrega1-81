@@ -37,6 +37,10 @@ public class PostsService {
         return postsRepository.findLastByUser(user);
     }
 
+    public Post getPost(Long id){
+        return postsRepository.findById(id).get();
+    }
+
 
 
 

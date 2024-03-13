@@ -51,4 +51,6 @@ public class Recommendation {
     public void setPost(Post post) {
         this.post = post;
     }
+
+
 }
