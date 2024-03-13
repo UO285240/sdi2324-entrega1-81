@@ -1,4 +1,4 @@
-<form action="/user/borrarTodos" method="post">
+
 <table class="table table-hover" th:fragment="usersTable" id="usersTable" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
 
     <div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
@@ -12,10 +12,6 @@
         <th scope="col" th:text="#{usersTable.email}"></th>
         <th scope="col" th:text="#{usersTable.name}"></th>
         <th scope="col" th:text="#{usersTable.lastName}"></th>
-        <th scope="col" th:text="#{usersTable.friendship}"></th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-        <th scope="col" th:text="#{usersTable.delete}"></th>
     </tr>
     </thead>
     <tbody>
@@ -24,41 +20,8 @@
         <td th:text="${user.name}">Nombre del alumno</td>
         <td th:text="${user.lastName}">Apellidos del alumno</td>
 
-
-        <!-------- Solicitud de amistad ------->
-
-        <!-- No son amigos-->
-        <td th:if="${!friendRequests.contains(user.email) && !friends.contains(user.email)}">
-            <a th:href="${'/friendship/send/' + user.id}">
-                <button type="button" th:id="${user.email}"
-                        class="btn btn-success" th:text="#{usersTable.sendFriendshipRequest}"></button>
-            </a>
-        </td>
-
-        <!-- Son amigos-->
-        <td th:if="${friends.contains(user.email)}" th:text="#{usersTable.alreadyFriends}"></td>
-
-        <!-- solicitud enviada-->
-        <td th:if="${friendRequests.contains(user.email)}">
-            <button type="submit" class="btn btn-primary" disabled
-                    th:id="${user.email}" th:text="#{usersTable.requestSent}">
-            </button>
-        </td>
-
-
-        <td><a th:href="${'/user/details/' + user.id}" th:text="#{table.details}"></a></td>
-        <td><a th:href="${'/user/edit/' + user.id}" th:text="#{table.modidy}"></a></td>
-
-
-        <td><input type="checkbox" name="usuariosABorrar" th:checked="${user.borrado}" th:value="${user.id}"/></td>
-
     </tr>
 
     </tbody>
 </table>
-    <div class="form-group" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
-        <div class="col-sm-offset-2 col-sm-10">
-            <button   type="submit"  th:text="#{usersTable.delete}" class="btn btn-primary">Borrar</button>
-        </div>
-    </div>
-</form>
+
