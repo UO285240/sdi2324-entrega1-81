@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +33,7 @@ public class PostController {
     }
 
     @RequestMapping(value = "/post/add", method = RequestMethod.GET)
-    public String addPost() {
+    public String addPost(Model model) {
         return "/post/add";
     }
 
@@ -50,7 +52,6 @@ public class PostController {
         String email = principal.getName(); // email del usuario autenticado
         User user = usersService.getUserByEmail(email);
 
-        // devuelve la lista de usuarios en función del rol del usuario autentificado
 
         Page<Post> posts = postsService.getPostsByUser(pageable, user);
 
@@ -61,13 +62,51 @@ public class PostController {
         return "post/list";
     }
 
+
+
+    @RequestMapping("/post/adminList")
+    public String getAdminList(Model model, Pageable pageable, Principal principal, @RequestParam(value="", required=false) String searchText){
+        String email = principal.getName(); // email del usuario autenticado
+        User user = usersService.getUserByEmail(email);
+
+        Page<Post> posts = postsService.getAllPosts(pageable);
+        if (searchText != null && !searchText.isEmpty()){
+            posts = postsService.searchByPostFields(searchText, pageable);
+        }
+
+        model.addAttribute("postsList", posts.getContent());
+        model.addAttribute("page", posts);
+        if (searchText != null)
+            model.addAttribute("searchText", searchText);
+        else
+            model.addAttribute("searchText","");
+
+        // valores de estado de una publicación
+        List<Post.PostState> postStates = Arrays.asList(Post.PostState.values());
+        model.addAttribute("postStates", postStates);
+
+
+        return "post/adminList";
+    }
+
+
+
     @RequestMapping("/post/details/{id}")
     public String getDetails(Model model, @PathVariable Long id){
         User user = usersService.getUser(id);
         List<Post> posts = postsService.getLastPostByUser(user);
         model.addAttribute("post", posts.get(0));
         return "/post/details";
-
-
     }
+
+
+    @RequestMapping(value = "/post/updateState/{id}", method = RequestMethod.POST)
+    public String updatePostState(@PathVariable Long id, @RequestParam("state") Post.PostState newState) {
+        Post post = postsService.getPost(id);
+        post.setState(newState);
+        postsService.updatePost(post);
+        return "redirect:/post/adminList";
+    }
+
+
 }

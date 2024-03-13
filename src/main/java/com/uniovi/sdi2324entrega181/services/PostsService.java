@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PostsService {
@@ -37,11 +36,27 @@ public class PostsService {
         return postsRepository.findLastByUser(user);
     }
 
+    public Post getPost(Long id) {
+        Post post = postsRepository.findById(id).isPresent() ? postsRepository.findById(id).get() : new Post();
+        return post;
+    }
+
+    public void updatePost(Post post) {
+        postsRepository.save(post);
+    }
 
 
+    /**
+     * Buscar por email, título, texto o estado de la publicación
+     */
+    public Page<Post> searchByPostFields(String searchText, Pageable pageable) {
+        String searchTest = "%"+searchText+"%";
+        Page<Post> posts = postsRepository.searchByPostFields(searchTest, pageable);
 
+        return posts;
+    }
 
-
-
-
+    public Page<Post> getAllPosts(Pageable pageable) {
+        return postsRepository.findAll(pageable);
+    }
 }
