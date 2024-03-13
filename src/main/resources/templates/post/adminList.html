@@ -8,9 +8,16 @@
     <h2>Mis publicaciones</h2>
     <p>A continuación se muestran las publicaciones que has realizado:</p>
 
+    <!--cuadro de búsqueda-->
+    <form class="form-inline" action="/post/adminList" style="margin-bottom: 20px;">
+        <div class="form-group"><input name="searchText" type="text" class="form-control" size="50"
+                                       placeholder="Buscar por email, título, texto o estado de la publicación" th:value="${searchText}"></div>
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
+
     <div class="table-responsive">
         <table class="table table-hover">
-            <table class="table table-hover" th:fragment="postsTable" id="postsTable" th:replace="fragments/posts_table" />
+            <table class="table table-hover" th:fragment="postsTable" id="postsTable" th:replace="fragments/adminPosts_table" />
 
         </table>
         <footer th:replace="fragments/pagination"/>
