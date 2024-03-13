@@ -243,15 +243,15 @@ class Sdi2324Entrega181ApplicationTests {
     void PR22() {
 
         //login - inicio sesión con un usuario estándar (pedri@example.com) que no es admin
-        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+        PO_PrivateView.doLogin(driver, "user03@email.com", "Us3r@3-PASSW");
 
         // listamos las usuarios
         PO_PrivateView.doClickListUsers(driver);
 
-        // Pedro le manda una invitación de amistad a Lucas (lucas@example.com)
-        PO_PrivateView.sendFriendshipRequest(driver, "lucas@example.com");
+        // Pedro le manda una invitación de amistad un usuario del que no es amigo
+        PO_PrivateView.sendFriendshipRequest(driver, "user02@email.com");
 
-        WebElement sendRequestButton = driver.findElement(By.id("lucas@example.com"));
+        WebElement sendRequestButton = driver.findElement(By.id("user02@email.com"));
 
         // Verifica si el botón está deshabilitado
         Assertions.assertFalse(sendRequestButton.isEnabled(), "El botón de solicitud está habilitado después de hacer click.");
@@ -508,7 +508,7 @@ void PR31(){
     // (comprobando que algunas de las etiquetas cambian al idioma correspondiente)
     @Test
     @Order(6)
-    void PR32() { // SIN ACABAR
+    void PR32() {
 
         // --- PÁGINA PRINCIPAL --- (/index)
 
@@ -590,7 +590,7 @@ void PR31(){
 
         // francés
         PO_PrivateView.changeLanguage(driver, "French"); // cambiamos a francés
-        checkText = "Bienvenue sur notre application web";
+        checkText = "Bienvenue sur notre application Web";
         result = PO_View.checkElementBy(driver, "text", checkText);
         Assertions.assertEquals(checkText, result.get(0).getText());
 
