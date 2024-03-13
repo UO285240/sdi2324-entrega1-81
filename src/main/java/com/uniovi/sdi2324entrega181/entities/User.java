@@ -30,6 +30,8 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Post> posts;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Recommendation> recommendations;
 
     public User(String email, String name, String lastName) {
         super();
@@ -39,6 +41,14 @@ public class User {
     }
 
     public User() { }
+
+    public Set<Recommendation> getRecommendations() {
+        return recommendations;
+    }
+
+    public void setRecommendations(Set<Recommendation> recommendations) {
+        this.recommendations = recommendations;
+    }
 
     public boolean getBorrado(){
         return this.borrado;
