@@ -37,15 +37,19 @@ public class UsersController {
     private final FriendshipsService friendshipsService;
     private final PostsService postsService;
 
+    private final RecommendationService recommendationService;
+
 
     public UsersController(UsersService usersService, SignUpFormValidator signUpFormValidator, SecurityService securityService,
-                           RolesService rolesService, FriendshipsService friendshipsService, PostsService postsService) {
+                           RolesService rolesService, FriendshipsService friendshipsService, PostsService postsService,
+                           RecommendationService recommendationService) {
         this.usersService = usersService;
         this.securityService = securityService;
         this.signUpFormValidator = signUpFormValidator;
         this.rolesService = rolesService;
         this.friendshipsService = friendshipsService;
         this.postsService = postsService;
+        this.recommendationService = recommendationService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -247,9 +251,11 @@ public class UsersController {
         User user = usersService.getUser(id);
         if(friendshipsService.areFriends(user,user1)) {
             Page<Post> posts = postsService.getPostsByUser(pageable, user);
+            List<Long> recommendedPosts = recommendationService.findRecommendationByUser(user1);
             model.addAttribute("user", user);
             model.addAttribute("postsList", posts.getContent());
             model.addAttribute("page", posts);
+            model.addAttribute("recommendedPosts",recommendedPosts);
             return "user/details";
         }
         else{

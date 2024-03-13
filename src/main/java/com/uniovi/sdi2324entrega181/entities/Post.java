@@ -2,6 +2,7 @@ package com.uniovi.sdi2324entrega181.entities;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "posts")
@@ -19,6 +20,9 @@ public class Post {
     @JoinColumn(name= "user_id")
     private User user;
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private Set<Recommendation> recommendations;
+
 
 
     public Post() {}
@@ -28,6 +32,14 @@ public class Post {
         this.title = title;
         this.text = text;
         this.date = date;
+    }
+
+    public Set<Recommendation> getRecommendations() {
+        return recommendations;
+    }
+
+    public void setRecommendations(Set<Recommendation> recommendations) {
+        this.recommendations = recommendations;
     }
 
     public long getId() {
