@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UsersController {
@@ -112,8 +111,10 @@ public class UsersController {
             model.addAttribute("searchText","");
 
         // friendships
-        model.addAttribute("friendRequests", friendshipsService.getFriendRequests(user));
+        model.addAttribute("friendRequests", friendshipsService.getFriendRequests(user)); // solicitudes donde el usuario autenticado es el que envia o el que recibe la solicitud de amistad
         model.addAttribute("friends", friendshipsService.getFriends(user));
+        model.addAttribute("sentRequests", friendshipsService.getSentRequests(user)); // solicitudes enviadas por el usuario autenticado
+        model.addAttribute("receivedRequests", friendshipsService.getReceivedRequests(user)); // solicitudes recibidas por el usuario (pendientes de aceptar/rechazar)
 
         return "user/list";
     }

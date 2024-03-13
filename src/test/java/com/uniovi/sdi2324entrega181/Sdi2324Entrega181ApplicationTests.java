@@ -1,8 +1,6 @@
 package com.uniovi.sdi2324entrega181;
 
-import com.uniovi.sdi2324entrega181.pageobjects.PO_HomeView;
-import com.uniovi.sdi2324entrega181.pageobjects.PO_PrivateView;
-import com.uniovi.sdi2324entrega181.pageobjects.PO_View;
+import com.uniovi.sdi2324entrega181.pageobjects.*;
 import com.uniovi.sdi2324entrega181.util.SeleniumUtils;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
@@ -22,7 +20,7 @@ class Sdi2324Entrega181ApplicationTests {
 
     static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
     //static String Geckodriver = "C:\\Path\\geckodriver-v0.30.0-win64.exe";
-    static String Geckodriver = "C:\\Users\\UO284185\\Downloads\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+    static String Geckodriver = "C:\\Users\\Rita Catucho\\Desktop\\segundo cuatri\\SDI\\laboratorios\\semana06\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
 
     static WebDriver driver = getDriver(PathFirefox, Geckodriver);
     static String URL = "http://localhost:8090";
