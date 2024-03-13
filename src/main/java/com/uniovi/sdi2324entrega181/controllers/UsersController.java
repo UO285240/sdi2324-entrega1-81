@@ -118,6 +118,55 @@ public class UsersController {
         return "user/list";
     }
 
+    @RequestMapping("/user/administratorList")
+    public String getAdministratorList(Model model, Pageable pageable, Principal principal, @RequestParam(value="", required=false) String searchText){
+        String email = principal.getName(); // email del usuario autenticado
+        User user = usersService.getUserByEmail(email);
+
+        // devuelve la lista de usuarios en función del rol del usuario autentificado
+        Page<User> users = usersService.getUsersForUser(pageable, user);
+
+        if (searchText != null && !searchText.isEmpty()){
+            users = usersService.searchByEmailNameAndSurname(searchText, pageable);
+        }
+
+        model.addAttribute("administratorList", users.getContent());
+        model.addAttribute("page", users);
+        if (searchText != null)
+            model.addAttribute("searchText", searchText);
+        else
+            model.addAttribute("searchText","");
+
+
+        return "user/administrateUsers";
+    }
+
+    @RequestMapping("/user/sendFriendshipList")
+    public String getSendFriendshipList(Model model, Pageable pageable, Principal principal, @RequestParam(value="", required=false) String searchText){
+        String email = principal.getName(); // email del usuario autenticado
+        User user = usersService.getUserByEmail(email);
+
+        // devuelve la lista de usuarios en función del rol del usuario autentificado
+        Page<User> users = usersService.getUsersForUser(pageable, user);
+
+        if (searchText != null && !searchText.isEmpty()){
+            users = usersService.searchByEmailNameAndSurname(searchText, pageable);
+        }
+
+        model.addAttribute("sendFriendshipList", users.getContent());
+        model.addAttribute("page", users);
+        if (searchText != null)
+            model.addAttribute("searchText", searchText);
+        else
+            model.addAttribute("searchText","");
+
+        // friendships
+        model.addAttribute("friendRequests", friendshipsService.getFriendRequests(user));
+        model.addAttribute("friends", friendshipsService.getFriends(user));
+
+        return "user/sendFriendshipList";
+    }
+
 
     /**
      * Actualiza la tabla de usuarios del sistema
@@ -132,6 +181,18 @@ public class UsersController {
         model.addAttribute("usersList", users.getContent());
         return "user/list :: usersTable";
     }
+
+    @RequestMapping("/user/sendFriendshipList/update")
+    public String updateSendFriendshipList(Model model, Pageable pageable, Principal principal) {
+        String email = principal.getName(); // email del usuario autenticado
+        User user = usersService.getUserByEmail(email);
+
+        Page<User> users = usersService.getUsersForUser(pageable, user);
+
+        model.addAttribute("sendFriendshipList", users.getContent());
+        return "user/sendFriendshipList :: sendFriendshipTable";
+    }
+
 
 /*
     @RequestMapping("/user/details/{id}")
@@ -176,7 +237,7 @@ public class UsersController {
             friendshipsService.borrarAmistades(usuariosABorrar,correo);
             usersService.borrarPorId(usuariosABorrar,correo);
         }
-        return "redirect:/user/list";
+        return "redirect:/user/administratorList";
     }
 
     @RequestMapping(value= "/user/details/{id}")
