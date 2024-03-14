@@ -612,11 +612,134 @@ void PR31(){
 
     }
 
+    // [Prueba41] Como administrador, cambiar el estado de una publicación y comprobar que el estado ha
+    // cambiado.
+    @Test
+    @Order(7)
+    void PR41() {
+
+        //login - inicio sesión con un usuario administrador
+        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
+
+        // listamos todas las publicaciones del sistema
+        PO_PrivateView.doClickAdminListPosts(driver);
+        WebElement updatedState = PO_PrivateView.changePostState(driver, "CENSURADA");
+
+        Assertions.assertEquals("CENSURADA", updatedState.getText());
+    }
+
+    //[Prueba42] Como usuario estándar, comprobar que NO aparece en el listado propio de publicaciones una
+    //publicación censurada.
+    @Test
+    @Order(8)
+    void PR42() {
+
+        // inicio sesión con usuario admin y censuro una publicación de user03@email.com
+        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
+
+        // listamos todas las publicaciones del sistema y censuro la primera del usuario user03@email.com
+        PO_PrivateView.doClickAdminListPosts(driver);
+        PO_PrivateView.changeStateFirstPost(driver, "user03@email.com", "CENSURADA");
+
+        PO_PrivateView.doLogout(driver);
+
+        //inicio sesión con un usuario estándar
+        PO_PrivateView.doLogin(driver, "user03@email.com", "Us3r@3-PASSW");
+
+        // Verificar que no aparece ninguna publicación censurada en el listado propio de publicaciones
+        Assertions.assertFalse(PO_PrivateView.isCensoredPostPresent(driver));
+    }
 
 
+    // [Prueba43] Como usuario estándar, comprobar que, en el listado de publicaciones de un amigo, NO
+    // aparece una publicación moderada.
+    @Test
+    @Order(9)
+    void PR43() {
 
+        // inicio sesión con usuario admin y censuro una publicación de user02@email.com
+        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
 
+        // listamos todas las publicaciones del sistema y censuro la primera del usuario user03@email.com
+        PO_PrivateView.doClickAdminListPosts(driver);
+        PO_PrivateView.changeStateFirstPost(driver, "user02@email.com", "MODERADA");
 
+        PO_PrivateView.doLogout(driver);
 
+        //inicio sesión con un usuario estándar (como pedro, ya que tiene de amigo a user02@email.com
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+
+        //Voy a la página de amigos y pincho en los detalles de user02@email.com para ver sus publicaciones
+        PO_PrivateView.doClickListFriends(driver);
+        WebElement userLink = driver.findElement(By.xpath("//a[contains(text(),'user02@email.com')]"));
+        userLink.click();
+
+        Assertions.assertFalse(PO_PrivateView.isStatePostPresent(driver, "MODERADA"));
+    }
+
+    // [Prueba44] Como usuario estándar, intentar acceder la opción de cambio del estado de una publicación y
+    // comprobar que se redirecciona al usuario hacia el formulario de login.
+
+    // [Prueba45] Hacer una búsqueda con el campo vacío y comprobar que se muestra la página que
+    // corresponde con el listado publicaciones.
+    @Test
+    @Order(10)
+    void PR45() {
+
+        //login - inicio sesión con un usuario admin
+        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
+
+        // listamos todas las publicaciones del sistema
+        PO_PrivateView.doClickAdminListPosts(driver);
+
+        // buscamos un texto vacío
+        PO_PrivateView.doSearch(driver, "");
+
+        // Comprobamos que hay un total de 5 publicaciones
+        int posts = PO_PrivateView.countPosts(driver);
+        Assertions.assertEquals(5, posts);
+    }
+
+    // [Prueba46] Hacer una búsqueda escribiendo en el campo un texto que no exista y comprobar que se
+    // muestra la página que corresponde, con la lista de publicaciones vacía
+    @Test
+    @Order(10)
+    void PR46() {
+
+        //login - inicio sesión con un usuario admin
+        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
+
+        // listamos todas las publicaciones del sistema
+        PO_PrivateView.doClickAdminListPosts(driver);
+
+        // buscamos un texto vacío
+        PO_PrivateView.doSearch(driver, "qwerty");
+
+        // Comprobamos que hay un total de 5 publicaciones
+        int posts = PO_PrivateView.countPosts(driver);
+        Assertions.assertEquals(0, posts);
+    }
+
+    // [Prueba47] Hacer una búsqueda de publicaciones censuradas, escribiendo el cuadro de búsqueda
+    // “Censurada” y comprobar que se muestra la página que corresponde, con la lista de publicaciones
+    // censuradas o que en el texto especificado sea parte de título, estado o del email
+    @Test
+    @Order(9)
+    void PR47() {
+
+        // inicio sesión con usuario admin
+        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
+
+        // listamos todas las publicaciones del sistema y censuro una
+        PO_PrivateView.doClickAdminListPosts(driver);
+        PO_PrivateView.changePostState(driver, "CENSURADA");
+
+        // buscamos el texto 'CENSURADA'
+        PO_PrivateView.doSearch(driver, "CENSURADA");
+
+        // Comprobamos que hay un total de 5 publicaciones
+        int posts = PO_PrivateView.countPosts(driver);
+        Assertions.assertEquals(1, posts);
+    }
 
 }
