@@ -201,8 +201,12 @@ class Sdi2324Entrega181ApplicationTests {
         //login - inicio sesión con un usuario estándar (pedri@example.com) que no es admin
         PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
 
-        // listamos las usuarios
+        // listamos las usuarios y enviamos una solicitud a user03@email.com
         PO_PrivateView.doClickListUsers(driver);
+        PO_PrivateView.sendFriendshipRequest(driver, "user03@email.com");
+
+        // listamos las invitaciones
+
 
     }
 

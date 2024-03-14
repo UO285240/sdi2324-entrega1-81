@@ -46,7 +46,7 @@ public class FriendshipsController {
         }
 
 
-        return "redirect:/user/sendFriendshipList";
+        return "redirect:/user/list";
     }
 
     @RequestMapping("/friendship/list")
