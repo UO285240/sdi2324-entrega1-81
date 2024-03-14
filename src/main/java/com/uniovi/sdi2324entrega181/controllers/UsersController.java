@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UsersController {
@@ -136,6 +136,7 @@ public class UsersController {
 
         model.addAttribute("administratorList", users.getContent());
         model.addAttribute("page", users);
+        model.addAttribute("email",email);
         if (searchText != null)
             model.addAttribute("searchText", searchText);
         else
@@ -234,12 +235,11 @@ public class UsersController {
 
 
 
-    @RequestMapping(value= "/user/borrarTodos",method= RequestMethod.POST)
-    public String borrarTodo(@RequestParam("usuariosABorrar") List<Long> usuariosABorrar, Principal principal){
+    @RequestMapping(value= "/user/deleteAll",method= RequestMethod.POST)
+    public String borrarTodo(@RequestParam("usuariosABorrar") List<Long> usuariosABorrar){
         if(usuariosABorrar!=null) {
-            String correo = principal.getName();
-            friendshipsService.borrarAmistades(usuariosABorrar,correo);
-            usersService.borrarPorId(usuariosABorrar,correo);
+            friendshipsService.borrarAmistades(usuariosABorrar);
+            usersService.borrarPorId(usuariosABorrar);
         }
         return "redirect:/user/administratorList";
     }
@@ -252,10 +252,12 @@ public class UsersController {
         if(friendshipsService.areFriends(user,user1)) {
             Page<Post> posts = postsService.getPostsByUser(pageable, user);
             List<Long> recommendedPosts = recommendationService.findRecommendationByUser(user1);
+            Map<Post,Long> recommendationsNumber = recommendationService.getNumberOfRecommendations(posts.getContent());
             model.addAttribute("user", user);
             model.addAttribute("postsList", posts.getContent());
             model.addAttribute("page", posts);
             model.addAttribute("recommendedPosts",recommendedPosts);
+            model.addAttribute("recommendationsNumber",recommendationsNumber);
             return "user/details";
         }
         else{

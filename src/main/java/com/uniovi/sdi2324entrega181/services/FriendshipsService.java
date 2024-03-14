@@ -74,10 +74,8 @@ public class FriendshipsService {
          return friendship.isPresent();
     }
 
-    public void borrarAmistades(List<Long> ids, String correo){
+    public void borrarAmistades(List<Long> ids){
         for(Long id: ids){
-            User principal = usersService.getUserByEmail(correo);
-            if(principal.getId() != id)
                 friendshipsRepository.borrarAmistades(id);
         }
     }

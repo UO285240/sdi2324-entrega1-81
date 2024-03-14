@@ -16,19 +16,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
 public class PostController {
     private final PostsService postsService;
     private final UsersService usersService;
+    private final RecommendationService recommendationService;
 
 
 
-    public PostController(PostsService postsService, UsersService usersService) {
+    public PostController(PostsService postsService, UsersService usersService, RecommendationService recommendationService) {
         this.postsService = postsService;
         this.usersService = usersService;
+        this.recommendationService = recommendationService;
     }
+
 
     @RequestMapping(value = "/post/add", method = RequestMethod.GET)
     public String addPost() {
@@ -53,6 +57,8 @@ public class PostController {
         // devuelve la lista de usuarios en función del rol del usuario autentificado
 
         Page<Post> posts = postsService.getPostsByUser(pageable, user);
+        Map<Post,Long> recommendationsNumber = recommendationService.getNumberOfRecommendations(posts.getContent());
+        model.addAttribute("recommendationsNumber",recommendationsNumber);
 
         model.addAttribute("postsList", posts.getContent());
         model.addAttribute("page", posts);

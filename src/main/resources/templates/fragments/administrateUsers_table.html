@@ -1,4 +1,4 @@
-<form action="/user/borrarTodos" method="post">
+<form action="/user/deleteAll" method="post">
   <table class="table table-hover" th:fragment="administrateUsersTable" id="administrateUsersTable" >
     <div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
          th:text="${mensaje}"
@@ -25,7 +25,7 @@
       <td><a th:href="${'/user/edit/' + user.id}" th:text="#{table.modidy}"></a></td>
 
 
-      <td><input type="checkbox" name="usuariosABorrar" th:checked="${user.borrado}" th:value="${user.id}"/></td>
+      <td><input th:if="${!user.email.equals(email)}" type="checkbox" name="usuariosABorrar" th:checked="${user.borrado}" th:value="${user.id}"/></td>
 
     </tr>
 

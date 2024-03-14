@@ -6,7 +6,9 @@ import com.uniovi.sdi2324entrega181.entities.User;
 import com.uniovi.sdi2324entrega181.repositories.RecommendationRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RecommendationService {
@@ -27,4 +29,12 @@ public class RecommendationService {
     }
 
 
+    public Map<Post, Long> getNumberOfRecommendations(List<Post> content) {
+        Map<Post,Long> numbers = new HashMap<Post,Long>();
+        for(Post post: content){
+            Long number = recommendationRepository.findNumberOfRecommendationsByPost(post);
+            numbers.put(post,number);
+        }
+        return numbers;
+    }
 }
