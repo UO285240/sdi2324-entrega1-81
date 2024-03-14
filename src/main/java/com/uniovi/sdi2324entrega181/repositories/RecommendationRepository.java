@@ -12,4 +12,8 @@ public interface RecommendationRepository extends CrudRepository<Recommendation,
 
     @Query("SELECT r.post.id FROM Recommendation r WHERE r.user = ?1 ")
     List<Long> findRecommendationByUser(User user);
+
+    @Query("SELECT COALESCE(COUNT(*),0) AS recommendations FROM Recommendation  r WHERE r.post=?1")
+    Long findNumberOfRecommendationsByPost(Post post);
+
 }
