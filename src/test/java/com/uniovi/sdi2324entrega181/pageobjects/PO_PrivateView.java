@@ -92,7 +92,6 @@ public class PO_PrivateView extends PO_NavView {
 
         // Encontrar el primer postId disponible en la lista de publicaciones
         WebElement postRow = driver.findElement(By.xpath("//tbody/tr[1]"));
-        String postId = postRow.getAttribute("id").replace("post", "");
 
         // Encontrar el elemento select y cambiar el estado a "Censurada"
         Select stateDropdown = new Select(postRow.findElement(By.tagName("select")));
@@ -294,7 +293,7 @@ public class PO_PrivateView extends PO_NavView {
     /**
      * Método para listar a los amigos
      */
-    static public void doClickListFriends(WebDriver driver){
+    static public void doClickListFriendships(WebDriver driver){
 
         //Pinchamos en la opción de menú de usuarios: //li[contains(@id, 'users-menu')]/a
         doClickMenuUsers(driver);
@@ -321,29 +320,16 @@ public class PO_PrivateView extends PO_NavView {
         Assertions.assertEquals(titulo, result.get(0).getText());
     }
 
-
     /**
-     * Método para comprobar si aparecen administradores en un listado paginado
+     * Método para listar la lista de solicitudes de amistad
      */
-    public static boolean getListAdminAppears(WebDriver driver, int numOfPages) {
-        String adminEmail = "admin@email.com";
+    public static void doClickListFriendshipRequests(WebDriver driver) {
+        //Pinchamos en la opción de menú de usuarios: //li[contains(@id, 'users-menu')]/a
+        doClickMenuUsers(driver);
 
-        // Recorrer cada página
-        for (int i = 1; i <= numOfPages; i++) {
-            // Ir a la página correspondiente
-            irAPagina(driver, i);
-
-            List<WebElement> userRows = driver.findElements(By.xpath("//table[@id='usersTable']//tbody//tr"));
-            for (WebElement row : userRows) {
-                String userEmail = row.findElement(By.tagName("td")).getText();
-                if (userEmail.equals(adminEmail)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        //Pinchamos en la opción de lista de usuarios
+        List<WebElement> elements = PO_View.checkElementBy(driver, "free", "//a[contains(@href, 'friendship/list')]");
+        elements.get(0).click();
     }
-
 }
 
