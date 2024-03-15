@@ -6,6 +6,9 @@ import com.uniovi.sdi2324entrega181.services.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -63,11 +68,20 @@ public class PostController {
     }
 
 
-
+    /**
+     * Listado de todas las publicaciones del sistema que permite cambiar su estado
+     * @param searchText opcional, texto que permite buscar publicaciones por diferentes campos (email, título...)
+     * @return la vista con la lista de todas las publicaciones
+     */
     @RequestMapping("/post/adminList")
     public String getAdminList(Model model, Pageable pageable, Principal principal, @RequestParam(value="", required=false) String searchText){
         String email = principal.getName(); // email del usuario autenticado
         User user = usersService.getUserByEmail(email);
+
+        // comprobar que el usuario es administrador
+        if(!user.getRole().equals(new RolesService().getRoles()[1])){
+            return "redirect:/login";
+        }
 
         Page<Post> posts = postsService.getAllPosts(pageable);
         if (searchText != null && !searchText.isEmpty()){
@@ -89,8 +103,6 @@ public class PostController {
         return "post/adminList";
     }
 
-
-
     @RequestMapping("/post/details/{id}")
     public String getDetails(Model model, @PathVariable Long id){
         User user = usersService.getUser(id);
@@ -99,9 +111,18 @@ public class PostController {
         return "/post/details";
     }
 
-
+    /**
+     * Updates the state of the post
+     * @param id the id of the post
+     * @param newState the new state to be changed
+     */
     @RequestMapping(value = "/post/updateState/{id}", method = RequestMethod.POST)
-    public String updatePostState(@PathVariable Long id, @RequestParam("state") Post.PostState newState) {
+    public String updatePostState(HttpServletRequest request, HttpServletResponse response, Principal principal, @PathVariable Long id, @RequestParam("state") Post.PostState newState) {
+        String email = principal.getName(); // email del usuario autenticado
+        User user = usersService.getUserByEmail(email);
+
+
+
         Post post = postsService.getPost(id);
         post.setState(newState);
         postsService.updatePost(post);

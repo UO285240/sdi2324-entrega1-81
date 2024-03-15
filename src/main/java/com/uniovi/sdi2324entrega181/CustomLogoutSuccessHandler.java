@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Ckase para mostrar un mensaje personalizado al cerrar sesión
+ * Clase para mostrar un mensaje personalizado al cerrar sesión
  */
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
