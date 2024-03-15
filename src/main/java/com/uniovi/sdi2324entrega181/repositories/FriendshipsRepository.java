@@ -46,6 +46,10 @@ public interface FriendshipsRepository extends CrudRepository<Friendship, Long> 
     @Query("DELETE FROM Friendship f WHERE f.sender.id = ?1 OR f.receiver.id = ?1")
     void borrarAmistades(Long id);
 
-    @Query("SELECT f.sender FROM Friendship f WHERE f.receiver.email LIKE (?1) AND f.isAccepted <> TRUE")
+    @Query("SELECT f FROM Friendship f WHERE f.receiver.email LIKE (?1) AND f.isAccepted <> TRUE")
     Page<Friendship> getReceivedPetitions(Pageable pageable, String email);
+
+    @Query("SELECT f FROM Friendship f WHERE (f.sender.email LIKE (?1) OR f.sender.email LIKE (?2)) AND " +
+            "((f.receiver.email LIKE (?1) OR f.receiver.email LIKE (?2)) AND f.isAccepted <> TRUE)")
+    List<Friendship> getPetitionBy2Users(String user1, String user2);
 }

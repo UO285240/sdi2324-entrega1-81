@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
@@ -75,10 +76,30 @@ public class FriendshipsController {
         Page<Friendship> friendships = friendshipsService.getMyReceivedPetitions(pageable, email);
 
         model.addAttribute("user", user);
-        model.addAttribute("requestList", friendships.getContent());
+        model.addAttribute("friendships", friendships.getContent());
         model.addAttribute("page", friendships);
 
         return "friendship/requestlist";
+    }
+
+    /**
+     * Accept a friend request
+     * @param principal user in session
+     * @param id identifier of the user who accepts the petition
+     * @return String view url
+     */
+    @RequestMapping(value="/friendship/accept/{id}")
+    public String acceptPetition(Principal principal, @PathVariable Long id) {
+        User receiver = usersService.getUser(id);
+        List<Friendship> friendships = friendshipsService.getPetitionBy2Users(principal.getName(), receiver.getEmail());
+
+        for (Friendship f : friendships){
+            friendshipsService.deletePetition(f);
+            f.setIsAccepted(true);
+            friendshipsService.add(f);
+        }
+
+        return "redirect:/friendship/requestlist";
     }
 
 

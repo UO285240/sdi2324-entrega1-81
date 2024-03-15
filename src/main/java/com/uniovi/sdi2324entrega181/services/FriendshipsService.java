@@ -29,6 +29,23 @@ public class FriendshipsService {
         friendshipsRepository.save(friendship);
     }
 
+    /**
+     * Deletes a petition from the database
+     * @param f friendship petition
+     */
+    public void deletePetition(Friendship f){
+        friendshipsRepository.delete(f);
+    }
+
+    /**
+     * Add new petition to the database
+     * @param friendship
+     */
+    public void add(Friendship friendship){
+        friendshipsRepository.save(friendship);
+    }
+
+
 
 
     /**
@@ -86,5 +103,15 @@ public class FriendshipsService {
      */
     public Page<Friendship> getMyReceivedPetitions(Pageable pageable,String email){
         return friendshipsRepository.getReceivedPetitions(pageable,email);
+    }
+
+    /**
+     * Returns the friend's petition between 2 users
+     * @param user1
+     * @param user2
+     * @return  the request(s) between users
+     */
+    public List<Friendship> getPetitionBy2Users(String user1, String user2){
+        return friendshipsRepository.getPetitionBy2Users(user1, user2);
     }
 }
