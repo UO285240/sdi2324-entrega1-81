@@ -261,7 +261,7 @@ public class UsersController {
             return "user/details";
         }
         else{
-            throw new AccessException("Authentication error") {};
+            return "/home";
         }
     }
 

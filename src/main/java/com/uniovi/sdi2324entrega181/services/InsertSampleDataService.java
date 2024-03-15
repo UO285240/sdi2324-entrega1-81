@@ -36,13 +36,9 @@ public class InsertSampleDataService {
 
 
 
-        User user1 = new User("pedro@example.com", "Pedro", "Díaz");
-        user1.setPassword("123456");
+        User user1 = new User("user01@email.com", "Pedro", "Díaz");
+        user1.setPassword("Us3r@1-PASSW");
         user1.setRole(rolesService.getRoles()[0]);
-
-        User user2 = new User("lucas@example.com", "Lucas", "Núñez");
-        user2.setPassword("123456");
-        user2.setRole(rolesService.getRoles()[0]);
 
         User user3 = new User("user02@email.com", "María", "Rodríguez");
         user3.setPassword("Us3r@2-PASSW");
@@ -96,14 +92,13 @@ public class InsertSampleDataService {
         user15.setPassword("Us3r@14-PASSW");
         user15.setRole(rolesService.getRoles()[0]);
 
-        User user16 = new User("user15@email.com", "William", "Anderson");
+        User user16 = new User("user15@email.com", "Lucas", "Núñez");
         user16.setPassword("Us3r@15-PASSW");
         user16.setRole(rolesService.getRoles()[0]);
 
 
 
         Set<Post> posts1 = new HashSet<Post>();
-        Set<Post> posts2 = new HashSet<Post>();
         Set<Post> posts3 = new HashSet<Post>();
         Set<Post> posts4 = new HashSet<Post>();
         Set<Post> posts5 = new HashSet<Post>();
@@ -122,7 +117,7 @@ public class InsertSampleDataService {
         LocalDate date;
         String title;
         String text;
-        Post post, post2,post3,post4, post5,post6,post7, post8,post9,post10, post11,post12,post13,post14,post15,post16;
+        Post post,post3,post4, post5,post6,post7, post8,post9,post10, post11,post12,post13,post14,post15,post16;
 
 
         for (int i = 1; i <= 15; i++) {
@@ -131,7 +126,6 @@ public class InsertSampleDataService {
             text = "Texto del post " + i;
 
             post = new Post(user1, title, text, date);
-            post2 = new Post(user2, title, text, date);
             post3 = new Post(user3, title, text, date);
             post4 = new Post(user4, title, text, date);
             post5 = new Post(user5, title, text, date);
@@ -148,7 +142,6 @@ public class InsertSampleDataService {
             post16 = new Post(user16, title, text, date);
 
             posts1.add(post);
-            posts2.add(post2);
             posts3.add(post3);
             posts4.add(post4);
             posts5.add(post5);
@@ -167,7 +160,6 @@ public class InsertSampleDataService {
         }
 
         user1.setPosts(posts1);
-        user2.setPosts(posts2);
         user3.setPosts(posts3);
         user4.setPosts(posts4);
         user5.setPosts(posts5);
@@ -187,7 +179,6 @@ public class InsertSampleDataService {
 
 
         userService.addUser(user1);
-        userService.addUser(user2);
         userService.addUser(user3);
         userService.addUser(user4);
         userService.addUser(user5);
@@ -204,13 +195,12 @@ public class InsertSampleDataService {
         userService.addUser(user16);
 
 
-        Friendship fr1 = new Friendship(user1,user2,true,LocalDate.now());
         Friendship fr2 = new Friendship(user3,user1,true,LocalDate.now());
 
         Friendship fr3 = new Friendship(user8,user9,true,LocalDate.of(2024, 2, 3));
 
 
-        friendshipsService.saveFrienship(fr1);
+
         friendshipsService.saveFrienship(fr2);
         friendshipsService.saveFrienship(fr3);
 
