@@ -99,6 +99,10 @@ public class UsersService {
         return users;
     }
 
+    /**
+     * Borra todos los usuarios dada una lista de ids de usuarios
+     * @param usuariosABorrar la lista de ids de los usuarios a borrar
+     */
     public void borrarPorId(List<Long> usuariosABorrar) {
                 usersRepository.deleteAllById(usuariosABorrar);
         }

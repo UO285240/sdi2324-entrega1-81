@@ -23,7 +23,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         this.usersRepository = usersRepository;
     }
 
-
+    /**
+     * Carga el usuario dado su email
+     * @param email email del usuario
+     * @return devuelve un objeto UserDetails del usuario si es distinto de null
+     * @throws UsernameNotFoundException si el usuario es null
+     */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = usersRepository.findByEmail(email);

@@ -19,16 +19,30 @@ public class RecommendationService {
         this.recommendationRepository=recommendationRepository;
     }
 
+    /**
+     * Devuelve una lista con los ids de los posts recomendados por un usuario
+     * @param user usuario del que se van a buscar los posts
+     * @return lista con los ids de los posts
+     */
     public List<Long> findRecommendationByUser(User user){
         return recommendationRepository.findRecommendationByUser(user);
     }
 
+    /**
+     * Crea una nueva recomendación
+     * @param user el usuario de la recomendación
+     * @param post el post de la recomendación
+     */
     public void addRecommendation(User user, Post post){
         Recommendation recommendation = new Recommendation(user,post);
         recommendationRepository.save(recommendation);
     }
 
-
+    /**
+     * Devuelve un map formado por posts y las veces que han sido recomendados dada una lista de posts
+     * @param content lista de posts para sacar el número de recomendaciones
+     * @return un map formado por posts y el número de veces que fueron recomendados
+     */
     public Map<Post, Long> getNumberOfRecommendations(List<Post> content) {
         Map<Post,Long> numbers = new HashMap<Post,Long>();
         for(Post post: content){

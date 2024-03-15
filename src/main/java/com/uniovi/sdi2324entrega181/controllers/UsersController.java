@@ -82,12 +82,22 @@ public class UsersController {
         return "home";
     }
 
-
+    /**
+     * Método get para cargar el formulario para registrarse
+     * @param model modelo para añadir datos a la vista
+     * @return dirige a la vista del formulario para registrarse
+     */
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String signup(Model model) {
         model.addAttribute("user", new User());
         return "signup"; }
 
+    /**
+     * Método post para procesar los datos recibidos en el formulario
+     * @param user usuario a registrar
+     * @param result el resultado con los datos del formulario
+     * @return devuelve a rellenar el formulario si hay errores y sino redirije a home
+     */
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public String signup(@Validated User user, BindingResult result) {
         signUpFormValidator.validate(user,result);
@@ -127,6 +137,15 @@ public class UsersController {
         return "user/list";
     }
 
+    /**
+     * Método que devuelve la vista con la lista de usuarios del administrador para poder manejar usuarios
+     * @param model modelo para añadir datos a la vista
+     * @param pageable objeto para llevar a cabo la paginación
+     * @param principal usuario registrado en la aplicación
+     * @param searchText texto opcional para el buscador
+     * @return la vista con la lista de usuarios
+     */
+
     @RequestMapping("/user/administratorList")
     public String getAdministratorList(Model model, Pageable pageable, Principal principal, @RequestParam(value="", required=false) String searchText){
         String email = principal.getName(); // email del usuario autenticado
@@ -151,6 +170,14 @@ public class UsersController {
         return "user/administrateUsers";
     }
 
+    /**
+     * Método que devuelve la vista con los usuarios para mandar solicitudes de amistad
+     * @param model modelo para añadir datos a la vista
+     * @param pageable objeto para llevar a cabo la paginación
+     * @param principal usuario registrado en la aplicación
+     * @param searchText texto opcional para el buscador
+     * @return devuelve la vista con los usuarios para mandar solicitudes de amistad
+     */
     @RequestMapping("/user/sendFriendshipList")
     public String getSendFriendshipList(Model model, Pageable pageable, Principal principal, @RequestParam(value="", required=false) String searchText){
         String email = principal.getName(); // email del usuario autenticado
@@ -192,6 +219,13 @@ public class UsersController {
         return "user/list :: usersTable";
     }
 
+    /**
+     * Método para actualizar la tabla de la vista con la lista de ususarios para mandar solicitud de amistad
+     * @param model modelo para añadir datos a la vista
+     * @param pageable objeto para llevar a cabo la paginación
+     * @param principal usuario registrado en la aplicación
+     * @return devuelve la tabla de la vista con la lista de ususarios para mandar solicitud de amistad
+     */
     @RequestMapping("/user/sendFriendshipList/update")
     public String updateSendFriendshipList(Model model, Pageable pageable, Principal principal) {
         String email = principal.getName(); // email del usuario autenticado
@@ -204,13 +238,6 @@ public class UsersController {
     }
 
 
-/*
-    @RequestMapping("/user/details/{id}")
-    public String getDetail(Model model, @PathVariable Long id) {
-        model.addAttribute("user", usersService.getUser(id));
-        return "user/details";
-    }
-    */
 
 
     @RequestMapping("/user/delete/{id}")
@@ -239,7 +266,12 @@ public class UsersController {
     }
 
 
-
+    /**
+     * Método que recibe el formulario con los usuarios marcados para borrar en la vista de administración de usuarios
+     * del administrador
+     * @param usuariosABorrar lista con los ids de los ususarios a borrar
+     * @return redirije a la vista de administración de usuarios
+     */
     @RequestMapping(value= "/user/deleteAll",method= RequestMethod.POST)
     public String borrarTodo(@RequestParam("usuariosABorrar") List<Long> usuariosABorrar){
         if(usuariosABorrar!=null) {
@@ -248,6 +280,8 @@ public class UsersController {
         }
         return "redirect:/user/administratorList";
     }
+
+
 
     @RequestMapping(value= "/user/details/{id}")
     public String getDetails(@PathVariable Long id, Model model, Pageable pageable, Principal principal) throws AccessException {

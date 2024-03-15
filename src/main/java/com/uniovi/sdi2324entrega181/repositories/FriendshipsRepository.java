@@ -30,7 +30,12 @@ public interface FriendshipsRepository extends CrudRepository<Friendship, Long> 
             "AND f.isAccepted = true")
     List<Friendship> getFriends(String email);
 
-
+    /**
+     * Método que devuelve un Page de amistades para un usuario determinado
+     * @param pageable objeto necesario para la paginación
+     * @param email email del usuario del que se van a sacar las amistades
+     * @return un Page con todas las amistades del usuario
+     */
     @Query("SELECT f FROM Friendship f " +
             "WHERE (f.sender.email LIKE ?1 OR f.receiver.email LIKE ?1 )" +
             "AND f.isAccepted = true")
@@ -42,6 +47,10 @@ public interface FriendshipsRepository extends CrudRepository<Friendship, Long> 
     @Query("SELECT f FROM Friendship f WHERE f.sender.email = ?1 AND f.receiver.email = ?2")
     Optional<Friendship> findBySenderAndReceiver(String sender, String receiver);
 
+    /**
+     * Borra las amistades de un usuario
+     * @param id id del usuario para borrar las amistades
+     */
     @Modifying
     @Transactional
     @Query("DELETE FROM Friendship f WHERE f.sender.id = ?1 OR f.receiver.id = ?1")
