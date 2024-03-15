@@ -370,7 +370,7 @@ public class PO_PrivateView extends PO_NavView {
     /**
      * Método para listar la lista de solicitudes de amistad
      */
-    public static void doClickListFriendshipRequests(WebDriver driver) {
+    public static void doClickListFriendships(WebDriver driver) {
         //Pinchamos en la opción de menú de usuarios: //li[contains(@id, 'users-menu')]/a
         doClickMenuUsers(driver);
 
@@ -378,5 +378,7 @@ public class PO_PrivateView extends PO_NavView {
         List<WebElement> elements = PO_View.checkElementBy(driver, "free", "//a[contains(@href, 'friendship/list')]");
         elements.get(0).click();
     }
+
+
 }
 

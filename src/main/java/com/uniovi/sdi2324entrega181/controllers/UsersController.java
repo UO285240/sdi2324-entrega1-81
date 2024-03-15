@@ -141,6 +141,7 @@ public class UsersController {
 
         model.addAttribute("administratorList", users.getContent());
         model.addAttribute("page", users);
+        model.addAttribute("email",email);
         if (searchText != null)
             model.addAttribute("searchText", searchText);
         else
