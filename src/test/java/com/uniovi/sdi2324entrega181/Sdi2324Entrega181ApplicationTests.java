@@ -21,8 +21,11 @@ class Sdi2324Entrega181ApplicationTests {
     static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
     //static String Geckodriver = "C:\\Path\\geckodriver-v0.30.0-win64.exe";
     //static String Geckodriver = "C:\\Users\\Rita Catucho\\Desktop\\segundo cuatri\\SDI\\laboratorios\\semana06\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
-    static String Geckodriver = "C:\\Users\\javie\\OneDrive\\Escritorio\\Tercero\\SDI\\L5\\PL-SDI-Sesión5-material" +
-            "\\geckodriver-v0.30.0-win64.exe";
+
+   static String Geckodriver = "C:\\Users\\coral\\IdeaProjects\\SeleniumMaterial\\geckodriver-v0.30.0-win64.exe";
+
+    //static String Geckodriver = "C:\\Users\\javie\\OneDrive\\Escritorio\\Tercero\\SDI\\L5\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+
 
     static WebDriver driver = getDriver(PathFirefox, Geckodriver);
     static String URL = "http://localhost:8090";
@@ -95,6 +98,15 @@ class Sdi2324Entrega181ApplicationTests {
         }
     }
 
+    // [Prueba11] - Mostrar el listado de usuarios y comprobar que se muestran todos los que existen en el sistema,
+    //incluyendo el usuario actual y los usuarios administradores.
+    @Test
+    @Order(1)
+    void PR11() {
+        // TODO: Comprobar listado de admin y listado de usuarios
+        Assertions.assertEquals(7, 1); // da falso
+    }
+
 
 
     // [Prueba17] - Mostrar el listado de usuarios y comprobar que se muestran todos los que existen en el sistema,
@@ -114,12 +126,84 @@ class Sdi2324Entrega181ApplicationTests {
         Assertions.assertEquals(7, users);
     }
 
+
+    // [Prueba18] -  Hacer una búsqueda con el campo vacío y comprobar que se muestra la página que
+    //corresponde con el listado usuarios existentes en el sistema.
+    @Test
+    @Order(4)
+    void PR18() {
+
+        //login - inicio sesión con un usuario estándar (pedri@example.com) que no es admin
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+
+        // listamos las usuarios
+        PO_PrivateView.doClickListUsers(driver);
+
+        // buscamos un texto vacío
+        PO_PrivateView.doSearch(driver, "");
+
+
+        // Comprobamos que hay un total de 7 usuarios (total de uruarios del sistema menos el autenticado y los usuarios administradores)
+        int users = PO_PrivateView.getNumOfUsers(driver, 2);
+        Assertions.assertEquals(7, users);
+    }
+
+
+    // [Prueba19] -  Hacer una búsqueda escribiendo en el campo un texto que no exista y comprobar que se
+    //muestra la página que corresponde, con la lista de usuarios vacía
+    @Test
+    @Order(5)
+    void PR19() {
+
+        //login - inicio sesión con un usuario estándar (pedri@example.com) que no es admin
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+
+        // listamos las usuarios
+        PO_PrivateView.doClickListUsers(driver);
+
+        // buscamos un texto que no coincide con nada
+        PO_PrivateView.doSearch(driver, "qwerty");
+
+
+        // Comprobamos que hay un total de 0 usuarios (total de uruarios del sistema menos el autenticado y los usuarios administradores)
+        int users = PO_PrivateView.getNumOfUsers(driver, 0);
+        Assertions.assertEquals(0, users);
+    }
+
+
+    // [Prueba20] -  Hacer una búsqueda con un texto específico y comprobar que se muestra la página que
+    //corresponde, con la lista de usuarios en los que el texto especificado sea parte de su nombre, apellidos o
+    //de su email.
+    @Test
+    @Order(6)
+    void PR20() {
+
+        //login - inicio sesión con un usuario estándar (pedri@example.com) que no es admin
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+
+        // listamos las usuarios
+        PO_PrivateView.doClickListUsers(driver);
+
+        // buscamos un texto que coincide con un usuario
+        PO_PrivateView.doSearch(driver, "lucas");
+
+
+        // Comprobamos que hay un total de 7 usuarios (total de uruarios del sistema menos el autenticado y los usuarios administradores)
+        int users = PO_PrivateView.getNumOfUsers(driver, 1);
+        Assertions.assertEquals(1, users);
+    }
+
+
+
+
+
+
     // [Prueba21] Desde el listado de usuarios de la aplicación, enviar una invitación de amistad a un usuario.
     // Comprobar que la solicitud de amistad aparece en el listado de invitaciones (punto siguiente).
     @Test
-    @Order(4)
+    @Order(7)
     void PR21() {
-        //login - inicio sesión con un usuario estándar (pedri@example.com) que no es admin
+        //login - inicio sesión con un usuario estándar (pedro@example.com) que no es admin
         PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
 
         // listamos las usuarios
@@ -131,7 +215,7 @@ class Sdi2324Entrega181ApplicationTests {
     // que ya le habíamos enviado la invitación previamente. No debería dejarnos enviar la invitación. Se podría
     // ocultar el botón de enviar invitación o notificar que ya había sido enviada previamente.
     @Test
-    @Order(5)
+    @Order(8)
     void PR22() {
 
         //login - inicio sesión con un usuario estándar (pedri@example.com) que no es admin
@@ -299,6 +383,75 @@ void PR26(){
 
 
 }
+
+
+    // [Prueba27] -  Ir al formulario crear publicaciones, rellenarla con datos válidos y pulsar el botón Submit.
+    //Comprobar que la publicación sale en el listado de publicaciones de dicho usuario.
+    @Test
+    @Order(13)
+    void PR27() {
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+
+        // ir a la sección de añadir post
+        PO_PrivateView.doClickAddPost(driver);
+
+        // crear publicación
+        String title = "Título de prueba 27";
+        String text = "Texto de la publicación de prueba 27";
+        PO_AddPostView.createPost(driver, title, text);
+
+        // comprobar que existe la publicación
+        boolean postCreated = PO_PostView.getPost(driver, "pedro@example.com", title, text);
+        Assertions.assertTrue(postCreated);
+
+    }
+
+
+    // [Prueba28] Ir al formulario de crear publicaciones, rellenarla con datos inválidos (campos título y
+    //descripción vacíos) y pulsar el botón Submit. Comprobar que se muestran los mensajes de campo
+    //obligatorios
+    @Test
+    @Order(13)
+    void PR28() {
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+
+        // ir a la sección de añadir post
+        PO_PrivateView.doClickAddPost(driver);
+
+        // crear publicación
+        String title = "";
+        String text = "";
+        PO_AddPostView.createPost(driver, title, text);
+
+        // TODO: REVISAR excepciones de datos inválidos
+        Assertions.assertTrue(false); // false
+
+    }
+
+
+    // [Prueba29] Mostrar el listado de publicaciones de un usuario y comprobar que se muestran todas las que
+    //existen para dicho usuario.
+    @Test
+    @Order(13)
+    void PR29() {
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+
+        // ir a la sección de añadir post
+        PO_PrivateView.doClickListPosts(driver);
+
+
+        int posts = PO_PrivateView.getPostsOfUser(driver, 3, "pedro@example.com");
+
+        Assertions.assertEquals(15, posts);
+
+
+
+    }
+
+
+
+
+
 //[Prueba30] Mostrar el perfil del usuario y comprobar que se muestran sus datos y el listado de sus publicaciones.
 @Test
 @Order(15)
@@ -325,6 +478,9 @@ void PR31(){
    //preguntar como comprobar
 
 }
+
+
+
 
 
 

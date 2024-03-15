@@ -70,6 +70,22 @@ public class PO_PrivateView extends PO_NavView {
 
 
     /**
+     * Método para acceder a crear las publicaciones
+     */
+    static public void doClickAddPost(WebDriver driver){
+
+        //Pinchamos en la opción de menú de publicaciones: //li[contains(@id, 'post-menu')]/a
+        List<WebElement> elements = PO_View.checkElementBy(driver, "free",
+                "//*[@id='my-navbarColor02']/ul[1]/li[3]");
+        elements.get(0).click();
+
+        //Pinchamos en la opción de lista de publicaciones
+        elements = PO_View.checkElementBy(driver, "free", "//a[contains(@href, 'post/add')]");
+        elements.get(0).click();
+    }
+
+
+    /**
      * Método para contar el total de usuarios en un listado con pagincación
      */
     public static int getNumOfUsers(WebDriver driver, int numOfPages) {
@@ -84,6 +100,32 @@ public class PO_PrivateView extends PO_NavView {
         }
 
         return elements;
+    }
+
+
+    /**
+     * Método para contar el total de publicaciones de un usuario en un listado con paginación
+     */
+    public static int getPostsOfUser(WebDriver driver, int numOfPages, String email) {
+        int totalPosts = 0;
+
+        // Recorrer cada página
+        for (int i = 1; i <= numOfPages; i++) {
+            // Ir a la página correspondiente
+            irAPagina(driver, i);
+
+            // Contar las publicaciones de la página actual
+            List<WebElement> posts = driver.findElements(By.cssSelector(".card.mb-4.shadow-sm"));
+            for (WebElement post : posts) {
+                // Verificar si el autor del post es "pedro@example.com"
+                String author = post.findElement(By.xpath(".//p[contains(text(), 'Autor: ')]")).getText().replace("Autor: ", "").trim();
+                if (author.equals(email)) {
+                    totalPosts++;
+                }
+            }
+        }
+
+        return totalPosts;
     }
 
     /**
@@ -111,6 +153,22 @@ public class PO_PrivateView extends PO_NavView {
         //WebElement sendRequestButton = driver.findElement(By.xpath("//tr[contains(td, '" + receiver + "')]/td/a/button[contains(text(), 'Enviar solicitud')]"));
         WebElement sendRequestButton = driver.findElement(By.id(receiver));
         sendRequestButton.click();
+    }
+
+
+    /**
+     * Buscar un texto de búsqueda
+     */
+    public static void doSearch(WebDriver driver, String text){
+        WebElement searchText = driver.findElement(By.name("searchText"));
+        // borrar texto
+        searchText.clear();
+
+        // hacer consulta
+        searchText.sendKeys(text);
+        driver.findElement(By.cssSelector("button[type='submit'].btn.btn-primary")).click();
+
+
     }
 
 
