@@ -258,7 +258,7 @@ public class UsersController {
     public String setEdit(@PathVariable Long id, @ModelAttribute User user,BindingResult result) {
         User originalUser = usersService.getUser(id);
         // modificar solo Email, nombre , apellidos y role
-        signUpFormValidator.validate(user,result);
+        //signUpFormValidator.validate(user,result);
         if(result.hasErrors()){
             return "user/edit";
         }
@@ -293,7 +293,7 @@ public class UsersController {
         String email = principal.getName();
         User user1 = usersService.getUserByEmail(email);
         User user = usersService.getUser(id);
-        if(friendshipsService.areFriends(user,user1)) {
+        if(friendshipsService.areFriends(user,user1) || user1.getRole().equals("ROLE_ADMIN")) {
             Page<Post> posts = postsService.getPostsByUser(pageable, user);
 
 

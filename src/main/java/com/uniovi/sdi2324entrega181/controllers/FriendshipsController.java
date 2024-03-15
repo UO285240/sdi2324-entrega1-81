@@ -47,7 +47,7 @@ public class FriendshipsController {
         }
 
 
-        return "redirect:/user/list";
+        return "redirect:/user/sendFriendshipList";
     }
 
     /**

@@ -17,13 +17,13 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="user : ${friendships}">
-                <th scope="row" th:text="${user.getReceiver().getName() + ' '} + ${user.getReceiver().getLastName()}">Usuario</th>
-                <th scope="row" th:text="${user.getReceiver().getEmail()}">Email</th>
-                <th scope="row" th:text="${user.sendDate}">Fecha</th>
-                <th scope="row" ><a th:href="${'/friendship/accept/' + user.id}">
+            <tr th:each="friendship : ${friendships}">
+                <th scope="row" th:text="${friendship.getSender().getName() + ' '} + ${friendship.getSender().getLastName()}">Usuario</th>
+                <th scope="row" th:text="${friendship.getSender().getEmail()}">Email</th>
+                <th scope="row" th:text="${friendship.sendDate}">Fecha</th>
+                <th scope="row" ><a th:href="${'/friendship/accept/' + friendship.getSender().getId()}">
                     <button type="submit" class="btn btn-primary" th:text="#{friendship.accept}"
-                            th:id="${user.getReceiver().getEmail()}"></button></a></th>
+                            th:id="${friendship.getReceiver().getEmail()}"></button></a></th>
             </tr>
             </tbody>
         </table>
