@@ -1,0 +1,37 @@
+<thead>
+<tr>
+
+    <th scope="col" th:text="#{adminPostList.date}"></th>
+    <th scope="col" th:text="#{adminPostList.email}"></th>
+    <th scope="col" th:text="#{adminPostList.title}"></th>
+    <th scope="col" th:text="#{adminPostList.state}"></th>
+    <th scope="col" th:text="#{postList.changeState}"></th>
+
+</tr>
+</thead>
+<tbody>
+<tr th:each="post : ${postsList}">
+    <td class="card-text" th:text="${post.date}">Fecha de la publicación</td>
+    <td class="card-text" th:text="${post.user.email}">Autor de la publicación</td>
+    <td class="card-title" th:text="${post.title}">Título de la publicación</td>
+    <td class="card-text" th:text="${post.state}">Estado de la publicación</td>
+
+    <td>
+        <form th:action="${'/post/updateState/' + post.id}" method="post" class="d-inline">
+            <select name="state" class="form-control mr-2">
+                <option th:each="state : ${postStates}"
+                        th:value="${state}"
+                        th:text="${#messages.msg('postList.changeState.' + state)}"
+                        th:unless="${state == post.state}"></option>
+            </select>
+            <button type="submit" class="btn btn-primary" th:text="#{postList.changeStateButton}" style="margin-top: 10px;"></button>
+        </form>
+    </td>
+</tr>
+</tbody>
+
+
+
+
+
+

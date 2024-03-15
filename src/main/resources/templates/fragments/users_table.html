@@ -38,12 +38,21 @@
         <!-- Son amigos-->
         <td th:if="${friends.contains(user.email)}" th:text="#{usersTable.alreadyFriends}"></td>
 
-        <!-- solicitud enviada-->
-        <td th:if="${friendRequests.contains(user.email)}">
+        <!-- solicitud enviada por el usuario -->
+        <td th:if="${sentRequests.contains(user.email)}">
             <button type="submit" class="btn btn-primary" disabled
                     th:id="${user.email}" th:text="#{usersTable.requestSent}">
             </button>
         </td>
+
+        <!-- Solicitud pendiente de aceptar -->
+        <td th:if="${receivedRequests.contains(user.email)}">
+            <button type="submit" class="btn btn-primary" disabled
+                    th:id="${user.email}" th:text="#{usersTable.pendingRequest}">
+            </button>
+        </td>
+
+
 
 
         <td><a th:href="${'/user/details/' + user.id}" th:text="#{table.details}"></a></td>
@@ -56,9 +65,9 @@
 
     </tbody>
 </table>
-    <div class="form-group">
+    <div class="form-group" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit"  th:text="#{usersTable.delete}" class="btn btn-primary">Borrar</button>
+            <button   type="submit"  th:text="#{usersTable.delete}" class="btn btn-primary">Borrar</button>
         </div>
     </div>
 </form>

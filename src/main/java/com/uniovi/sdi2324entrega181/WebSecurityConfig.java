@@ -8,7 +8,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
 @Configuration
 @EnableWebSecurity
@@ -29,25 +34,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
 
-        http.csrf().disable().authorizeRequests().antMatchers("/css/**", "/images/**", "/script/**", "/", "/signup", "/login/**").permitAll()
-                .antMatchers("/user/add").authenticated()
-                .antMatchers("/user/list").authenticated()
-                .antMatchers("user/list/edit/*").hasRole("USUARIO_ADMIN")
-                .antMatchers("/post/*").authenticated()
-                .antMatchers("/home").authenticated()
-                .antMatchers("/friendship/list").authenticated()
-                .anyRequest().authenticated()
-
+        http.csrf().disable()
+                .authorizeRequests()
+                    .antMatchers("/css/**", "/images/**", "/script/**", "/", "/signup", "/login/**").permitAll()
+                    .antMatchers("/user/add").authenticated()
+                    .antMatchers("/user/list").authenticated()
+                    .antMatchers("/post/adminList").hasRole("ADMIN")
+                    .antMatchers("/post/updateState/**").hasRole("ADMIN")
+                    .antMatchers("/post/*").authenticated()
+                    .antMatchers("/home").authenticated()
+                    .antMatchers("/friendship/list").authenticated()
+                    .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .defaultSuccessUrl("/user/list")
+                    .loginPage("/login")
+                    .permitAll()
                 .and()
                 .logout()
-                .logoutSuccessHandler(new CustomLogoutSuccessHandler()) // Aquí configuras el LogoutSuccessHandler personalizado
-                .permitAll();
-
+                    .logoutSuccessHandler(new CustomLogoutSuccessHandler()) // Configuración del LogoutSuccessHandler personalizado
+                .and();
     }
 
 

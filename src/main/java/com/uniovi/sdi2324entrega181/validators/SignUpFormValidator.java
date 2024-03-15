@@ -83,7 +83,11 @@ public class SignUpFormValidator implements Validator {
 
 
     }
-
+    /**
+     * Método para comprobar que un String cumple con las caracterísiticas de ser una contraseña fuerte
+     * @param contraseña String que se va a comprobar si es fuerte
+     * @return devuelve true si la contraseña es fuerte, false en caso contrario
+     */
     private static boolean esContraseñaFuerte(String contraseña) {
         // Al menos una letra mayúscula, una minúscula, un número y un carácter especial
         return contieneLetraMayuscula(contraseña) &&
@@ -91,7 +95,11 @@ public class SignUpFormValidator implements Validator {
                 contieneNumero(contraseña) &&
                 contieneCaracterEspecial(contraseña);
     }
-
+    /**
+     * Método para comprobar que un String tiene letras mayúsculas
+     * @param str el string a comprobar
+     * @return devuelve true si tiene letras mayúsculas, false en caso contrario
+     */
     private static boolean contieneLetraMayuscula(String str) {
         for (char c : str.toCharArray()) {
             if (Character.isUpperCase(c)) {
@@ -100,7 +108,11 @@ public class SignUpFormValidator implements Validator {
         }
         return false;
     }
-
+    /**
+     * Método para comprobar que un String tiene letras minúsculas
+     * @param str el string a comprobar
+     * @return devuelve true si tiene letras minúsculas, false en caso contrario
+     */
     private static boolean contieneLetraMinuscula(String str) {
         for (char c : str.toCharArray()) {
             if (Character.isLowerCase(c)) {
@@ -109,7 +121,11 @@ public class SignUpFormValidator implements Validator {
         }
         return false;
     }
-
+    /**
+     * Método para comprobar que un String tiene números
+     * @param str el string a comprobar
+     * @return devuelve true si tiene números, false en caso contrario
+     */
     private static boolean contieneNumero(String str) {
         for (char c : str.toCharArray()) {
             if (Character.isDigit(c)) {
@@ -119,6 +135,11 @@ public class SignUpFormValidator implements Validator {
         return false;
     }
 
+    /**
+     * Método para comprobar que un String tiene carácteres especiales
+     * @param str el string a comprobar
+     * @return devuelve true si tiene carcateres especiales, false en caso contrario
+     */
     private static boolean contieneCaracterEspecial(String str) {
         String caracteresEspeciales = "@$!%*?&";
         for (char c : str.toCharArray()) {

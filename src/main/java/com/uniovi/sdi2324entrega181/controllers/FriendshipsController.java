@@ -19,8 +19,8 @@ import org.springframework.ui.Model;
 @Controller
 public class FriendshipsController {
 
-    private UsersService usersService;
-    private FriendshipsService friendshipsService;
+    private final UsersService usersService;
+    private final FriendshipsService friendshipsService;
 
     public FriendshipsController(UsersService usersService, FriendshipsService friendshipsService){
         this.usersService = usersService;
@@ -50,6 +50,13 @@ public class FriendshipsController {
         return "redirect:/user/list";
     }
 
+    /**
+     * Método que devuelve la vista con los amigos de usuario
+     * @param model modelo para añadir datos a la vista
+     * @param pageable objeto necesario para la paginación
+     * @param principal el ususario registrado en la aplicación
+     * @return devuelve la vista con el listado de amigos
+     */
     @RequestMapping("/friendship/list")
     public String getList(Model model, Pageable pageable, Principal principal){
         String email = principal.getName();

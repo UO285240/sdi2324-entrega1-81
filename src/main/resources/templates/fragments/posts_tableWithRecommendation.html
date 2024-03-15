@@ -1,3 +1,4 @@
+
 <div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
      th:text="${mensaje}"
      class="alert">
@@ -15,7 +16,12 @@
                 <p class="card-text" th:text="#{post.author}+' '+ ${post.user.email}">Autor de la publicación</p>
                 <p class="card-text" th:text="#{post.date}+' '+${post.date}">Fecha de la publicación</p>
                 <p class="card-text" th:text="#{post.recommended}+' '+${recommendationsNumber.get(post)}+ ' '+#{post.person}"></p>
-                <!-- Puedes agregar más detalles de la publicación aquí -->
+                <p th:if="${recommendedPosts.contains(post.id)}" class="card-text" th:text="#{recommendation.already}"></p>
+                <form th:if="${!recommendedPosts.contains(post.id)}" action="/recommendation/add" method="post">
+                    <input type="hidden" name="post_id" th:value="${post.id}">
+                    <input type="hidden" name="user_id" th:value="${user.id}">
+                    <button type="submit" class="btn btn-primary" th:text="#{recommendation.recommend}" ></button>
+                </form>
             </div>
         </div>
     </div>

@@ -1,0 +1,50 @@
+
+    <table class="table table-hover" th:fragment="sendFriendshipTable" id="sendFriendshipTable" >
+
+        <div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
+             th:text="${mensaje}"
+             class="alert">
+        </div>
+
+
+        <thead>
+        <tr>
+            <th scope="col" th:text="#{usersTable.email}"></th>
+            <th scope="col" th:text="#{usersTable.name}"></th>
+            <th scope="col" th:text="#{usersTable.lastName}"></th>
+            <th scope="col" th:text="#{usersTable.friendship}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${sendFriendshipList}">
+            <td th:text="${user.email}">71888888X</td>
+            <td th:text="${user.name}">Nombre del alumno</td>
+            <td th:text="${user.lastName}">Apellidos del alumno</td>
+
+
+            <!-------- Solicitud de amistad ------->
+
+            <!-- No son amigos-->
+            <td th:if="${!friendRequests.contains(user.email) && !friends.contains(user.email)}">
+                <a th:href="${'/friendship/send/' + user.id}">
+                    <button type="button" th:id="${user.email}"
+                            class="btn btn-success" th:text="#{usersTable.sendFriendshipRequest}"></button>
+                </a>
+            </td>
+
+            <!-- Son amigos-->
+            <td th:if="${friends.contains(user.email)}" th:text="#{usersTable.alreadyFriends}"></td>
+
+            <!-- solicitud enviada-->
+            <td th:if="${friendRequests.contains(user.email)}">
+                <button type="submit" class="btn btn-primary" disabled
+                        th:id="${user.email}" th:text="#{usersTable.requestSent}">
+                </button>
+            </td>
+
+
+        </tr>
+
+        </tbody>
+    </table>
+

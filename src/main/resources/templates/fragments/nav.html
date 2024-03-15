@@ -11,10 +11,17 @@
                 <a class="nav-link" href="/home">Home<span class="sr-only">(current)</span></a>
             </li>
 
+            <li  sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item dropdown" >
+                <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="#{nav.adminDropdown}"></a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/user/administratorList" th:text="#{nav.administrateUsers}"></a>
+                </div>
+            </li>
+
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="#{nav.userDropdown}"></a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/user/list" th:text="#{nav.seeUsers}"></a>
+                    <a class="dropdown-item" href="/user/sendFriendshipList" th:text="#{nav.seeUsers}"></a>
                     <a class="dropdown-item" href="/friendship/list" th:text="#{nav.friends}"></a>
                     <a class="dropdpwn-item" href="/friendship/requestlist" th:text="#{nav.petitions}"></a>
                 </div>
@@ -25,8 +32,11 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="/post/add" th:text="#{nav.addPost}"></a>
                     <a class="dropdown-item" href="/post/list" th:text="#{nav.listPost}"></a>
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" class="dropdown-item" href="/post/adminList" th:text="#{nav.listPostAdmin}" ></a>
                 </div>
             </li>
+
+
 
         </ul>
 

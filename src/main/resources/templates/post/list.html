@@ -6,15 +6,13 @@
 <nav th:replace="fragments/nav"/>
 <div class="container">
     <h2>Mis publicaciones</h2>
-    <p>A continuación se muestran las publicaciones que has realizado:</p>
-
+    <p th:text="#{postsList.subtitle}"></p>
 
     <div class="table-responsive">
         <table class="table table-hover">
             <table class="table table-hover" th:fragment="postsTable" id="postsTable" th:replace="fragments/posts_table" />
 
         </table>
-        <div th:if="${#lists.isEmpty(postsList)}"> No hay publicaciones :(</div>
         <footer th:replace="fragments/pagination"/>
     </div>
 

@@ -18,7 +18,7 @@
             if (numberPage != null ){
                 urlUpdate += "?page="+numberPage[0];
             }
-            $("#usersTable").load(urlUpdate);
+            $("#sendFriendshipTable").load(urlUpdate);
         });
         /*]]>*/
     </script>
@@ -31,16 +31,15 @@
     </form>
     <div class="table-responsive">
         <table class="table table-hover">
-            <table class="table table-hover" th:fragment="usersTable" id="usersTable" th:replace="fragments/users_table" />
+            <table class="table table-hover" th:fragment="sendFriendshipTable" id="sendFriendshipTable" th:replace="fragments/sendFriendship_table" />
             <footer th:replace="fragments/pagination"/>
         </table>
     </div>
 
-    <div th:if="${#lists.isEmpty(usersList)}" th:text="#{usersList.noUsers}"></div>
+    <div th:if="${#lists.isEmpty(sendFriendshipList)}" th:text="#{usersList.noUsers}"></div>
 
 </div>
 </div>
 <footer th:replace="fragments/footer"/>
 </body>
 </html>
-

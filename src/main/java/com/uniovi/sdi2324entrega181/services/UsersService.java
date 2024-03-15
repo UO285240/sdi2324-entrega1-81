@@ -90,20 +90,21 @@ public class UsersService {
     public Page<User> getUsersForUser(Pageable pageable, User user) {
         Page<User> users = new PageImpl<>(new LinkedList<>());
 
-        if (user.getRole().equals("USUARIO_ESTANDAR")) {
-            users = usersRepository.findAllByStandardUser(pageable, user.getId(), "USUARIO_ESTANDAR");}
+        if (user.getRole().equals("ROLE_USER")) {
+            users = usersRepository.findAllByStandardUser(pageable, user.getId(), "ROLE_USER");}
 
-        if (user.getRole().equals("USUARIO_ADMIN")) {
+        if (user.getRole().equals("ROLE_ADMIN")) {
             users = getUsers(pageable); }
 
         return users;
     }
 
+    /**
+     * Borra todos los usuarios dada una lista de ids de usuarios
+     * @param usuariosABorrar la lista de ids de los usuarios a borrar
+     */
     public void borrarPorId(List<Long> usuariosABorrar) {
-
-        for(Long id: usuariosABorrar){
-
-            usersRepository.deleteById(id);
+                usersRepository.deleteAllById(usuariosABorrar);
         }
-    }
+
 }
