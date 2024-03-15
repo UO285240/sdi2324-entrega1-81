@@ -18,34 +18,47 @@ public class PostsService {
     private PostsRepository postsRepository;
     private List<Post> posts; // lista los posts de un usuario
 
-    public PostsService(PostsRepository postsRepository){
+    public PostsService(PostsRepository postsRepository) {
         this.postsRepository = postsRepository;
     }
 
 
-    public void addPost(Post post){
+    public void addPost(Post post) {
         postsRepository.save(post);
     }
 
 
-    public Page<Post> getPostsByUser(Pageable pageable, User user){
+    public Page<Post> getPostsByUser(Pageable pageable, User user) {
         Page<Post> posts = postsRepository.findByUser(pageable, user);
         return posts;
     }
 
-    public List<Post> getLastPostByUser(User user){
+    public List<Post> getLastPostByUser(User user) {
         return postsRepository.findLastByUser(user);
     }
 
-    public Post getPost(Long id){
+    public Post getPost(Long id) {
         return postsRepository.findById(id).get();
     }
 
 
+    public void updatePost(Post post) {
+        postsRepository.save(post);
+    }
 
 
+    /**
+     * Buscar por email, título, texto o estado de la publicación
+     */
+    public Page<Post> searchByPostFields(String searchText, Pageable pageable) {
+        String searchTest = "%" + searchText + "%";
+        Page<Post> posts = postsRepository.searchByPostFields(searchTest, pageable);
+        return posts;
+    }
 
 
+        public Page<Post> getAllPosts (Pageable pageable){
+            return postsRepository.findAll(pageable);
+        }
+    }
 
-
-}

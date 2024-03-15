@@ -3,7 +3,10 @@ package com.uniovi.sdi2324entrega181;
 import com.uniovi.sdi2324entrega181.pageobjects.*;
 import com.uniovi.sdi2324entrega181.util.SeleniumUtils;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -258,8 +261,6 @@ class Sdi2324Entrega181ApplicationTests {
         //Compruebo si existe el texto esperado
         Assert.hasText("Rellene este campo.");
 
-
-
     }
 //[Prueba3] Registro de Usuario con datos inválidos (repetición de contraseña inválida).
 @Test
@@ -291,7 +292,7 @@ void PR04(){
 @Test
 @Order(10)
 void PR14(){
-        //inicio sesión como el administrador
+    //inicio sesión como el administrador
     PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
     // listamos las usuarios
     PO_PrivateView.clickAdminUserList(driver);
@@ -479,16 +480,290 @@ void PR39(){
 // con el que no se mantiene una relación de amistad.
 @Test
 @Order(18)
-void PR40(){
+void PR40() {
     PO_PrivateView.doLogin(driver, "user07@email.com", "Us3r@7-PASSW");
     driver.navigate().to("http://localhost:8090/user/details/1");
 
-    PO_HomeView.checkWelcomeToPage(driver,PO_Properties.getSPANISH());
+    PO_HomeView.checkWelcomeToPage(driver, PO_Properties.getSPANISH());
+}
 
+    // [Prueba32] Visualizar tres páginas (Página principal - Listado de usuarios - lista de publicaciones) en español/inglés/español
+    // (comprobando que algunas de las etiquetas cambian al idioma correspondiente)
+    @Test
+    @Order(6)
+    void PR32() {
+
+        // --- PÁGINA PRINCIPAL --- (/index)
+
+        // inglés
+        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
+        String checkText = "Welcome to our web application"; //
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        // español
+        PO_PrivateView.changeLanguage(driver, "Spanish"); // cambiamos a español
+        checkText = "Bienvenido a nuestra aplicación web";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        // inglés
+        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
+        checkText = "Welcome to our web application";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+
+        // --- LISTADO DE USUARIOS --- (/user/list)
+        PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW"); //login
+        PO_PrivateView.doClickListUsers(driver); // listamos los usuarios
+
+        // español
+        PO_PrivateView.changeLanguage(driver, "Spanish"); // cambiamos a español
+        checkText = "Los usuarios que actualmente figuran en el sistema son los siguientes:";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        // inglés
+        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
+        checkText = "The users currently listed in the system are the following:";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        // español
+        PO_PrivateView.changeLanguage(driver, "Spanish"); // cambiamos a español
+        checkText = "Los usuarios que actualmente figuran en el sistema son los siguientes:";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+
+        // --- LISTADO DE PUBLICACIONES --- (/post/list)
+        PO_PrivateView.doClickListPosts(driver); // listamos las publicaciones
+
+        // inglés
+        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
+        checkText = "The posts you have made are shown below:";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        // español
+        PO_PrivateView.changeLanguage(driver, "Spanish"); // cambiamos a español
+        checkText = "A continuación se muestran las publicaciones que has realizado:";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+    }
+
+    /**
+     * [Prueba33] Visualizar al menos tres páginas en inglés/francés (comprobando
+     * que algunas de las etiquetas cambian al idioma correspondiente).
+     */
+    @Test
+    @Order(6)
+    void PR33() {
+
+        // --- PÁGINA PRINCIPAL --- (/index)
+
+        // inglés
+        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
+        String checkText = "Welcome to our web application"; //
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        // francés
+        PO_PrivateView.changeLanguage(driver, "French"); // cambiamos a francés
+        checkText = "Bienvenue sur notre application Web";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        // inglés
+        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
+        checkText = "Welcome to our web application";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+
+        // --- LISTADO DE USUARIOS --- (/user/list)
+        PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW"); //login
+        PO_PrivateView.doClickListUsers(driver); // listamos los usuarios
+
+        // español
+        PO_PrivateView.changeLanguage(driver, "French"); // cambiamos a francés
+        checkText = "Les utilisateurs actuellement répertoriés dans le système sont les suivants:";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        // inglés
+        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
+        checkText = "The users currently listed in the system are the following:";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        // español
+        PO_PrivateView.changeLanguage(driver, "French"); // cambiamos a francés
+        checkText = "Les utilisateurs actuellement répertoriés dans le système sont les suivants:";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+
+        // --- LISTADO DE PUBLICACIONES --- (/post/list)
+        PO_PrivateView.doClickListPosts(driver); // listamos las publicaciones
+
+        // inglés
+        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
+        checkText = "The posts you have made are shown below:";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        // español
+        PO_PrivateView.changeLanguage(driver, "French"); // cambiamos a francés
+        checkText = "Les messages que vous avez publiés sont affichés ci-dessous:";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+    }
+
+    /**
+     * [Prueba41] Como administrador, cambiar el estado de una publicación y comprobar que el estado ha cambiado
+     */
+    @Test
+    @Order(7)
+    void PR41() {
+
+        //login - inicio sesión con un usuario administrador
+        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
+
+        // listamos todas las publicaciones del sistema
+        PO_PrivateView.doClickAdminListPosts(driver);
+        WebElement updatedState = PO_PrivateView.changePostState(driver, "CENSURADA");
+
+        Assertions.assertEquals("CENSURADA", updatedState.getText());
+    }
+
+    /**
+     * [Prueba42] Como usuario estándar, comprobar que NO aparece en el listado propio de publicaciones una
+     * publicación censurada.
+     */
+    @Test
+    @Order(8)
+    void PR42() {
+
+        // inicio sesión con usuario admin y censuro una publicación de user03@email.com
+        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
+
+        // listamos todas las publicaciones del sistema y censuro la primera del usuario user03@email.com
+        PO_PrivateView.doClickAdminListPosts(driver);
+        PO_PrivateView.changeStateFirstPost(driver, "user03@email.com", "CENSURADA");
+
+        PO_PrivateView.doLogout(driver);
+
+        //inicio sesión con un usuario estándar
+        PO_PrivateView.doLogin(driver, "user03@email.com", "Us3r@3-PASSW");
+
+        // Verificar que no aparece ninguna publicación censurada en el listado propio de publicaciones
+        Assertions.assertFalse(PO_PrivateView.isCensoredPostPresent(driver));
+    }
+
+
+    /**
+     * [Prueba43] Como usuario estándar, comprobar que, en el listado de publicaciones de un amigo, NO
+     * aparece una publicación moderada.
+     */
+    @Test
+    @Order(9)
+    void PR43() {
+
+        // inicio sesión con usuario admin y censuro una publicación de user02@email.com
+        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
+
+        // listamos todas las publicaciones del sistema y censuro la primera del usuario user03@email.com
+        PO_PrivateView.doClickAdminListPosts(driver);
+        PO_PrivateView.changeStateFirstPost(driver, "user02@email.com", "MODERADA");
+
+        PO_PrivateView.doLogout(driver);
+
+        //inicio sesión con un usuario estándar (como pedro, ya que tiene de amigo a user02@email.com
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+
+        //Voy a la página de amigos y pincho en los detalles de user02@email.com para ver sus publicaciones
+        PO_PrivateView.doClickListFriendships(driver);
+        WebElement userLink = driver.findElement(By.xpath("//a[contains(text(),'user02@email.com')]"));
+        userLink.click();
+
+        Assertions.assertFalse(PO_PrivateView.isStatePostPresent(driver, "MODERADA"));
+    }
+
+    /**
+     * [Prueba44] Como usuario estándar, intentar acceder la opción de cambio del estado de una publicación y
+     * comprobar que se redirecciona al usuario hacia el formulario de login.
+     */
+    @Test
+    @Order(9)
+    void PR44() {
+
+        // Intentar acceder a la URL para cambiar el estado de la publicación
+        driver.get("http://localhost:8090/post/updateState/3");
+
+        // redirecciona al login
+        String checkText = "Identifícate";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        // ahora lo intento otra vez logeada como un usuario estándar
+        PO_PrivateView.doLogin(driver, "user07@email.com", "Us3r@7-PASSW");
+
+        // Intentar acceder a la URL para cambiar el estado de la publicación
+        driver.get("http://localhost:8090/post/adminList");
+
+        // redirecciona al login
+        checkText = "Identifícate";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
+
+    // [Prueba45] Hacer una búsqueda con el campo vacío y comprobar que se muestra la página que
+    // corresponde con el listado publicaciones.
+    @Test
+    @Order(10)
+    void PR45() {
+
+        //login - inicio sesión con un usuario admin
+        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
+
+        // listamos todas las publicaciones del sistema
+        PO_PrivateView.doClickAdminListPosts(driver);
+
+        // buscamos un texto vacío
+        PO_PrivateView.doSearch(driver, "");
+
+        // Comprobamos que hay un total de 5 publicaciones
+        int posts = PO_PrivateView.countPosts(driver);
+        Assertions.assertEquals(5, posts);
+    }
+
+    // [Prueba46] Hacer una búsqueda escribiendo en el campo un texto que no exista y comprobar que se
+    // muestra la página que corresponde, con la lista de publicaciones vacía
+    @Test
+    @Order(10)
+    void PR46() {
+
+        //login - inicio sesión con un usuario admin
+        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
+
+        // listamos todas las publicaciones del sistema
+        PO_PrivateView.doClickAdminListPosts(driver);
+
+        // buscamos un texto vacío
+        PO_PrivateView.doSearch(driver, "qwerty");
+
+        // Comprobamos que hay un total de 5 publicaciones
+        int posts = PO_PrivateView.countPosts(driver);
+        Assertions.assertEquals(0, posts);
+    }
 
 }
 
 
 
 
-}
+
