@@ -58,6 +58,18 @@ public class Post {
         return date;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
     public User getUser() {
         return user;
     }
@@ -74,6 +86,19 @@ public class Post {
                 ", date=" + date +
                 ", user=" + user +
                 ", recommendations=" + recommendations +
+                '}';
+    }
+
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                ", date=" + date +
+                ", user=" + user +
+                ", recommendations=" + recommendations +
+                ", state=" + state +
                 '}';
     }
 }

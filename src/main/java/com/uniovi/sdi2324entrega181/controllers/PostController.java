@@ -3,6 +3,7 @@ package com.uniovi.sdi2324entrega181.controllers;
 import com.uniovi.sdi2324entrega181.entities.Post;
 import com.uniovi.sdi2324entrega181.entities.User;
 import com.uniovi.sdi2324entrega181.services.*;
+import com.uniovi.sdi2324entrega181.validators.CreatePostFormValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,27 +34,47 @@ public class PostController {
     private final PostsService postsService;
     private final UsersService usersService;
     private final RecommendationService recommendationService;
+    private final CreatePostFormValidator createPostFormValidator;
 
 
 
-    public PostController(PostsService postsService, UsersService usersService, RecommendationService recommendationService) {
+    public PostController(PostsService postsService, UsersService usersService, RecommendationService recommendationService, CreatePostFormValidator createPostFormValidator) {
         this.postsService = postsService;
         this.usersService = usersService;
         this.recommendationService = recommendationService;
+        this.createPostFormValidator = createPostFormValidator;
     }
 
 
     @RequestMapping(value = "/post/add", method = RequestMethod.GET)
     public String addPost(Model model) {
-        return "/post/add";
+        model.addAttribute("post", new Post());
+        return "post/add";
     }
 
     @RequestMapping(value = "/post/add", method = RequestMethod.POST)
-    public String createPost(@RequestParam String title, @RequestParam String text, Principal principal) {
+    public String createPost(@Validated Post post, BindingResult result, @RequestParam String title, @RequestParam String text, Principal principal) {
+
+        post.setTitle(title);
+        post.setText(text);
+        createPostFormValidator.validate(post,result);
+
+        System.out.println("POST --> " + post);
+
+        if (result.hasErrors()){
+            return "post/add";
+        }
+
         String email = principal.getName();
         User user = usersService.getUserByEmail(email);
         LocalDate date = LocalDate.now();
-        postsService.addPost(new Post(user, title, text, date));
+
+        post.setUser(user);
+        post.setDate(date);
+        post.setState(Post.PostState.ACEPTADA);
+        postsService.addPost(post);
+        System.out.println("POST creado --> " + post);
+
         return "redirect:/post/list";
     }
 
