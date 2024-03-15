@@ -1,6 +1,7 @@
 package com.uniovi.sdi2324entrega181;
 
 import com.uniovi.sdi2324entrega181.pageobjects.PO_HomeView;
+import com.uniovi.sdi2324entrega181.pageobjects.PO_LoginView;
 import com.uniovi.sdi2324entrega181.pageobjects.PO_PrivateView;
 import com.uniovi.sdi2324entrega181.pageobjects.PO_View;
 import com.uniovi.sdi2324entrega181.util.SeleniumUtils;
@@ -22,8 +23,8 @@ class Sdi2324Entrega181ApplicationTests {
 
     static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
     //static String Geckodriver = "C:\\Path\\geckodriver-v0.30.0-win64.exe";
-    static String Geckodriver = "C:\\Users\\Rita Catucho\\Desktop\\segundo cuatri\\SDI\\laboratorios\\semana06\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
-
+   // static String Geckodriver = "C:\\Users\\Rita Catucho\\Desktop\\segundo cuatri\\SDI\\laboratorios\\semana06\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+    static String Geckodriver = "D:\\Users\\rodri\\Universidad\\Curso23-24\\Sdi\\Lab\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
 
     static WebDriver driver = getDriver(PathFirefox, Geckodriver);
     static String URL = "http://localhost:8090";
@@ -53,14 +54,66 @@ class Sdi2324Entrega181ApplicationTests {
         driver.quit();
     }
 
+    // [Prueba5] - Introduccir datos validos e iniciar sesión (administrador)
+    @Test
+    @Order(5)
+    void PR05() {
+        //Vamos al formulario de logueo.
+        PO_HomeView.clickOption(driver, "login", "id", "password");
+        //Rellenamos el formulario
+        PO_LoginView.fillLoginForm(driver, "admin@email.com", "@Dm1n1str@D0r");
+        //Comprobamos que entramos en la pagina privada del admin
+        String checkText = "Usuarios";
+        List<WebElement> result = PO_View.checkElementBy(driver, "id", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
 
+    // [Prueba5] - Introduccir datos validos e iniciar sesión (usuario estándar)
+    @Test
+    @Order(6)
+    void PR06() {
+        //Vamos al formulario de logueo.
+        PO_HomeView.clickOption(driver, "login", "id", "password");
+        //Rellenamos el formulario
+        PO_LoginView.fillLoginForm(driver, "pedro@example.com", "123456");
+        //Comprobamos que entramos en la pagina privada del usuario
+        String checkText = "Usuarios";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
 
+    // [Prueba7] - Inicio de sesión con datos inválidos
+    @Test
+    @Order(7)
+    void PR07() {
+        //Vamos al formulario de logueo.
+        PO_HomeView.clickOption(driver, "login", "id", "password");
+        //Rellenamos el formulario
+        PO_LoginView.fillLoginForm(driver, "", "");
+        //Comprobamos que volvemos al login
+        String checkText = "Identifícate";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
 
+    // [Prueba8] - Inicio de sesión con datos validos pero contraseña incorrecta
+    @Test
+    @Order(8)
+    void PR08() {
+        //Vamos al formulario de logueo.
+        PO_HomeView.clickOption(driver, "login", "id", "password");
+        //Rellenamos el formulario
+        PO_LoginView.fillLoginForm(driver, "pedro@example.com", "12");
+        //Comprobamos que volvemos al login
+        String checkText = "Identifícate";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
 
     // [Prueba9] - Hacer clic en la opción de salir de sesión y comprobar que se muestra el mensaje “Ha cerrado
     // sesión correctamente” y se redirige a la página de inicio de sesión
     @Test
-    @Order(1)
+    @Order(2)
     void PR09() {
 
         //login
@@ -81,7 +134,7 @@ class Sdi2324Entrega181ApplicationTests {
 
     // [Prueba10] - Comprobar que el botón cerrar sesión no está visible si el usuario no está autenticado.
     @Test
-    @Order(2)
+    @Order(3)
     void PR10() {
 
         //login
