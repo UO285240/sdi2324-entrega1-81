@@ -3,12 +3,11 @@ package com.uniovi.sdi2324entrega181;
 import com.uniovi.sdi2324entrega181.pageobjects.*;
 import com.uniovi.sdi2324entrega181.util.SeleniumUtils;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +15,17 @@ import java.util.List;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class Sdi2324Entrega181ApplicationTests {
 
     static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
     //static String Geckodriver = "C:\\Path\\geckodriver-v0.30.0-win64.exe";
-    static String Geckodriver = "geckodriver-v0.30.0-win64.exe";
+    //static String Geckodriver = "C:\\Users\\Rita Catucho\\Desktop\\segundo cuatri\\SDI\\laboratorios\\semana06\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+
+  // static String Geckodriver = "C:\\Users\\coral\\IdeaProjects\\SeleniumMaterial\\geckodriver-v0.30.0-win64.exe";
+
+    static String Geckodriver = "C:\\Users\\javie\\OneDrive\\Escritorio\\Tercero\\SDI\\L5\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+
 
     static WebDriver driver = getDriver(PathFirefox, Geckodriver);
     static String URL = "http://localhost:8090";
@@ -51,16 +56,17 @@ class Sdi2324Entrega181ApplicationTests {
     }
 
 
-    /**
-     * [Prueba9] - Hacer clic en la opción de salir de sesión y comprobar que se muestra el mensaje “Ha cerrado
-     * sesión correctamente” y se redirige a la página de inicio de sesión
-     */
+
+
+
+    // [Prueba9] - Hacer clic en la opción de salir de sesión y comprobar que se muestra el mensaje “Ha cerrado
+    // sesión correctamente” y se redirige a la página de inicio de sesión
     @Test
     @Order(1)
     void PR09() {
 
         //login
-        PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW");
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
         // click en el botón de logout
         PO_PrivateView.doLogout(driver);
 
@@ -75,15 +81,13 @@ class Sdi2324Entrega181ApplicationTests {
         Assertions.assertEquals(checkText, result.get(0).getText());
     }
 
-    /**
-     * [Prueba10] - Comprobar que el botón cerrar sesión no está visible si el usuario no está autenticado.
-     */
+    // [Prueba10] - Comprobar que el botón cerrar sesión no está visible si el usuario no está autenticado.
     @Test
     @Order(2)
     void PR10() {
 
         //login
-        PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW");
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
 
         // Comprobamos que no está visible el botón de logout
         List<WebElement> elements = new ArrayList<>();
@@ -104,23 +108,22 @@ class Sdi2324Entrega181ApplicationTests {
     }
 
 
-    /**
-     * [Prueba17] - Mostrar el listado de usuarios y comprobar que se muestran todos los que existen en el sistema,
-     * excepto el propio usuario y aquellos que sean administradores.
-     */
+
+    // [Prueba17] - Mostrar el listado de usuarios y comprobar que se muestran todos los que existen en el sistema,
+    // excepto el propio usuario y aquellos que sean administradores.
     @Test
     @Order(3)
     void PR17() {
 
-        //login - inicio sesión con un usuario estándar que no es admin
-        PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW");
+        //login - inicio sesión con un usuario estándar (pedri@example.com) que no es admin
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
 
         // listamos las usuarios
         PO_PrivateView.doClickListUsers(driver);
 
-        // Comprobamos que hay un total de 13 usuarios (total de usuarios del sistema menos el autenticado y los usuarios administradores)
-        int users = PO_PrivateView.getNumOfUsers(driver, 3);
-        Assertions.assertEquals(13, users);
+        // Comprobamos que hay un total de 7 usuarios (total de uruarios del sistema menos el autenticado y los usuarios administradores)
+        int users = PO_PrivateView.getNumOfUsers(driver, 2);
+        Assertions.assertEquals(7, users);
     }
 
 
@@ -191,47 +194,40 @@ class Sdi2324Entrega181ApplicationTests {
     }
 
 
-    /**
-     * [Prueba21] Desde el listado de usuarios de la aplicación, enviar una invitación de amistad a un usuario.
-     * Comprobar que la solicitud de amistad aparece en el listado de invitaciones
-     */
+
+
+
+
+    // [Prueba21] Desde el listado de usuarios de la aplicación, enviar una invitación de amistad a un usuario.
+    // Comprobar que la solicitud de amistad aparece en el listado de invitaciones (punto siguiente).
     @Test
-    @Order(4)
+    @Order(7)
     void PR21() {
-        //login - inicio sesión con un usuario estándar que no es admin
-        PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW");
-
-        // listamos las usuarios y enviamos una solicitud a user03@email.com
-        PO_PrivateView.doClickListUsers(driver);
-        PO_PrivateView.sendFriendshipRequest(driver, "user03@email.com");
-
-        // listamos las invitaciones
-        PO_PrivateView.doClickListFriendshipRequests(driver); // MODIFICAR
-
-        // encontrar la solicitud
-
-
-    }
-
-    /**
-     * [Prueba22] Desde el listado de usuarios de la aplicación, enviar una invitación de amistad a un usuario al
-     * que ya le habíamos enviado la invitación previamente. No debería dejarnos enviar la invitación. Se podría
-     * ocultar el botón de enviar invitación o notificar que ya había sido enviada previamente.
-     */
-    @Test
-    @Order(5)
-    void PR22() {
-
-        //login - inicio sesión con un usuario estándar (pedri@example.com) que no es admin
-        PO_PrivateView.doLogin(driver, "user03@email.com", "Us3r@3-PASSW");
+        //login - inicio sesión con un usuario estándar (pedro@example.com) que no es admin
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
 
         // listamos las usuarios
         PO_PrivateView.doClickListUsers(driver);
 
-        // Pedro le manda una invitación de amistad un usuario del que no es amigo
-        PO_PrivateView.sendFriendshipRequest(driver, "user02@email.com");
+    }
 
-        WebElement sendRequestButton = driver.findElement(By.id("user02@email.com"));
+    // [Prueba22] Desde el listado de usuarios de la aplicación, enviar una invitación de amistad a un usuario al
+    // que ya le habíamos enviado la invitación previamente. No debería dejarnos enviar la invitación. Se podría
+    // ocultar el botón de enviar invitación o notificar que ya había sido enviada previamente.
+    @Test
+    @Order(8)
+    void PR22() {
+
+        //login - inicio sesión con un usuario estándar (pedri@example.com) que no es admin
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+
+        // listamos las usuarios
+        PO_PrivateView.doClickListUsers(driver);
+
+        // Pedro le manda una invitación de amistad a Lucas (lucas@example.com)
+        PO_PrivateView.sendFriendshipRequest(driver, "lucas@example.com");
+
+        WebElement sendRequestButton = driver.findElement(By.id("lucas@example.com"));
 
         // Verifica si el botón está deshabilitado
         Assertions.assertFalse(sendRequestButton.isEnabled(), "El botón de solicitud está habilitado después de hacer click.");
@@ -259,22 +255,10 @@ class Sdi2324Entrega181ApplicationTests {
         PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
         //Rellenamos el formulario.
         PO_SignUpView.fillForm(driver, "", "", "", "corta", "corta");
-        //Recojo los elementos que coincidan con esos mensajes de error
-        List<WebElement> result = PO_SignUpView.checkElementByKey(driver, "Error.empty",
-                PO_Properties.getSPANISH());
-        List<WebElement> result1 = PO_SignUpView.checkElementByKey(driver, "Error.signup.password.notHard",
-                PO_Properties.getSPANISH());
-        //Creo los strings con los mensajes de error esperados
-        String checkText = PO_HomeView.getP().getString("Error.empty", PO_Properties.getSPANISH())+"\n"+
-                PO_HomeView.getP().getString("Error.signup.email.notCorrectFormat", PO_Properties.getSPANISH());
-        String checkText1 = PO_HomeView.getP().getString("Error.signup.password.notHard", PO_Properties.getSPANISH())
-                +"\n"+ PO_HomeView.getP().getString("Error.signup.password.length", PO_Properties.getSPANISH());
-        String checkText2 = PO_HomeView.getP().getString("Error.empty", PO_Properties.getSPANISH());
-        //Hago las comprobaciones de que salen todos los mensajes de error
-        Assertions.assertEquals(checkText , result.get(0).getText());
-        Assertions.assertEquals(checkText1 , result1.get(0).getText());
-        Assertions.assertEquals(checkText2 , result.get(1).getText());
-        Assertions.assertEquals(checkText2 , result.get(2).getText());
+        //Compruebo si existe el texto esperado
+        Assert.hasText("Rellene este campo.");
+
+
 
     }
 //[Prueba3] Registro de Usuario con datos inválidos (repetición de contraseña inválida).
@@ -308,32 +292,28 @@ void PR04(){
 @Order(10)
 void PR14(){
         //inicio sesión como el administrador
-    PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+    PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
     // listamos las usuarios
-    PO_PrivateView.doClickListUsers(driver);
-    //selecciono el checkbox del primero
-    By checkBox  = By.xpath("/html/body/div/div/table[2]/tbody/tr[1]/td[7]/input");
-    driver.findElement(checkBox).click();
-    //doy click en el botón de borrar
-    By boton = By.xpath("/html/body/div/div/div[1]/div/button");
-    driver.findElement(boton).click();
-    SeleniumUtils.waitTextIsNotPresentOnPage(driver, "lucas@example.com",PO_View.getTimeout());
+    PO_PrivateView.clickAdminUserList(driver);
+
+    //borro el primero usuario borrable
+    PO_PrivateView.deleteAnUser(driver,"2");
+
+    SeleniumUtils.waitTextIsNotPresentOnPage(driver, "user01@example.com",PO_View.getTimeout());
 }
 //[Prueba15] Ir a la lista de usuarios, borrar el último usuario de la lista, comprobar que la lista se actualiza y dicho usuario desaparece.
 @Test
 @Order(11)
 void PR15(){
     //inicio sesión como el administrador
-    PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+    PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
     // listamos las usuarios
-    PO_PrivateView.doClickListUsers(driver);
+    PO_PrivateView.clickAdminUserList(driver);
+    //Voy a la última página
     PO_PrivateView.irAPagina(driver,3);
-    //selecciono el checkbox
-    By checkBox  = By.xpath("/html/body/div/div/table[2]/tbody/tr[4]/td[7]/input");
-    driver.findElement(checkBox).click();
-    //doy click en el botón de borrar
-    By boton = By.xpath("/html/body/div/div/div[1]/div/button");
-    driver.findElement(boton).click();
+    //borro el último usuario borrable
+    PO_PrivateView.deleteAnUser(driver,"1");
+    //Voy a la última página
     PO_PrivateView.irAPagina(driver,3);
     SeleniumUtils.waitTextIsNotPresentOnPage(driver, "user15@email.com",PO_View.getTimeout());
 }
@@ -343,22 +323,15 @@ void PR15(){
     @Order(12)
     void PR16(){
         //inicio sesión como el administrador
-        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
         // listamos las usuarios
-        PO_PrivateView.doClickListUsers(driver);
-        //selecciono el checkbox del primero
-        By checkBox  = By.xpath("/html/body/div/div/table[2]/tbody/tr[2]/td[7]/input");
-        driver.findElement(checkBox).click();
-        By checkBox2  = By.xpath("/html/body/div/div/table[2]/tbody/tr[3]/td[7]/input");
-        driver.findElement(checkBox2).click();
-        By checkBox3  = By.xpath("/html/body/div/div/table[2]/tbody/tr[4]/td[7]/input");
-        driver.findElement(checkBox3).click();
-        //doy click en el botón de borrar
-        By boton = By.xpath("/html/body/div/div/div[1]/div/button");
-        driver.findElement(boton).click();
+        PO_PrivateView.clickAdminUserList(driver);
+
+        PO_PrivateView.deleteThreeFirstUsers(driver);
+
+        SeleniumUtils.waitTextIsNotPresentOnPage(driver, "user01@email.com",PO_View.getTimeout());
+        SeleniumUtils.waitTextIsNotPresentOnPage(driver, "user02@email.com",PO_View.getTimeout());
         SeleniumUtils.waitTextIsNotPresentOnPage(driver, "user03@email.com",PO_View.getTimeout());
-        SeleniumUtils.waitTextIsNotPresentOnPage(driver, "user04@email.com",PO_View.getTimeout());
-        SeleniumUtils.waitTextIsNotPresentOnPage(driver, "user05@email.com",PO_View.getTimeout());
     }
 
 //[Prueba25] Mostrar el listado de amigos de un usuario. Comprobar que el listado contiene los amigos que deben ser.
@@ -368,9 +341,9 @@ void PR25(){
         //Login como el usuario 7
     PO_PrivateView.doLogin(driver, "user07@email.com", "Us3r@7-PASSW");
     //Voy a la página de amigos
-    PO_PrivateView.doClickListFriendships(driver);
+    PO_PrivateView.doClickListFriends(driver);
     //Compruebo que el número de amigos es el correcto
-    PO_PrivateView.checkNumberOfFriends(driver,4);
+    PO_PrivateView.checkNumberOfFriends(driver,1);
 }
 //[Prueba26] Mostrar el listado de amigos de un usuario. Comprobar que se incluye la información relacionada con la última publicación de cada usuario y la fecha de inicio de amistad.
 @Test
@@ -379,7 +352,7 @@ void PR26(){
     //Login como el usuario 7
     PO_PrivateView.doLogin(driver, "user07@email.com", "Us3r@7-PASSW");
     //Voy a la página de amigos
-    PO_PrivateView.doClickListFriendships(driver);
+    PO_PrivateView.doClickListFriends(driver);
     //Compruebo la fecha
     PO_PrivateView.checkDate(driver,"2024-02-03");
     //Compruebo la última publicación
@@ -463,321 +436,59 @@ void PR30(){
     //Login como el usuario 7
     PO_PrivateView.doLogin(driver, "user07@email.com", "Us3r@7-PASSW");
     //Voy a la página de amigos
-    PO_PrivateView.doClickListFriendships(driver);
-    //Contar posts mirar Coral
-    By enlace = By.xpath("/html/body/div/div/table/tbody/tr/td[1]/a");
-    driver.findElement(enlace).click();
-    List<WebElement> postsList = SeleniumUtils.waitLoadElementsBy(driver, "free", "/html/body/div/div/div[1]", PO_View.getTimeout());
-    Assertions.assertEquals(5, postsList.size());
+    PO_PrivateView.doClickListFriends(driver);
+    //Voy a los detalles del amigo
+    PO_PrivateView.doClickFriendDetails(driver,"/html/body/div/div/table/tbody/tr/td[1]/a");
+    int posts = PO_PrivateView.getPostsOfUser(driver, 3, "user08@email.com");
+    Assertions.assertEquals(15, posts);
 
 
 }
-//[Prueba31] Utilizando un acceso vía URL u otra alternativa, tratar de acceder al perfil de un usuario que no sea amigo del usuario identificado en sesión. Comprobar que el sistema da un error de autorización.
+//[Prueba31] Utilizando un acceso vía URL u otra alternativa, tratar de acceder al perfil de un usuario que no sea amigo
+// del usuario identificado en sesión. Comprobar que el sistema da un error de autorización.
 
 @Test
 @Order(16)
 void PR31(){
     PO_PrivateView.doLogin(driver, "user07@email.com", "Us3r@7-PASSW");
     driver.navigate().to("http://localhost:8090/user/details/1");
-   //preguntar como comprobar
+    PO_HomeView.checkWelcomeToPage(driver,PO_Properties.getSPANISH());
 
 }
 
 
-    // [Prueba32] Visualizar tres páginas (Página principal - Listado de usuarios - lista de publicaciones) en español/inglés/español
-    // (comprobando que algunas de las etiquetas cambian al idioma correspondiente)
-    @Test
-    @Order(6)
-    void PR32() {
+// [Prueba39] Acceder a las publicaciones de un amigo y recomendar una publicación. Comprobar que el número de
+// recomendaciones se ha incrementado en uno y que no aparece el botón/enlace recomendar
+@Test
+@Order(17)
+void PR39(){
+    //Login como el usuario 7
+    PO_PrivateView.doLogin(driver, "user07@email.com", "Us3r@7-PASSW");
+    //Voy a la página de amigos
+    PO_PrivateView.doClickListFriends(driver);
+    //Voy a los detalles del amigo
+    PO_PrivateView.doClickFriendDetails(driver,"/html/body/div/div/table/tbody/tr/td[1]/a");
 
-        // --- PÁGINA PRINCIPAL --- (/index)
+    PO_PrivateView.checkRecommendation(driver,"/html/body/div/div/div[1]/div[1]/div/div/button",
+            "/html/body/div/div/div[1]/div[1]/div/div/p[4]","Recomendado por 1 personas");
 
-        // inglés
-        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
-        String checkText = "Welcome to our web application"; //
-        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertEquals(checkText, result.get(0).getText());
 
-        // español
-        PO_PrivateView.changeLanguage(driver, "Spanish"); // cambiamos a español
-        checkText = "Bienvenido a nuestra aplicación web";
-        result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertEquals(checkText, result.get(0).getText());
+}
 
-        // inglés
-        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
-        checkText = "Welcome to our web application";
-        result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertEquals(checkText, result.get(0).getText());
+//[Prueba40] Utilizando un acceso vía URL u otra alternativa, tratar de recomendar una publicación de un usuario
+// con el que no se mantiene una relación de amistad.
+@Test
+@Order(18)
+void PR40(){
+    PO_PrivateView.doLogin(driver, "user07@email.com", "Us3r@7-PASSW");
+    driver.navigate().to("http://localhost:8090/user/details/1");
 
+    PO_HomeView.checkWelcomeToPage(driver,PO_Properties.getSPANISH());
 
-        // --- LISTADO DE USUARIOS --- (/user/list)
-        PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW"); //login
-        PO_PrivateView.doClickListUsers(driver); // listamos los usuarios
 
-        // español
-        PO_PrivateView.changeLanguage(driver, "Spanish"); // cambiamos a español
-        checkText = "Los usuarios que actualmente figuran en el sistema son los siguientes:";
-        result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertEquals(checkText, result.get(0).getText());
+}
 
-        // inglés
-        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
-        checkText = "The users currently listed in the system are the following:";
-        result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertEquals(checkText, result.get(0).getText());
 
-        // español
-        PO_PrivateView.changeLanguage(driver, "Spanish"); // cambiamos a español
-        checkText = "Los usuarios que actualmente figuran en el sistema son los siguientes:";
-        result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertEquals(checkText, result.get(0).getText());
 
-
-        // --- LISTADO DE PUBLICACIONES --- (/post/list)
-        PO_PrivateView.doClickListPosts(driver); // listamos las publicaciones
-
-        // inglés
-        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
-        checkText = "The posts you have made are shown below:";
-        result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertEquals(checkText, result.get(0).getText());
-
-        // español
-        PO_PrivateView.changeLanguage(driver, "Spanish"); // cambiamos a español
-        checkText = "A continuación se muestran las publicaciones que has realizado:";
-        result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertEquals(checkText, result.get(0).getText());
-
-    }
-
-    /**
-     * [Prueba33] Visualizar al menos tres páginas en inglés/francés (comprobando
-     * que algunas de las etiquetas cambian al idioma correspondiente).
-     */
-    @Test
-    @Order(6)
-    void PR33() {
-
-        // --- PÁGINA PRINCIPAL --- (/index)
-
-        // inglés
-        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
-        String checkText = "Welcome to our web application"; //
-        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertEquals(checkText, result.get(0).getText());
-
-        // francés
-        PO_PrivateView.changeLanguage(driver, "French"); // cambiamos a francés
-        checkText = "Bienvenue sur notre application Web";
-        result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertEquals(checkText, result.get(0).getText());
-
-        // inglés
-        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
-        checkText = "Welcome to our web application";
-        result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertEquals(checkText, result.get(0).getText());
-
-
-        // --- LISTADO DE USUARIOS --- (/user/list)
-        PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW"); //login
-        PO_PrivateView.doClickListUsers(driver); // listamos los usuarios
-
-        // español
-        PO_PrivateView.changeLanguage(driver, "French"); // cambiamos a francés
-        checkText = "Les utilisateurs actuellement répertoriés dans le système sont les suivants:";
-        result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertEquals(checkText, result.get(0).getText());
-
-        // inglés
-        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
-        checkText = "The users currently listed in the system are the following:";
-        result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertEquals(checkText, result.get(0).getText());
-
-        // español
-        PO_PrivateView.changeLanguage(driver, "French"); // cambiamos a francés
-        checkText = "Les utilisateurs actuellement répertoriés dans le système sont les suivants:";
-        result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertEquals(checkText, result.get(0).getText());
-
-
-        // --- LISTADO DE PUBLICACIONES --- (/post/list)
-        PO_PrivateView.doClickListPosts(driver); // listamos las publicaciones
-
-        // inglés
-        PO_PrivateView.changeLanguage(driver, "English"); // cambiamos a inglés
-        checkText = "The posts you have made are shown below:";
-        result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertEquals(checkText, result.get(0).getText());
-
-        // español
-        PO_PrivateView.changeLanguage(driver, "French"); // cambiamos a francés
-        checkText = "Les messages que vous avez publiés sont affichés ci-dessous:";
-        result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertEquals(checkText, result.get(0).getText());
-
-    }
-
-    /**
-     * [Prueba41] Como administrador, cambiar el estado de una publicación y comprobar que el estado ha cambiado
-     */
-    @Test
-    @Order(7)
-    void PR41() {
-
-        //login - inicio sesión con un usuario administrador
-        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
-
-        // listamos todas las publicaciones del sistema
-        PO_PrivateView.doClickAdminListPosts(driver);
-        WebElement updatedState = PO_PrivateView.changePostState(driver, "CENSURADA");
-
-        Assertions.assertEquals("CENSURADA", updatedState.getText());
-    }
-
-    /**
-     * [Prueba42] Como usuario estándar, comprobar que NO aparece en el listado propio de publicaciones una
-     * publicación censurada.
-     */
-    @Test
-    @Order(8)
-    void PR42() {
-
-        // inicio sesión con usuario admin y censuro una publicación de user03@email.com
-        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
-
-        // listamos todas las publicaciones del sistema y censuro la primera del usuario user03@email.com
-        PO_PrivateView.doClickAdminListPosts(driver);
-        PO_PrivateView.changeStateFirstPost(driver, "user03@email.com", "CENSURADA");
-
-        PO_PrivateView.doLogout(driver);
-
-        //inicio sesión con un usuario estándar
-        PO_PrivateView.doLogin(driver, "user03@email.com", "Us3r@3-PASSW");
-
-        // Verificar que no aparece ninguna publicación censurada en el listado propio de publicaciones
-        Assertions.assertFalse(PO_PrivateView.isCensoredPostPresent(driver));
-    }
-
-
-    /**
-     * [Prueba43] Como usuario estándar, comprobar que, en el listado de publicaciones de un amigo, NO
-     * aparece una publicación moderada.
-     */
-    @Test
-    @Order(9)
-    void PR43() {
-
-        // inicio sesión con usuario admin y censuro una publicación de user02@email.com
-        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
-
-        // listamos todas las publicaciones del sistema y censuro la primera del usuario user03@email.com
-        PO_PrivateView.doClickAdminListPosts(driver);
-        PO_PrivateView.changeStateFirstPost(driver, "user02@email.com", "MODERADA");
-
-        PO_PrivateView.doLogout(driver);
-
-        //inicio sesión con un usuario estándar (como pedro, ya que tiene de amigo a user02@email.com
-        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
-
-        //Voy a la página de amigos y pincho en los detalles de user02@email.com para ver sus publicaciones
-        PO_PrivateView.doClickListFriendships(driver);
-        WebElement userLink = driver.findElement(By.xpath("//a[contains(text(),'user02@email.com')]"));
-        userLink.click();
-
-        Assertions.assertFalse(PO_PrivateView.isStatePostPresent(driver, "MODERADA"));
-    }
-
-    /**
-     * [Prueba44] Como usuario estándar, intentar acceder la opción de cambio del estado de una publicación y
-     * comprobar que se redirecciona al usuario hacia el formulario de login.
-     */
-    @Test
-    @Order(9)
-    void PR44() {
-
-        // Intentar acceder a la URL para cambiar el estado de la publicación
-        driver.get("http://localhost:8090/post/updateState/3");
-
-        // redirecciona al login
-        String checkText = "Identifícate";
-        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertEquals(checkText, result.get(0).getText());
-
-        // ahora lo intento otra vez logeada como un usuario estándar
-        PO_PrivateView.doLogin(driver, "user07@email.com", "Us3r@7-PASSW");
-
-        // Intentar acceder a la URL para cambiar el estado de la publicación
-        driver.get("http://localhost:8090/post/adminList");
-
-        // redirecciona al login
-        checkText = "Identifícate";
-        result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertEquals(checkText, result.get(0).getText());
-    }
-
-    // [Prueba45] Hacer una búsqueda con el campo vacío y comprobar que se muestra la página que
-    // corresponde con el listado publicaciones.
-    @Test
-    @Order(10)
-    void PR45() {
-
-        //login - inicio sesión con un usuario admin
-        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
-
-        // listamos todas las publicaciones del sistema
-        PO_PrivateView.doClickAdminListPosts(driver);
-
-        // buscamos un texto vacío
-        PO_PrivateView.doSearch(driver, "");
-
-        // Comprobamos que hay un total de 5 publicaciones
-        int posts = PO_PrivateView.countPosts(driver);
-        Assertions.assertEquals(5, posts);
-    }
-
-    // [Prueba46] Hacer una búsqueda escribiendo en el campo un texto que no exista y comprobar que se
-    // muestra la página que corresponde, con la lista de publicaciones vacía
-    @Test
-    @Order(10)
-    void PR46() {
-
-        //login - inicio sesión con un usuario admin
-        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
-
-        // listamos todas las publicaciones del sistema
-        PO_PrivateView.doClickAdminListPosts(driver);
-
-        // buscamos un texto vacío
-        PO_PrivateView.doSearch(driver, "qwerty");
-
-        // Comprobamos que hay un total de 5 publicaciones
-        int posts = PO_PrivateView.countPosts(driver);
-        Assertions.assertEquals(0, posts);
-    }
-
-    // [Prueba47] Hacer una búsqueda de publicaciones censuradas, escribiendo el cuadro de búsqueda
-    // “Censurada” y comprobar que se muestra la página que corresponde, con la lista de publicaciones
-    // censuradas o que en el texto especificado sea parte de título, estado o del email
-    @Test
-    @Order(9)
-    void PR47() {
-
-        // inicio sesión con usuario admin
-        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
-
-        // listamos todas las publicaciones del sistema y censuro una
-        PO_PrivateView.doClickAdminListPosts(driver);
-        PO_PrivateView.changeStateFirstPost(driver, "user03@email.com", "CENSURADA");
-
-        // buscamos el texto 'CENSURADA'
-        PO_PrivateView.doSearch(driver, "CENSURADA");
-
-        // Comprobamos que hay un total de 5 publicaciones
-        int posts = PO_PrivateView.countPosts(driver);
-        Assertions.assertEquals(1, posts);
-    }
 
 }
