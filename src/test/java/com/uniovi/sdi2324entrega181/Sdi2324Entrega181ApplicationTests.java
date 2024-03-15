@@ -20,7 +20,7 @@ class Sdi2324Entrega181ApplicationTests {
 
     static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
     //static String Geckodriver = "C:\\Path\\geckodriver-v0.30.0-win64.exe";
-    static String Geckodriver = "C:\\Users\\Rita\\Downloads\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+    static String Geckodriver = "geckodriver-v0.30.0-win64.exe";
 
     static WebDriver driver = getDriver(PathFirefox, Geckodriver);
     static String URL = "http://localhost:8090";
