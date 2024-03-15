@@ -109,6 +109,13 @@ public class PostController {
         return "post/adminList";
     }
 
+    /**
+     * Método get que devuelve los detalles de una publicación
+     * @param model modelo para añadir datos a la vista
+     * @param id id del usuario del post para encontrar su último post
+     * @return devuelve la vista con los detalles del post
+     */
+
     @RequestMapping("/post/details/{id}")
     public String getDetails(Model model, @PathVariable Long id){
         User user = usersService.getUser(id);

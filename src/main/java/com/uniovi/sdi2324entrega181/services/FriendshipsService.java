@@ -64,6 +64,12 @@ public class FriendshipsService {
         return friendEmails;
     }
 
+    /**
+     * Método que devuelve un Page con las amistades de un usuario
+     * @param pageable objeto necesario para la paginación
+     * @param user usuario del que se van a buscar las amistades
+     * @return un Page con las amistades del usuario
+     */
     public Page<Friendship> getFriendsUser(Pageable pageable,User user){
         return friendshipsRepository.getFriendsPageable(pageable,user.getEmail());
     }
@@ -73,12 +79,22 @@ public class FriendshipsService {
          return friendship.isPresent();
     }
 
+    /**
+     * Método para borrar todas las amistades de una lista de usuarios
+     * @param ids lista con los ids de los usuarios
+     */
     public void borrarAmistades(List<Long> ids){
         for(Long id: ids){
                 friendshipsRepository.borrarAmistades(id);
         }
     }
 
+    /**
+     * Método que comprueba si 2 usuarios son amigos
+     * @param user1 usuario1 a comprobar
+     * @param user2 usuario 2 a comprobar
+     * @return true si son amigos y false si no
+     */
     public boolean areFriends(User user1, User user2){
         if(existsFriendship(user1,user2) || existsFriendship(user2,user1))
             return true;

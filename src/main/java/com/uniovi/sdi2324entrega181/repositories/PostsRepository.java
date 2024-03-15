@@ -11,9 +11,20 @@ import java.util.List;
 
 public interface PostsRepository extends CrudRepository<Post, Long> {
 
+    /**
+     * Método que devuelve un Page con todos los posts de un usuario
+     * @param pageable objeto necesario para la paginación
+     * @param user usuario del que se van a buscar los posts
+     * @return un Page con todos los posts del usuario
+     */
     @Query("SELECT p FROM Post p WHERE (p.user = ?1 AND p.state != 'CENSURADA') ORDER BY p.date DESC")
     Page<Post> findByUser(Pageable pageable, User user);
 
+    /**
+     * Método que devuelve una lista ordenada de los posts de un usuario
+     * @param user usuario del que se van a buscar los posts
+     * @return una lista de posts
+     */
     @Query("SELECT p FROM Post p WHERE (p.user = ?1 AND p.state != 'MODERADA' AND p.state != 'CENSURADA') ORDER BY p.date DESC")
     List<Post> findLastByUser(User user);
 

@@ -28,6 +28,13 @@ public class RecommendationController {
         this.postsService = postsService;
     }
 
+    /**
+     * Método para crear recomendaciones
+     * @param postId id del post de la recomendación
+     * @param userId id del amigo para redirigir a la su ventana de detalles
+     * @param principal id del usuario que crea la recomendación
+     * @return redirección a los detalles del amigo
+     */
     @RequestMapping(value = "/recommendation/add", method = RequestMethod.POST)
     public String createRecommendation(@RequestParam("post_id") Long postId, @RequestParam("user_id") Long userId,
     Principal principal){

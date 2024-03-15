@@ -33,10 +33,20 @@ public class PostsService {
         return posts;
     }
 
+    /**
+     * Devuelve una lista de los posts de un usuario
+     * @param user el usuario del que se van a sacar los posts
+     * @return una lista con los posts de usuario
+     */
     public List<Post> getLastPostByUser(User user) {
         return postsRepository.findLastByUser(user);
     }
 
+    /**
+     * Devuelve un post dado su id
+     * @param id id del post
+     * @return el post que se corresponde con el id
+     */
     public Post getPost(Long id) {
         return postsRepository.findById(id).get();
     }
