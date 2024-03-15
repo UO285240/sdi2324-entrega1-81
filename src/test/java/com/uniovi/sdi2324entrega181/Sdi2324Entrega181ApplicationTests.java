@@ -258,8 +258,11 @@ class Sdi2324Entrega181ApplicationTests {
         PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
         //Rellenamos el formulario.
         PO_SignUpView.fillForm(driver, "", "", "", "corta", "corta");
-        //Compruebo si existe el texto esperado
-        Assert.hasText("Rellene este campo.");
+        List<WebElement> result = PO_SignUpView.checkElementByKey(driver, "Error.empty",
+                PO_Properties.getSPANISH());
+        String checkText = PO_HomeView.getP().getString("Error.empty", PO_Properties.getSPANISH())+"\n"+
+                PO_HomeView.getP().getString("Error.signup.email.notCorrectFormat", PO_Properties.getSPANISH());
+        Assertions.assertEquals(checkText , result.get(0).getText());
 
     }
 //[Prueba3] Registro de Usuario con datos inválidos (repetición de contraseña inválida).
@@ -269,6 +272,7 @@ void PR03(){
     PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
     //Rellenamos el formulario.
     PO_SignUpView.fillForm(driver, "correcto@email.com", "Pepe", "José", "corta", "corta");
+
     List<WebElement> result = PO_SignUpView.checkElementByKey(driver, "Error.signup.password.notHard",
             PO_Properties.getSPANISH());
     String checkText = PO_HomeView.getP().getString("Error.signup.password.notHard", PO_Properties.getSPANISH())
