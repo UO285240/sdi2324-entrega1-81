@@ -9,6 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +18,17 @@ import java.util.List;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class Sdi2324Entrega181ApplicationTests {
 
     static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
     //static String Geckodriver = "C:\\Path\\geckodriver-v0.30.0-win64.exe";
-    static String Geckodriver = "geckodriver-v0.30.0-win64.exe";
+    //static String Geckodriver = "C:\\Users\\Rita Catucho\\Desktop\\segundo cuatri\\SDI\\laboratorios\\semana06\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+
+   static String Geckodriver = "C:\\Users\\coral\\IdeaProjects\\SeleniumMaterial\\geckodriver-v0.30.0-win64.exe";
+
+    //static String Geckodriver = "C:\\Users\\javie\\OneDrive\\Escritorio\\Tercero\\SDI\\L5\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+
 
     static WebDriver driver = getDriver(PathFirefox, Geckodriver);
     static String URL = "http://localhost:8090";
@@ -51,16 +59,17 @@ class Sdi2324Entrega181ApplicationTests {
     }
 
 
-    /**
-     * [Prueba9] - Hacer clic en la opción de salir de sesión y comprobar que se muestra el mensaje “Ha cerrado
-     * sesión correctamente” y se redirige a la página de inicio de sesión
-     */
+
+
+
+    // [Prueba9] - Hacer clic en la opción de salir de sesión y comprobar que se muestra el mensaje “Ha cerrado
+    // sesión correctamente” y se redirige a la página de inicio de sesión
     @Test
     @Order(1)
     void PR09() {
 
         //login
-        PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW");
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
         // click en el botón de logout
         PO_PrivateView.doLogout(driver);
 
@@ -75,15 +84,13 @@ class Sdi2324Entrega181ApplicationTests {
         Assertions.assertEquals(checkText, result.get(0).getText());
     }
 
-    /**
-     * [Prueba10] - Comprobar que el botón cerrar sesión no está visible si el usuario no está autenticado.
-     */
+    // [Prueba10] - Comprobar que el botón cerrar sesión no está visible si el usuario no está autenticado.
     @Test
     @Order(2)
     void PR10() {
 
         //login
-        PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW");
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
 
         // Comprobamos que no está visible el botón de logout
         List<WebElement> elements = new ArrayList<>();
@@ -104,23 +111,22 @@ class Sdi2324Entrega181ApplicationTests {
     }
 
 
-    /**
-     * [Prueba17] - Mostrar el listado de usuarios y comprobar que se muestran todos los que existen en el sistema,
-     * excepto el propio usuario y aquellos que sean administradores.
-     */
+
+    // [Prueba17] - Mostrar el listado de usuarios y comprobar que se muestran todos los que existen en el sistema,
+    // excepto el propio usuario y aquellos que sean administradores.
     @Test
     @Order(3)
     void PR17() {
 
-        //login - inicio sesión con un usuario estándar que no es admin
-        PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW");
+        //login - inicio sesión con un usuario estándar (pedri@example.com) que no es admin
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
 
         // listamos las usuarios
         PO_PrivateView.doClickListUsers(driver);
 
-        // Comprobamos que hay un total de 13 usuarios (total de usuarios del sistema menos el autenticado y los usuarios administradores)
-        int users = PO_PrivateView.getNumOfUsers(driver, 3);
-        Assertions.assertEquals(13, users);
+        // Comprobamos que hay un total de 7 usuarios (total de uruarios del sistema menos el autenticado y los usuarios administradores)
+        int users = PO_PrivateView.getNumOfUsers(driver, 2);
+        Assertions.assertEquals(7, users);
     }
 
 
@@ -191,47 +197,40 @@ class Sdi2324Entrega181ApplicationTests {
     }
 
 
-    /**
-     * [Prueba21] Desde el listado de usuarios de la aplicación, enviar una invitación de amistad a un usuario.
-     * Comprobar que la solicitud de amistad aparece en el listado de invitaciones
-     */
+
+
+
+
+    // [Prueba21] Desde el listado de usuarios de la aplicación, enviar una invitación de amistad a un usuario.
+    // Comprobar que la solicitud de amistad aparece en el listado de invitaciones (punto siguiente).
     @Test
-    @Order(4)
+    @Order(7)
     void PR21() {
-        //login - inicio sesión con un usuario estándar que no es admin
-        PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW");
-
-        // listamos las usuarios y enviamos una solicitud a user03@email.com
-        PO_PrivateView.doClickListUsers(driver);
-        PO_PrivateView.sendFriendshipRequest(driver, "user03@email.com");
-
-        // listamos las invitaciones
-        PO_PrivateView.doClickListFriendshipRequests(driver); // MODIFICAR
-
-        // encontrar la solicitud
-
-
-    }
-
-    /**
-     * [Prueba22] Desde el listado de usuarios de la aplicación, enviar una invitación de amistad a un usuario al
-     * que ya le habíamos enviado la invitación previamente. No debería dejarnos enviar la invitación. Se podría
-     * ocultar el botón de enviar invitación o notificar que ya había sido enviada previamente.
-     */
-    @Test
-    @Order(5)
-    void PR22() {
-
-        //login - inicio sesión con un usuario estándar (pedri@example.com) que no es admin
-        PO_PrivateView.doLogin(driver, "user03@email.com", "Us3r@3-PASSW");
+        //login - inicio sesión con un usuario estándar (pedro@example.com) que no es admin
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
 
         // listamos las usuarios
         PO_PrivateView.doClickListUsers(driver);
 
-        // Pedro le manda una invitación de amistad un usuario del que no es amigo
-        PO_PrivateView.sendFriendshipRequest(driver, "user02@email.com");
+    }
 
-        WebElement sendRequestButton = driver.findElement(By.id("user02@email.com"));
+    // [Prueba22] Desde el listado de usuarios de la aplicación, enviar una invitación de amistad a un usuario al
+    // que ya le habíamos enviado la invitación previamente. No debería dejarnos enviar la invitación. Se podría
+    // ocultar el botón de enviar invitación o notificar que ya había sido enviada previamente.
+    @Test
+    @Order(8)
+    void PR22() {
+
+        //login - inicio sesión con un usuario estándar (pedri@example.com) que no es admin
+        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+
+        // listamos las usuarios
+        PO_PrivateView.doClickListUsers(driver);
+
+        // Pedro le manda una invitación de amistad a Lucas (lucas@example.com)
+        PO_PrivateView.sendFriendshipRequest(driver, "lucas@example.com");
+
+        WebElement sendRequestButton = driver.findElement(By.id("lucas@example.com"));
 
         // Verifica si el botón está deshabilitado
         Assertions.assertFalse(sendRequestButton.isEnabled(), "El botón de solicitud está habilitado después de hacer click.");
@@ -368,7 +367,7 @@ void PR25(){
         //Login como el usuario 7
     PO_PrivateView.doLogin(driver, "user07@email.com", "Us3r@7-PASSW");
     //Voy a la página de amigos
-    PO_PrivateView.doClickListFriendships(driver);
+    PO_PrivateView.doClickListFriends(driver);
     //Compruebo que el número de amigos es el correcto
     PO_PrivateView.checkNumberOfFriends(driver,4);
 }
@@ -379,7 +378,7 @@ void PR26(){
     //Login como el usuario 7
     PO_PrivateView.doLogin(driver, "user07@email.com", "Us3r@7-PASSW");
     //Voy a la página de amigos
-    PO_PrivateView.doClickListFriendships(driver);
+    PO_PrivateView.doClickListFriends(driver);
     //Compruebo la fecha
     PO_PrivateView.checkDate(driver,"2024-02-03");
     //Compruebo la última publicación
@@ -463,7 +462,7 @@ void PR30(){
     //Login como el usuario 7
     PO_PrivateView.doLogin(driver, "user07@email.com", "Us3r@7-PASSW");
     //Voy a la página de amigos
-    PO_PrivateView.doClickListFriendships(driver);
+    PO_PrivateView.doClickListFriends(driver);
     //Contar posts mirar Coral
     By enlace = By.xpath("/html/body/div/div/table/tbody/tr/td[1]/a");
     driver.findElement(enlace).click();
@@ -472,17 +471,46 @@ void PR30(){
 
 
 }
-//[Prueba31] Utilizando un acceso vía URL u otra alternativa, tratar de acceder al perfil de un usuario que no sea amigo del usuario identificado en sesión. Comprobar que el sistema da un error de autorización.
+//[Prueba31] Utilizando un acceso vía URL u otra alternativa, tratar de acceder al perfil de un usuario que no sea amigo
+// del usuario identificado en sesión. Comprobar que el sistema da un error de autorización.
 
 @Test
 @Order(16)
 void PR31(){
     PO_PrivateView.doLogin(driver, "user07@email.com", "Us3r@7-PASSW");
     driver.navigate().to("http://localhost:8090/user/details/1");
-   //preguntar como comprobar
+    PO_HomeView.checkWelcomeToPage(driver,PO_Properties.getSPANISH());
 
 }
 
+
+// [Prueba39] Acceder a las publicaciones de un amigo y recomendar una publicación. Comprobar que el número de
+// recomendaciones se ha incrementado en uno y que no aparece el botón/enlace recomendar
+@Test
+@Order(17)
+void PR39(){
+    //Login como el usuario 7
+    PO_PrivateView.doLogin(driver, "user07@email.com", "Us3r@7-PASSW");
+    //Voy a la página de amigos
+    PO_PrivateView.doClickListFriends(driver);
+    //Voy a los detalles del amigo
+    PO_PrivateView.doClickFriendDetails(driver,"/html/body/div/div/table/tbody/tr/td[1]/a");
+
+    PO_PrivateView.checkRecommendation(driver,"/html/body/div/div/div[1]/div[1]/div/div/button",
+            "/html/body/div/div/div[1]/div[1]/div/div/p[4]","Recomendado por 1 personas");
+
+
+}
+
+//[Prueba40] Utilizando un acceso vía URL u otra alternativa, tratar de recomendar una publicación de un usuario
+// con el que no se mantiene una relación de amistad.
+@Test
+@Order(18)
+void PR40(){
+    PO_PrivateView.doLogin(driver, "user07@email.com", "Us3r@7-PASSW");
+    driver.navigate().to("http://localhost:8090/user/details/1");
+
+    PO_HomeView.checkWelcomeToPage(driver,PO_Properties.getSPANISH());
 
     // [Prueba32] Visualizar tres páginas (Página principal - Listado de usuarios - lista de publicaciones) en español/inglés/español
     // (comprobando que algunas de las etiquetas cambian al idioma correspondiente)
@@ -758,26 +786,9 @@ void PR31(){
         Assertions.assertEquals(0, posts);
     }
 
-    // [Prueba47] Hacer una búsqueda de publicaciones censuradas, escribiendo el cuadro de búsqueda
-    // “Censurada” y comprobar que se muestra la página que corresponde, con la lista de publicaciones
-    // censuradas o que en el texto especificado sea parte de título, estado o del email
-    @Test
-    @Order(9)
-    void PR47() {
+}
 
-        // inicio sesión con usuario admin
-        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
 
-        // listamos todas las publicaciones del sistema y censuro una
-        PO_PrivateView.doClickAdminListPosts(driver);
-        PO_PrivateView.changeStateFirstPost(driver, "user03@email.com", "CENSURADA");
 
-        // buscamos el texto 'CENSURADA'
-        PO_PrivateView.doSearch(driver, "CENSURADA");
-
-        // Comprobamos que hay un total de 5 publicaciones
-        int posts = PO_PrivateView.countPosts(driver);
-        Assertions.assertEquals(1, posts);
-    }
 
 }

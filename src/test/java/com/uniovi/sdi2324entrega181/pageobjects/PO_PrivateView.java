@@ -201,8 +201,6 @@ public class PO_PrivateView extends PO_NavView {
     }
 
 
-
-
     /**
      * Método para contar el total de usuarios en un listado con pagincación
      */
@@ -268,6 +266,7 @@ public class PO_PrivateView extends PO_NavView {
      * Envía una solicitud de amistad
      */
     public static void sendFriendshipRequest(WebDriver driver, String receiver) {
+        //WebElement sendRequestButton = driver.findElement(By.xpath("//tr[contains(td, '" + receiver + "')]/td/a/button[contains(text(), 'Enviar solicitud')]"));
         WebElement sendRequestButton = driver.findElement(By.id(receiver));
         sendRequestButton.click();
     }
@@ -293,7 +292,7 @@ public class PO_PrivateView extends PO_NavView {
     /**
      * Método para listar a los amigos
      */
-    static public void doClickListFriendships(WebDriver driver){
+    static public void doClickListFriends(WebDriver driver){
 
         //Pinchamos en la opción de menú de usuarios: //li[contains(@id, 'users-menu')]/a
         doClickMenuUsers(driver);
@@ -320,6 +319,54 @@ public class PO_PrivateView extends PO_NavView {
         Assertions.assertEquals(titulo, result.get(0).getText());
     }
 
+    static public void doClickFriendDetails(WebDriver driver, String xpath){
+        List<WebElement> elements = PO_View.checkElementBy(driver, "free",xpath);
+        elements.get(0).click();
+    }
+
+     static public void checkRecommendation(WebDriver driver, String button, String text, String checkTest) {
+        List<WebElement> elements = PO_View.checkElementBy(driver, "free",button);
+        elements.get(0).click();
+        elements = PO_View.checkElementBy(driver, "free",text);
+        String checkText = checkTest;
+        Assertions.assertEquals(checkText, elements.get(0).getText());
+    }
+
+    static public void clickAdminUserList(WebDriver driver){
+        //Pincho en el deslplegable del administrador
+        List<WebElement> elements = PO_View.checkElementBy(driver, "free", "/html/body/nav/div/ul[1]/li[2]");
+        elements.get(0).click();
+        //Pinchamos en la opción de lista de usuarios
+        elements = PO_View.checkElementBy(driver, "free", "//a[contains(@href, 'user/administratorList')]");
+        elements.get(0).click();
+    }
+
+     static public void deleteAnUser(WebDriver driver,String number) {
+        //selecciono el checkbox del primero
+         List<WebElement> elements = PO_View.checkElementBy(driver, "free",
+                 "/html/body/div/div/form/table/tbody/tr["+number+"]/td[5]/input");
+         elements.get(0).click();
+        //doy click en el botón de borrar
+         elements = PO_View.checkElementBy(driver, "free", "/html/body/div/div/form/div/div/button");
+         elements.get(0).click();
+
+    }
+
+    public static void deleteThreeFirstUsers(WebDriver driver) {
+        //selecciono el checkbox del primero
+        List<WebElement> elements = PO_View.checkElementBy(driver, "free",
+                "/html/body/div/div/form/table/tbody/tr[2]/td[5]/input");
+        elements.get(0).click();
+        elements = PO_View.checkElementBy(driver, "free",
+                "/html/body/div/div/form/table/tbody/tr[3]/td[5]/input");
+        elements.get(0).click();
+        elements = PO_View.checkElementBy(driver, "free",
+                "/html/body/div/div/form/table/tbody/tr[4]/td[5]/input");
+        elements.get(0).click();
+        //doy click en el botón de borrar
+        elements = PO_View.checkElementBy(driver, "free", "/html/body/div/div/form/div/div/button");
+        elements.get(0).click();
+    }
     /**
      * Método para listar la lista de solicitudes de amistad
      */

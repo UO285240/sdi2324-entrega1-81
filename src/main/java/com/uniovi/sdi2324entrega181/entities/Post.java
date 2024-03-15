@@ -2,6 +2,7 @@ package com.uniovi.sdi2324entrega181.entities;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "posts")
@@ -18,6 +19,9 @@ public class Post {
     @ManyToOne
     @JoinColumn(name= "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private Set<Recommendation> recommendations;
 
     public enum PostState {
         ACEPTADA, // Todas las publicaciones son aceptadas cuando se crean
@@ -38,6 +42,14 @@ public class Post {
         this.text = text;
         this.date = date;
         this.state = PostState.ACEPTADA;
+    }
+
+    public Set<Recommendation> getRecommendations() {
+        return recommendations;
+    }
+
+    public void setRecommendations(Set<Recommendation> recommendations) {
+        this.recommendations = recommendations;
     }
 
     public long getId() {

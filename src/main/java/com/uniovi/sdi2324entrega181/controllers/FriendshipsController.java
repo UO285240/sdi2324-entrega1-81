@@ -18,8 +18,8 @@ import org.springframework.ui.Model;
 @Controller
 public class FriendshipsController {
 
-    private UsersService usersService;
-    private FriendshipsService friendshipsService;
+    private final UsersService usersService;
+    private final FriendshipsService friendshipsService;
 
     public FriendshipsController(UsersService usersService, FriendshipsService friendshipsService){
         this.usersService = usersService;

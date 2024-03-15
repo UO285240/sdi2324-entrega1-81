@@ -23,11 +23,13 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UsersController {
@@ -40,15 +42,19 @@ public class UsersController {
     private final FriendshipsService friendshipsService;
     private final PostsService postsService;
 
+    private final RecommendationService recommendationService;
+
 
     public UsersController(UsersService usersService, SignUpFormValidator signUpFormValidator, SecurityService securityService,
-                           RolesService rolesService, FriendshipsService friendshipsService, PostsService postsService) {
+                           RolesService rolesService, FriendshipsService friendshipsService, PostsService postsService,
+                           RecommendationService recommendationService) {
         this.usersService = usersService;
         this.securityService = securityService;
         this.signUpFormValidator = signUpFormValidator;
         this.rolesService = rolesService;
         this.friendshipsService = friendshipsService;
         this.postsService = postsService;
+        this.recommendationService = recommendationService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -115,10 +121,8 @@ public class UsersController {
             model.addAttribute("searchText","");
 
         // friendships
-        model.addAttribute("friendRequests", friendshipsService.getFriendRequests(user)); // solicitudes donde el usuario autenticado es el que envia o el que recibe la solicitud de amistad
+        model.addAttribute("friendRequests", friendshipsService.getFriendRequests(user));
         model.addAttribute("friends", friendshipsService.getFriends(user));
-        model.addAttribute("sentRequests", friendshipsService.getSentRequests(user)); // solicitudes enviadas por el usuario autenticado
-        model.addAttribute("receivedRequests", friendshipsService.getReceivedRequests(user)); // solicitudes recibidas por el usuario (pendientes de aceptar/rechazar)
 
         return "user/list";
     }
@@ -235,16 +239,14 @@ public class UsersController {
 
 
 
-    @RequestMapping(value= "/user/borrarTodos",method= RequestMethod.POST)
-    public String borrarTodo(@RequestParam("usuariosABorrar") List<Long> usuariosABorrar, Principal principal){
+    @RequestMapping(value= "/user/deleteAll",method= RequestMethod.POST)
+    public String borrarTodo(@RequestParam("usuariosABorrar") List<Long> usuariosABorrar){
         if(usuariosABorrar!=null) {
-            String correo = principal.getName();
-            friendshipsService.borrarAmistades(usuariosABorrar,correo);
-            usersService.borrarPorId(usuariosABorrar,correo);
+            friendshipsService.borrarAmistades(usuariosABorrar);
+            usersService.borrarPorId(usuariosABorrar);
         }
         return "redirect:/user/administratorList";
     }
-
 
     @RequestMapping(value= "/user/details/{id}")
     public String getDetails(@PathVariable Long id, Model model, Pageable pageable, Principal principal) throws AccessException {
@@ -280,13 +282,17 @@ public class UsersController {
 
 
 
+            List<Long> recommendedPosts = recommendationService.findRecommendationByUser(user1);
+            Map<Post,Long> recommendationsNumber = recommendationService.getNumberOfRecommendations(posts.getContent());
             model.addAttribute("user", user);
-            model.addAttribute("postsList", sublist);
-            model.addAttribute("page", filteredPage);
+            model.addAttribute("postsList", posts.getContent());
+            model.addAttribute("page", posts);
+            model.addAttribute("recommendedPosts",recommendedPosts);
+            model.addAttribute("recommendationsNumber",recommendationsNumber);
             return "user/details";
         }
         else{
-            throw new AccessException("Authentication error") {};
+            return "/home";
         }
     }
 
