@@ -47,16 +47,21 @@
 
 
         <td><a th:href="${'/user/details/' + user.id}" th:text="#{table.details}"></a></td>
-        <td><a th:href="${'/user/edit/' + user.id}" th:text="#{table.modidy}"></a></td>
+        <td><a th:href="${'/user/edit/' + user.id}" th:text="#{table.modify}" sec:authorize="hasRole('USUARIO_ADMIN')"></a></td>
 
 
-        <td><input type="checkbox" name="usuariosABorrar" th:checked="${user.borrado}" th:value="${user.id}"/></td>
+        <td><input type="checkbox" name="usuariosABorrar" th:checked="${user.borrado}" th:value="${user.id}" sec:authorize="hasRole('USUARIO_ADMIN')"/></td>
 
     </tr>
 
     </tbody>
 </table>
-    <div class="form-group" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
+    <div>
+        <p>
+            <b th:inline="text" sec:authentication="principal"></b>
+        </p>
+    </div>
+    <div class="form-group" sec:authorize="hasRole('USUARIO_ADMIN')">
         <div class="col-sm-offset-2 col-sm-10">
             <button   type="submit"  th:text="#{usersTable.delete}" class="btn btn-primary">Borrar</button>
         </div>
