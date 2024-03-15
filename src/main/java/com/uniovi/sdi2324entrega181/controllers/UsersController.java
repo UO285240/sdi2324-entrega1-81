@@ -63,8 +63,8 @@ public class UsersController {
         String email = auth.getName();
 
         // En el caso de que el usuario ya esté logeado, ir a user/list
-        if (email != "anonymousUser")
-            return "redirect:user/list";
+        //if (email != "anonymousUser")
+        //    return "redirect:user/list";
 
         if (logout != null) {
             model.addAttribute("mensaje", "s");

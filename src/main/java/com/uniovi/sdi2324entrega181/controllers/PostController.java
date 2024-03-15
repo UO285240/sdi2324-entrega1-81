@@ -86,7 +86,7 @@ public class PostController {
 
         // comprobar que el usuario es administrador
         if(!user.getRole().equals(new RolesService().getRoles()[1])){
-            return "redirect:/login";
+            return "redirect:/home";
         }
 
         Page<Post> posts = postsService.getAllPosts(pageable);
@@ -134,6 +134,10 @@ public class PostController {
         String email = principal.getName(); // email del usuario autenticado
         User user = usersService.getUserByEmail(email);
 
+        // comprobar que el usuario es administrador
+        if(!user.getRole().equals(new RolesService().getRoles()[1])){
+            return "redirect:/home";
+        }
 
 
         Post post = postsService.getPost(id);

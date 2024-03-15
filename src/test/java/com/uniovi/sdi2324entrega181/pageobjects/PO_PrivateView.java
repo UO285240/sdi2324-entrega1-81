@@ -50,7 +50,7 @@ public class PO_PrivateView extends PO_NavView {
         doClickMenuUsers(driver);
 
         //Pinchamos en la opción de lista de usuarios
-        List<WebElement> elements = PO_View.checkElementBy(driver, "free", "//a[contains(@href, 'user/list')]");
+        List<WebElement> elements = PO_View.checkElementBy(driver, "free", "//a[contains(@href, 'user/sendFriendshipList')]");
         elements.get(0).click();
     }
 
@@ -72,11 +72,11 @@ public class PO_PrivateView extends PO_NavView {
     /**
      * Método para listar las todas publicaciones del sistema (solo los admins puede)
      */
-    static public void doClickAdminListPosts(WebDriver driver){
+    static public void doClickAdminListPostsForAdminNav(WebDriver driver){
 
         //Pinchamos en la opción de menú de publicaciones: //li[contains(@id, 'post-menu')]/a
         List<WebElement> elements = PO_View.checkElementBy(driver, "free",
-                "//*[@id='my-navbarColor02']/ul[1]/li[3]");
+                "//*[@id='my-navbarColor02']/ul[1]/li[4]");
         elements.get(0).click();
 
         //Pinchamos en la opción de lista de publicaciones
@@ -110,7 +110,7 @@ public class PO_PrivateView extends PO_NavView {
      */
     static public void changeStateFirstPost(WebDriver driver, String userEmail, String state) {
         // Navegar a la página de listado de todas las publicaciones
-        doClickAdminListPosts(driver);
+        doClickAdminListPostsForAdminNav(driver);
 
         // Encontrar la primera publicación del usuario con el correo electrónico especificado y censurarla
         List<WebElement> posts = driver.findElements(By.xpath("//tbody/tr"));
@@ -258,7 +258,6 @@ public class PO_PrivateView extends PO_NavView {
     static public int contarElementosEnPagina(WebDriver driver){
         List<WebElement> elementsList = SeleniumUtils.waitLoadElementsBy(driver, "free", "//tbody/tr",
                 PO_View.getTimeout());
-        System.out.println(elementsList.size());
         return elementsList.size();
     }
 
