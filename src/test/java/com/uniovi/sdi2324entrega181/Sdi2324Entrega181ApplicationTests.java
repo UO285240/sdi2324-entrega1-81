@@ -22,9 +22,9 @@ class Sdi2324Entrega181ApplicationTests {
 
     static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
     //static String Geckodriver = "C:\\Path\\geckodriver-v0.30.0-win64.exe";
-    static String Geckodriver = "C:\\Users\\Rita Catucho\\Desktop\\segundo cuatri\\SDI\\laboratorios\\semana06\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+    //static String Geckodriver = "C:\\Users\\Rita Catucho\\Desktop\\segundo cuatri\\SDI\\laboratorios\\semana06\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
 
-  // static String Geckodriver = "C:\\Users\\coral\\IdeaProjects\\SeleniumMaterial\\geckodriver-v0.30.0-win64.exe";
+    static String Geckodriver = "C:\\Users\\coral\\IdeaProjects\\SeleniumMaterial\\geckodriver-v0.30.0-win64.exe";
 
     //static String Geckodriver = "C:\\Users\\javie\\OneDrive\\Escritorio\\Tercero\\SDI\\L5\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
 
@@ -379,7 +379,7 @@ void PR26(){
     @Test
     @Order(13)
     void PR27() {
-        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+        PO_PrivateView.doLogin(driver, "user01@email.com", "Us3r@1-PASSW");
 
         // ir a la sección de añadir post
         PO_PrivateView.doClickAddPost(driver);
@@ -390,7 +390,7 @@ void PR26(){
         PO_AddPostView.createPost(driver, title, text);
 
         // comprobar que existe la publicación
-        boolean postCreated = PO_PostView.getPost(driver, "pedro@example.com", title, text);
+        boolean postCreated = PO_PostView.getPost(driver, "user01@email.com", title, text);
         Assertions.assertTrue(postCreated);
 
     }
@@ -402,7 +402,7 @@ void PR26(){
     @Test
     @Order(13)
     void PR28() {
-        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+        PO_PrivateView.doLogin(driver, "user01@email.com", "Us3r@1-PASSW");
 
         // ir a la sección de añadir post
         PO_PrivateView.doClickAddPost(driver);
@@ -412,8 +412,9 @@ void PR26(){
         String text = "";
         PO_AddPostView.createPost(driver, title, text);
 
-        // TODO: REVISAR excepciones de datos inválidos
-        Assertions.assertTrue(false); // false
+        WebElement errorMessage = driver.findElement(By.className("text-danger"));
+        Assertions.assertTrue(errorMessage.getText().contains(PO_AddPostView.getP().getString("Error.empty", 0)));
+
 
     }
 
