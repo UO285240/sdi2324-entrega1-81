@@ -23,6 +23,15 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private Set<Recommendation> recommendations;
 
+    public enum PostState {
+        ACEPTADA, // Todas las publicaciones son aceptadas cuando se crean
+        MODERADA, // Solamente el usuario (y administradores) podrán ver esa publicación.
+        CENSURADA // La publicación solamente se muestra al perfil Administrador.
+    }
+
+    @Enumerated(EnumType.STRING)
+    private PostState state;
+
 
 
     public Post() {}
@@ -32,6 +41,7 @@ public class Post {
         this.title = title;
         this.text = text;
         this.date = date;
+        this.state = PostState.ACEPTADA;
     }
 
     public Set<Recommendation> getRecommendations() {
@@ -58,6 +68,21 @@ public class Post {
         return date;
     }
 
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public PostState getState() {
+        return state;
+    }
+
+    public void setState(PostState state) {
+        this.state = state;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -69,26 +94,6 @@ public class Post {
     public void setDate(LocalDate date) {
         this.date = date;
     }
-
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    @Override
-    public String toString() {
-        return "Post{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", text='" + text + '\'' +
-                ", date=" + date +
-                ", user=" + user +
-                ", recommendations=" + recommendations +
-                '}';
-    }
-
 
     @Override
     public String toString() {
