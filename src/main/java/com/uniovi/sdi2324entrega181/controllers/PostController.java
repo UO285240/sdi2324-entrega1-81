@@ -157,13 +157,9 @@ public class PostController {
         String email = principal.getName(); // email del usuario autenticado
         User user = usersService.getUserByEmail(email);
 
-
-
         Post post = postsService.getPost(id);
         post.setState(newState);
         postsService.updatePost(post);
         return "redirect:/post/adminList";
     }
-
-
 }

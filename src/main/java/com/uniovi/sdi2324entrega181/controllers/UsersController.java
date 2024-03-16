@@ -6,6 +6,8 @@ import com.uniovi.sdi2324entrega181.services.*;
 import com.uniovi.sdi2324entrega181.services.SecurityService;
 import com.uniovi.sdi2324entrega181.validators.SignUpFormValidator;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import org.springframework.expression.AccessException;
@@ -18,6 +20,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +29,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UsersController {
@@ -58,8 +63,8 @@ public class UsersController {
         String email = auth.getName();
 
         // En el caso de que el usuario ya esté logeado, ir a user/list
-        if (email != "anonymousUser")
-            return "redirect:user/list";
+        //if (email != "anonymousUser")
+        //    return "redirect:user/list";
 
         if (logout != null) {
             model.addAttribute("mensaje", "s");
@@ -285,6 +290,33 @@ public class UsersController {
         User user = usersService.getUser(id);
         if(friendshipsService.areFriends(user,user1)) {
             Page<Post> posts = postsService.getPostsByUser(pageable, user);
+
+
+            // Filtrar las publicaciones que no están ni censuradas ni moderadas
+            List<Post> filteredPosts = new ArrayList<>();
+            posts.forEach(post -> {
+                if (!post.getState().equals("CENSURADA") && !post.getState().equals("MODERADA")) {
+                    filteredPosts.add(post);
+                }
+            });
+
+            // Crear una nueva página con los posts filtrados
+            int pageSize = pageable.getPageSize();
+            int currentPage = pageable.getPageNumber();
+            int startItem = currentPage * pageSize;
+            List<Post> sublist;
+
+            if (filteredPosts.size() < startItem) {
+                sublist = Collections.emptyList();
+            } else {
+                int toIndex = Math.min(startItem + pageSize, filteredPosts.size());
+                sublist = filteredPosts.subList(startItem, toIndex);
+            }
+
+            Page<Post> filteredPage = new PageImpl<>(sublist, PageRequest.of(currentPage, pageSize), filteredPosts.size());
+
+
+
             List<Long> recommendedPosts = recommendationService.findRecommendationByUser(user1);
             Map<Post,Long> recommendationsNumber = recommendationService.getNumberOfRecommendations(posts.getContent());
             model.addAttribute("user", user);
