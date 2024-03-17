@@ -132,7 +132,7 @@ class Sdi2324Entrega181ApplicationTests {
         PO_LoginView.fillLoginForm(driver, "admin@email.com", "@Dm1n1str@D0r");
         //Comprobamos que entramos en la pagina privada del admin
         String checkText = "Usuarios";
-        List<WebElement> result = PO_View.checkElementBy(driver, "id", checkText);
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
         Assertions.assertEquals(checkText, result.get(0).getText());
     }
 
