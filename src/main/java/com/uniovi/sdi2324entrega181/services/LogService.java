@@ -5,6 +5,9 @@ import com.uniovi.sdi2324entrega181.repositories.LogRepository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+@Service
 public class LogService {
     private LogRepository logRepository;
 
