@@ -42,7 +42,8 @@ public class EditUserValidator implements Validator{
                 user.getLastName().endsWith(" ")) {
             user.setLastName(user.getLastName().trim());
         }
-        if(usersService.getUserByEmail(user.getEmail())!=null){
+        User existingUser = usersService.getUserByEmail(user.getEmail());
+        if (existingUser != null && existingUser.getId() != user.getId()) {
             errors.rejectValue("email", "Error.signup.email.duplicate");
         }
         if(!user.getEmail().matches(".*@.*\\..*")){

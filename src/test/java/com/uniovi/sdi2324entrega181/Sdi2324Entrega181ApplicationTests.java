@@ -32,8 +32,8 @@ class Sdi2324Entrega181ApplicationTests {
 
   // static String Geckodriver = "C:\\Users\\coral\\IdeaProjects\\SeleniumMaterial\\geckodriver-v0.30.0-win64.exe";
 
-    static String Geckodriver = "C:\\Users\\javie\\OneDrive\\Escritorio\\Tercero\\SDI\\L5\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
-
+   // static String Geckodriver = "C:\\Users\\javie\\OneDrive\\Escritorio\\Tercero\\SDI\\L5\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+    static String Geckodriver = "D:\\Users\\rodri\\Universidad\\Curso23-24\\Sdi\\Lab\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe" ;
 
     static WebDriver driver = getDriver(PathFirefox, Geckodriver);
     static String URL = "http://localhost:8090";
@@ -930,10 +930,10 @@ void PR40() {
     @Test
     @Order(21)
     void PR23() {
-        // Iniciamos sesión como nunez@icloud.com
-        PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW");
+        // Iniciamos sesión como user02@email.com
+        PO_PrivateView.doLogin(driver, "user01@email.com", "Us3r@1-PASSW");
         // Accedemos a la vista de peticiones recibidas
-        driver.findElement(By.id("listPetitions")).click();
+        PO_PrivateView.doClickPetitionsList(driver);
         // Deberían de salir 5 peticiones
         List<WebElement> petitions = SeleniumUtils.waitLoadElementsBy(driver, "free", "//tbody/tr",
                 PO_View.getTimeout());
@@ -947,13 +947,13 @@ void PR40() {
     /**
      * Sobre el listado de invitaciones recibidas. Hacer clic en el botón/enlace de una de ellas y
      * comprobar que dicha solicitud desaparece del listado de invitaciones.
-     * Volvemos a iniciar sesión con nunez@icloud.com, y aceptamos una petición de la primera página;
+     * Volvemos a iniciar sesión con user02@email.com, y aceptamos una petición de la primera página;
      * no debería de aparecer tras aceptarla.
      */
     @Test
     @Order(22)
     void PR24() {
-        // Iniciamos sesión como nunez@icloud.com
+        // Iniciamos sesión como user02@email.com
         PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW");
         // Accedemos a la vista de peticiones recibidas
         driver.findElement(By.id("listPetitions")).click();

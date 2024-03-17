@@ -238,7 +238,6 @@ public class UsersController {
     public String setEdit(@PathVariable Long id, @ModelAttribute User user,BindingResult result) {
         User originalUser = usersService.getUser(id);
         // modificar solo Email, nombre , apellidos y role
-        /*
 
         // TODO: RODRIGO REVISAR VALIDAR DATOS
         editUserValidator.validate(user,result);
@@ -246,7 +245,7 @@ public class UsersController {
             return "user/edit";
         }
 
-         */
+
         originalUser.setEmail(user.getEmail());
         originalUser.setName(user.getName());
         originalUser.setLastName(user.getLastName());
