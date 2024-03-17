@@ -1,5 +1,8 @@
 package com.uniovi.sdi2324entrega181;
 
+import com.uniovi.sdi2324entrega181.handlers.CustomLoginErrorHandler;
+import com.uniovi.sdi2324entrega181.handlers.CustomLoginSuccessHandler;
+import com.uniovi.sdi2324entrega181.handlers.CustomLogoutSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,6 +14,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
@@ -50,6 +55,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage("/login")
                 .defaultSuccessUrl("/user/sendFriendshipList")
                     .permitAll()
+                .successHandler(myAuthenticationSuccessHandler())
+                .failureHandler(customLoginErrorHandler())
                 .and()
                 .logout()
                     .logoutSuccessHandler(new CustomLogoutSuccessHandler()) // Configuración del LogoutSuccessHandler personalizado
@@ -61,5 +68,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public SpringSecurityDialect securityDialect() {
         return new SpringSecurityDialect();
     }
+
+    @Bean
+    public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
+        return new CustomLoginSuccessHandler();
+    }
+
+    @Bean
+    public AuthenticationFailureHandler customLoginErrorHandler() {
+        return new CustomLoginErrorHandler();
+    }
+
 
 }

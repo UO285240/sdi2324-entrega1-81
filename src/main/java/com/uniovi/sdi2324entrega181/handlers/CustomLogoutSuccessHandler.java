@@ -1,4 +1,4 @@
-package com.uniovi.sdi2324entrega181;
+package com.uniovi.sdi2324entrega181.handlers;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;

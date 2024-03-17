@@ -204,6 +204,18 @@ public class InsertSampleDataService {
         friendshipsService.saveFrienship(fr2);
         friendshipsService.saveFrienship(fr3);
 
+        // Peticiones de amistad
+        Friendship f1 = new Friendship(user3, user1, true,LocalDate.of(2024, 2, 3));
+        Friendship f2 = new Friendship(user3, user12, false,LocalDate.now());
+        Friendship f3 = new Friendship(user4, user12, false,LocalDate.now());
+        Friendship f4 = new Friendship(user5, user12, false,LocalDate.now());
+        Friendship f5 = new Friendship(user6, user12, false,LocalDate.now());
+        Friendship f6 = new Friendship(user7, user12, false,LocalDate.now());
+        Friendship f7 = new Friendship(user8, user12, false,LocalDate.now());
+        Friendship f8 = new Friendship(user9, user12, false,LocalDate.now());
+        Friendship f9 = new Friendship(user10, user12, false,LocalDate.now());
+        Friendship f10 = new Friendship(user11, user12, false,LocalDate.now());
+
 
 
 

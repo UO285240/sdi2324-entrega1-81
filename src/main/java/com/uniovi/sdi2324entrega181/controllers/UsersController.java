@@ -41,6 +41,7 @@ public class UsersController {
     private final RolesService rolesService;
     private final FriendshipsService friendshipsService;
     private final PostsService postsService;
+    private LogService logService;
 
     private final RecommendationService recommendationService;
 
@@ -58,13 +59,14 @@ public class UsersController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(@RequestParam(name = "logout", required = false) String logout, Model model) {
+    public String login(@RequestParam(name = "logout", required = false) String logout, Model model, String error) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        logService.logPET("Mapping: /login Method: GET ");
         String email = auth.getName();
 
-        // En el caso de que el usuario ya esté logeado, ir a user/list
-        //if (email != "anonymousUser")
-        //    return "redirect:user/list";
+        if (error != null) {
+            model.addAttribute("error", "Error en el usuario o la contraseña.");
+        }
 
         if (logout != null) {
             model.addAttribute("mensaje", "s");
@@ -76,6 +78,7 @@ public class UsersController {
 
     @RequestMapping(value = {"/home"}, method = RequestMethod.GET)
     public String home(Model model, Pageable pageable) {
+        logService.logPET("Mapping: /home Method: GET ");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
         User activeUser = usersService.getUserByEmail(email);
@@ -89,6 +92,7 @@ public class UsersController {
      */
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String signup(Model model) {
+        logService.logPET("Mapping: /signup Method: GET ");
         model.addAttribute("user", new User());
         return "signup"; }
 
@@ -100,6 +104,7 @@ public class UsersController {
      */
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public String signup(@Validated User user, BindingResult result) {
+        logService.logPET("Mapping: /signup Method: POST Params: " + user.toString());
         signUpFormValidator.validate(user,result);
         if(result.hasErrors()){
             return "signup";
@@ -107,6 +112,7 @@ public class UsersController {
         user.setRole(rolesService.getRoles()[0]);
         usersService.addUser(user);
         securityService.autoLogin(user.getEmail(), user.getPasswordConfirm());
+        logService.logALTA("New User: " + user);
         return "redirect:index";
     }
 
@@ -118,6 +124,7 @@ public class UsersController {
      * @param searchText texto opcional para el buscador
      * @return la vista con la lista de usuarios
      */
+
     @RequestMapping("/user/administratorList")
     public String getAdministratorList(Model model, Pageable pageable, Principal principal, @RequestParam(value="", required=false) String searchText){
         String email = principal.getName(); // email del usuario autenticado
@@ -138,7 +145,7 @@ public class UsersController {
         else
             model.addAttribute("searchText","");
 
-
+        logService.logPET("Mapping: /user/administradorList Method: GET");
         return "user/administrateUsers";
     }
 
@@ -173,7 +180,7 @@ public class UsersController {
         // friendships
         model.addAttribute("friendRequests", friendshipsService.getFriendRequests(user));
         model.addAttribute("friends", friendshipsService.getFriends(user));
-
+        logService.logPET("Mapping: /user/sendFriendList Method: GET");
         return "user/sendFriendshipList";
     }
 
@@ -183,6 +190,7 @@ public class UsersController {
      */
     @RequestMapping("/user/list/update")
     public String updateList(Model model, Pageable pageable, Principal principal) {
+        logService.logPET("Mapping: /user/list/update Method: GET");
         String email = principal.getName(); // email del usuario autenticado
         User user = usersService.getUserByEmail(email);
 
@@ -201,6 +209,7 @@ public class UsersController {
      */
     @RequestMapping("/user/sendFriendshipList/update")
     public String updateSendFriendshipList(Model model, Pageable pageable, Principal principal) {
+        logService.logPET("Mapping: /user/sendFriendShipList/update Method: GET");
         String email = principal.getName(); // email del usuario autenticado
         User user = usersService.getUserByEmail(email);
 
@@ -213,18 +222,24 @@ public class UsersController {
 
     @RequestMapping(value = "/user/edit/{id}")
     public String getEdit(Model model, @PathVariable Long id) {
+        logService.logPET("Mapping: /user/edit/"+id+" Method: GET");
         User user = usersService.getUser(id);
         model.addAttribute("user", user);
+        model.addAttribute("availableRoles",rolesService.getRoles());
         return "user/edit";
     }
     @RequestMapping(value = "/user/edit/{id}", method = RequestMethod.POST)
-    public String setEdit(@PathVariable Long id, @ModelAttribute User user) {
-        //usersService.addUser(user);
+    public String setEdit(@PathVariable Long id, @ModelAttribute User user,BindingResult result) {
         User originalUser = usersService.getUser(id);
-        // modificar solo Email, nombre y apellidos
+        // modificar solo Email, nombre , apellidos y role
+        //signUpFormValidator.validate(user,result);
+        if(result.hasErrors()){
+            return "user/edit";
+        }
         originalUser.setEmail(user.getEmail());
         originalUser.setName(user.getName());
         originalUser.setLastName(user.getLastName());
+        originalUser.setRole(user.getRole());
         usersService.saveUser(originalUser);
         return "redirect:/user/details/" + id;
     }
@@ -249,10 +264,11 @@ public class UsersController {
 
     @RequestMapping(value= "/user/details/{id}")
     public String getDetails(@PathVariable Long id, Model model, Pageable pageable, Principal principal) throws AccessException {
+        logService.logPET("Mapping: /user/details/"+id+" Method: GET");
         String email = principal.getName();
         User user1 = usersService.getUserByEmail(email);
         User user = usersService.getUser(id);
-        if(friendshipsService.areFriends(user,user1)) {
+        if(friendshipsService.areFriends(user,user1) || user1.getRole().equals("ROLE_ADMIN")) {
             Page<Post> posts = postsService.getPostsByUser(pageable, user);
 
 

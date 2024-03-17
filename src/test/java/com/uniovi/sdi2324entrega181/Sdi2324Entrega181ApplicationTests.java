@@ -1,6 +1,10 @@
 package com.uniovi.sdi2324entrega181;
 
 import com.uniovi.sdi2324entrega181.pageobjects.*;
+import com.uniovi.sdi2324entrega181.pageobjects.PO_HomeView;
+import com.uniovi.sdi2324entrega181.pageobjects.PO_LoginView;
+import com.uniovi.sdi2324entrega181.pageobjects.PO_PrivateView;
+import com.uniovi.sdi2324entrega181.pageobjects.PO_View;
 import com.uniovi.sdi2324entrega181.util.SeleniumUtils;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
@@ -10,6 +14,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +30,7 @@ class Sdi2324Entrega181ApplicationTests {
     //static String Geckodriver = "C:\\Path\\geckodriver-v0.30.0-win64.exe";
     //static String Geckodriver = "C:\\Users\\Rita Catucho\\Desktop\\segundo cuatri\\SDI\\laboratorios\\semana06\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
 
-    //static String Geckodriver = "C:\\Users\\coral\\IdeaProjects\\SeleniumMaterial\\geckodriver-v0.30.0-win64.exe";
+  // static String Geckodriver = "C:\\Users\\coral\\IdeaProjects\\SeleniumMaterial\\geckodriver-v0.30.0-win64.exe";
 
     static String Geckodriver = "C:\\Users\\javie\\OneDrive\\Escritorio\\Tercero\\SDI\\L5\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
 
@@ -58,9 +63,61 @@ class Sdi2324Entrega181ApplicationTests {
         driver.quit();
     }
 
+    // [Prueba5] - Introduccir datos validos e iniciar sesión (administrador)
+    @Test
+    @Order(5)
+    void PR05() {
+        //Vamos al formulario de logueo.
+        PO_HomeView.clickOption(driver, "login", "id", "password");
+        //Rellenamos el formulario
+        PO_LoginView.fillLoginForm(driver, "admin@email.com", "@Dm1n1str@D0r");
+        //Comprobamos que entramos en la pagina privada del admin
+        String checkText = "Usuarios";
+        List<WebElement> result = PO_View.checkElementBy(driver, "id", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
 
+    // [Prueba6] - Introduccir datos validos e iniciar sesión (usuario estándar)
+    @Test
+    @Order(6)
+    void PR06() {
+        //Vamos al formulario de logueo.
+        PO_HomeView.clickOption(driver, "login", "id", "password");
+        //Rellenamos el formulario
+        PO_LoginView.fillLoginForm(driver, "pedro@example.com", "123456");
+        //Comprobamos que entramos en la pagina privada del usuario
+        String checkText = "Usuarios";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
 
+    // [Prueba7] - Inicio de sesión con datos inválidos
+    @Test
+    @Order(7)
+    void PR07() {
+        //Vamos al formulario de logueo.
+        PO_HomeView.clickOption(driver, "login", "id", "password");
+        //Rellenamos el formulario
+        PO_LoginView.fillLoginForm(driver, "", "");
+        //Comprobamos que volvemos al login
+        String checkText = "Identifícate";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
 
+    // [Prueba8] - Inicio de sesión con datos validos pero contraseña incorrecta
+    @Test
+    @Order(8)
+    void PR08() {
+        //Vamos al formulario de logueo.
+        PO_HomeView.clickOption(driver, "login", "id", "password");
+        //Rellenamos el formulario
+        PO_LoginView.fillLoginForm(driver, "pedro@example.com", "12");
+        //Comprobamos que volvemos al login
+        String checkText = "Identifícate";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
 
     /**
      * [Prueba9] - Hacer clic en la opción de salir de sesión y comprobar que se muestra el mensaje “Ha cerrado
@@ -736,7 +793,7 @@ void PR40() {
         // Intentar acceder a la URL para cambiar el estado de la publicación
         driver.get("http://localhost:8090/post/adminList");
 
-        // redirecciona al login
+        // redirecciona al home
         checkText = "Bienvenidos a la página principal";
         result = PO_View.checkElementBy(driver, "text", checkText);
         Assertions.assertEquals(checkText, result.get(0).getText());
@@ -862,6 +919,132 @@ void PR40() {
     }
 
 
+
+
+    /**
+     * Mostrar el listado de invitaciones de amistad recibidas. Comprobar con un listado que
+     * contenga varias invitaciones recibidas.
+     * Se han enviado varias solicitudes de amistad a nunez@icloud.com, deberían de aparecer 5 en la
+     * primera página.
+     */
+    @Test
+    @Order(21)
+    void PR23() {
+        // Iniciamos sesión como nunez@icloud.com
+        PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW");
+        // Accedemos a la vista de peticiones recibidas
+        driver.findElement(By.id("listPetitions")).click();
+        // Deberían de salir 5 peticiones
+        List<WebElement> petitions = SeleniumUtils.waitLoadElementsBy(driver, "free", "//tbody/tr",
+                PO_View.getTimeout());
+        // Comprobamos que salen 5 peticiones
+        Assertions.assertEquals(5, petitions.size());
+
+        //Ahora nos desconectamos y comprobamos que aparece el menú de identificarse
+        PO_PrivateView.doLogout(driver);
+    }
+
+    /**
+     * Sobre el listado de invitaciones recibidas. Hacer clic en el botón/enlace de una de ellas y
+     * comprobar que dicha solicitud desaparece del listado de invitaciones.
+     * Volvemos a iniciar sesión con nunez@icloud.com, y aceptamos una petición de la primera página;
+     * no debería de aparecer tras aceptarla.
+     */
+    @Test
+    @Order(22)
+    void PR24() {
+        // Iniciamos sesión como nunez@icloud.com
+        PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW");
+        // Accedemos a la vista de peticiones recibidas
+        driver.findElement(By.id("listPetitions")).click();
+        // Comprobamos que aparece una única invitación de María Rodríguez
+        List<WebElement> petitions = PO_View.checkElementBy(driver, "text", "María Rodríguez");
+        Assertions.assertEquals(1, petitions.size());
+        // Aceptamos la petición de user02@email.com, tras aceptarla no debería de aparecer
+        driver.findElement(By.id("user02@email.com")).click();
+        // Comprobamos que no aparece ninguna solicitud de María Rodríguez
+        SeleniumUtils.textIsNotPresentOnPage(driver, "María Rodríguez");
+
+        //Ahora nos desconectamos y comprobamos que aparece el menú de identificarse
+        PO_PrivateView.doLogout(driver);
+    }
+
+    // Intentar acceder sin estar autenticado a la opción de listado de usuarios. Se deberá volver al
+    // formulario de login.
+    @Test
+    @Order(34)
+    void PR34() {
+        // Intentamos navegar a listado de usuarios
+        String url = driver.getCurrentUrl() + "userList";
+        driver.navigate().to(url);
+        // Comprobamos que nos devuelve al login
+        String checkText = "Identifícate";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals("Identifícate", result.get(0).getText());
+    }
+
+    // Intentar acceder sin estar autenticado a la opción de listado de invitaciones de amistad recibida
+    // de un usuario estándar. Se deberá volver al formulario de login.
+    @Test
+    @Order(35)
+    void PR35() {
+        // Intentamos navegar a listado de usuarios
+        String url = driver.getCurrentUrl() + "list";
+        driver.navigate().to(url);
+        // Comprobamos que nos devuelve al login
+        String checkText = "Identifícate";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals("Identifícate", result.get(0).getText());
+    }
+
+    // Estando autenticado como usuario estándar intentar acceder a una opción disponible solo
+    // para usuarios administradores (Añadir menú de auditoria (visualizar logs)). Se deberá indicar un mensaje
+    // de acción prohibida.
+    @Test
+    @Order(36)
+    void PR36() {
+        //Vamos al formulario de logueo.
+        PO_HomeView.clickOption(driver, "login", "id", "password");
+        //Rellenamos el formulario
+        PO_LoginView.fillLoginForm(driver, "user01@email.com", "Us3r@1-PASSW");
+        //Comprobamos que nos da error forbidden
+        driver.navigate().to(driver.getCurrentUrl().substring(0, driver.getCurrentUrl().length() - 5) + "/log");
+        String checkText = "There was an unexpected error (type=Forbidden, status=403).";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
+
+    @Test
+    @Order(12)
+    void PR12(){
+        //login - inicio sesión con un usuario admin
+        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
+        PO_PrivateView.clickAdminUserList(driver);
+
+        PO_EditView.fillForm(driver, "pedro@gmail.com.es", "Pedrox", "Zapico");
+
+
+        //Iniciamos sesión con el usuario que hemos modificado
+        PO_PrivateView.doLogin(driver,"pedro@gmail.com","Us3r@1-PASSW");
+        PO_PrivateView.clickAdminUserList(driver);
+        String checkText = "Usuarios";
+        List<WebElement> result = PO_View.checkElementBy(driver, "id", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+    }
+
+    @Test
+    @Order(13)
+    void PR13(){
+        //login - inicio sesión con un usuario admin
+        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
+        PO_PrivateView.clickAdminUserList(driver);
+        PO_EditView.fillForm(driver, "pedrogmail.com.es", " ", " ");
+        String checkText = "El email no cumple el formato estandar: xxx@xxx.xxx .";
+        List<WebElement> result = PO_View.checkElementBy(driver, "id", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+    }
 
 
 }

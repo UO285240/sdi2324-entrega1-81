@@ -3,6 +3,7 @@ package com.uniovi.sdi2324entrega181.services;
 import com.uniovi.sdi2324entrega181.entities.Friendship;
 import com.uniovi.sdi2324entrega181.entities.User;
 import com.uniovi.sdi2324entrega181.repositories.FriendshipsRepository;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,23 @@ public class FriendshipsService {
     public void saveFrienship(Friendship friendship){
         friendshipsRepository.save(friendship);
     }
+
+    /**
+     * Deletes a petition from the database
+     * @param f friendship petition
+     */
+    public void deletePetition(Friendship f){
+        friendshipsRepository.delete(f);
+    }
+
+    /**
+     * Add new petition to the database
+     * @param friendship
+     */
+    public void add(Friendship friendship){
+        friendshipsRepository.save(friendship);
+    }
+
 
 
 
@@ -91,7 +109,7 @@ public class FriendshipsService {
      */
     public void borrarAmistades(List<Long> ids){
         for(Long id: ids){
-                friendshipsRepository.borrarAmistades(id);
+            friendshipsRepository.borrarAmistades(id);
         }
     }
 
@@ -121,5 +139,25 @@ public class FriendshipsService {
      */
     public List<String> getReceivedRequests(User user) {
        return friendshipsRepository.getReceivedRequests(user.getEmail());
+    }
+
+    /**
+     * Devuelve una lista con todas las solicitudes pendientes de un usuario
+     * @param pageable
+     * @param email
+     * @return pageable users
+     */
+    public Page<Friendship> getMyReceivedPetitions(Pageable pageable,String email){
+        return friendshipsRepository.getReceivedPetitions(pageable,email);
+    }
+
+    /**
+     * Returns the friend's petition between 2 users
+     * @param user1
+     * @param user2
+     * @return  the request(s) between users
+     */
+    public List<Friendship> getPetitionBy2Users(String user1, String user2){
+        return friendshipsRepository.getPetitionBy2Users(user1, user2);
     }
 }
