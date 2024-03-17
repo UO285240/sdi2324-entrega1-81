@@ -83,8 +83,6 @@ public class FriendshipsController {
 
     /**
      * Devuelve la lista con las solicitudes de amistad pendientes
-     * @param model
-     * @param pageable
      * @param principal user en sesión
      * @return String url
      */

@@ -1,7 +1,6 @@
 package com.uniovi.sdi2324entrega181.entities;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,10 +21,6 @@ public class User {
     private String role;
 
     private Boolean borrado=false;
-
-
-
-
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Post> posts;

@@ -2,7 +2,6 @@ package com.uniovi.sdi2324entrega181.entities;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "friendship")
