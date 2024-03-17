@@ -24,7 +24,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     /**
-     * Carga el usuario dado su email
+     * Carga el usuario dado su email para poder utilizar el sistema de autenticación y control
+     * de acceso con Spring Security,
      * @param email email del usuario
      * @return devuelve un objeto UserDetails del usuario si es distinto de null
      * @throws UsernameNotFoundException si el usuario es null

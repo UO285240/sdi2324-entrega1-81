@@ -238,15 +238,6 @@ public class UsersController {
     }
 
 
-
-
-    @RequestMapping("/user/delete/{id}")
-    public String deleteUser(@PathVariable Long id){
-        usersService.deleteUser(id);
-        return "redirect:/user/list";
-
-    }
-
     @RequestMapping(value = "/user/edit/{id}")
     public String getEdit(Model model, @PathVariable Long id) {
         User user = usersService.getUser(id);
