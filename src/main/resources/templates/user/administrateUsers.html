@@ -13,7 +13,7 @@
 
     <form class="form-inline" action="/user/administratorList">
         <div class="form-group"><input name="searchText" type="text" class="form-control" size="50"
-                                       th:text="#{admin.search.user}" th:value="${searchText}"></div>
+                                       th:placeholder="#{admin.search.user}" th:value="${searchText}"></div>
         <button type="submit" class="btn btn-primary" th:text="#{post.search}"></button>
     </form>
     <div class="table-responsive">

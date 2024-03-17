@@ -191,7 +191,7 @@ public class UsersController {
         User user = usersService.getUserByEmail(email);
 
         // devuelve la lista de usuarios en función del rol del usuario autentificado
-        Page<User> users = usersService.getUsersForUser(pageable, user);
+        Page<User> users = usersService.getNormalUsers(pageable, user);
 
         if (searchText != null && !searchText.isEmpty()){
             users = usersService.searchByEmailNameAndSurname(searchText, pageable);
