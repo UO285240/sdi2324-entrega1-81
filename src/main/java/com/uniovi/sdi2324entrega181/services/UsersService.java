@@ -100,6 +100,16 @@ public class UsersService {
     }
 
     /**
+     * Devuelve un listado con todos los usuarios menos el que se pasa como parámetro
+     * @param pageable objeto necesario para la paginación
+     * @param user usuario que va a ser excluido
+     * @return una lista con todos los usuarios menos el excluido
+     */
+    public Page<User> getNormalUsers(Pageable pageable, User user){
+         return usersRepository.findOtherUsers(pageable, user.getId());
+    }
+
+    /**
      * Borra todos los usuarios dada una lista de ids de usuarios
      * @param usuariosABorrar la lista de ids de los usuarios a borrar
      */
