@@ -13,6 +13,7 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 @SpringBootTest
@@ -800,6 +801,60 @@ void PR40() {
         int posts = PO_PrivateView.countPosts(driver);
         Assertions.assertEquals(1, posts);
     }
+
+    /**
+     * [Prueba48] Desde el formulario de crear publicaciones, crear una publicación con datos válidos y una foto
+     * adjunta. Comprobar que en el listado de publicaciones aparecer la foto adjunta junto al resto de datos de
+     * la publicación.
+     */
+    @Test
+    @Order(12)
+    void PR48() {
+
+        // inicio sesión con usuario2
+        PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW");
+
+        // formulario de creación de publicaciones
+        PO_PrivateView.doClickAddPost(driver);
+
+        String title = "Titulo post con foto";
+        String text = "Texto de la publicación con foto";
+        String imagePath = "src/main/resources/static/images/student-48.png";
+        PO_AddPostView.createPostAndImage(driver, title, text, imagePath);
+
+        // comprobar que existe la publicación
+        boolean postCreated = PO_PostView.getPostWithImage(driver, "user02@email.com", title, text);
+
+        Assertions.assertTrue(postCreated);
+    }
+
+
+    /**
+     * [Prueba49] Crear una publicación con datos válidos y sin una foto adjunta. Comprobar que la publicación
+     * se ha creado con éxito, ya que la foto no es obligatoria.
+     */
+    @Test
+    @Order(13)
+    void PR49() {
+
+        // inicio sesión con usuario2
+        PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW");
+
+        // formulario de creación de publicaciones
+        PO_PrivateView.doClickAddPost(driver);
+
+        String title = "Titulo post sin foto";
+        String text = "Texto de la publicación sin foto";
+        PO_AddPostView.createPost(driver, title, text);
+
+        // comprobar que existe la publicación con una foto (por  defecto la foto)
+        boolean postCreated = PO_PostView.getPostWithImage(driver, "user02@email.com", title, text);
+
+        Assertions.assertTrue(postCreated);
+    }
+
+
+
 
 }
 
