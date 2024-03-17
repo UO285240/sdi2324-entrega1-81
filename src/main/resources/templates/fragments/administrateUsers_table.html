@@ -17,12 +17,12 @@
     </thead>
     <tbody>
     <tr th:each="user : ${administratorList}">
-      <td th:text="${user.email}">71888888X</td>
-      <td th:text="${user.name}">Nombre del alumno</td>
-      <td th:text="${user.lastName}">Apellidos del alumno</td>
+      <td th:text="${user.email}"></td>
+      <td th:text="${user.name}"></td>
+      <td th:text="${user.lastName}"></td>
 
 
-      <td><a th:href="${'/user/edit/' + user.id}" th:text="#{table.modidy}"></a></td>
+      <td><a th:href="${'/user/edit/' + user.id}" th:text="#{table.modify}"></a></td>
 
 
       <td><input th:if="${!user.email.equals(email)}" type="checkbox" name="usuariosABorrar" th:checked="${user.borrado}" th:value="${user.id}"/></td>
@@ -33,7 +33,7 @@
   </table>
   <div class="form-group" >
     <div class="col-sm-offset-2 col-sm-10">
-      <button   type="submit"  th:text="#{usersTable.delete}" class="btn btn-primary">Borrar</button>
+      <button   type="submit"  th:text="#{usersTable.delete}" class="btn btn-primary"></button>
     </div>
   </div>
 </form>

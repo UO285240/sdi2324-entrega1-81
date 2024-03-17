@@ -6,11 +6,10 @@
 <nav th:replace="fragments/nav"/>
 <div class="container" style="text-align: center">
     <h2 th:text="#{index.welcome}"></h2>
-    <p>Se trata de una aplicación web de una red social para la asignatura Sistemas Distribuidos e Internet del grado
-        de Ingeniería Informática del Software de la Universidad de Oviedo
+    <p th:text="#{index.text}">
     </p>
     <div class="container" style="text-align: left">
-        <p>Desarrollada por:</p>
+        <p th:text="#{index.dev}"></p>
         <ul>
             <li>Rita Fernández-Catuxo Ortíz (UO284185)</li>
             <li>Javier Monteserín Rodríguez (UO288524)</li>
@@ -18,8 +17,6 @@
             <li>Coral Izquierdo Muñiz (UO285240)</li>
         </ul>
     </div>
-
-    <!-- Botones de inicio de sesión y registro -->
 
 
 </div>

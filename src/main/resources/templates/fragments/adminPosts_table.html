@@ -11,10 +11,11 @@
 </thead>
 <tbody>
 <tr th:each="post : ${postsList}">
-    <td class="card-text" th:text="${post.date}">Fecha de la publicación</td>
-    <td class="card-text" th:text="${post.user.email}">Autor de la publicación</td>
-    <td class="card-title" th:text="${post.title}">Título de la publicación</td>
-    <td class="card-text" th:text="${post.state}">Estado de la publicación</td>
+
+    <td class="card-text" th:text="${post.date}"></td>
+    <td class="card-text" th:text="${post.user.email}"></td>
+    <td class="card-title" th:text="${post.title}"></td>
+    <td class="card-text" th:text="${post.state}"></td>
 
     <td>
         <form th:action="${'/post/updateState/' + post.id}" method="post" class="d-inline">

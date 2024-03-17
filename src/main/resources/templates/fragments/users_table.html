@@ -16,9 +16,9 @@
     </thead>
     <tbody>
     <tr th:each="user : ${usersList}">
-        <td th:text="${user.email}">71888888X</td>
-        <td th:text="${user.name}">Nombre del alumno</td>
-        <td th:text="${user.lastName}">Apellidos del alumno</td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.lastName}"></td>
 
 
         <!-------- Solicitud de amistad ------->
@@ -68,7 +68,7 @@
     </div>
     <div class="form-group" sec:authorize="hasRole('USUARIO_ADMIN')">
         <div class="col-sm-offset-2 col-sm-10">
-            <button   type="submit"  th:text="#{usersTable.delete}" class="btn btn-primary">Borrar</button>
+            <button   type="submit"  th:text="#{usersTable.delete}" class="btn btn-primary"></button>
         </div>
     </div>
 </form>

@@ -13,8 +13,8 @@
 
     <form class="form-inline" action="/user/administratorList">
         <div class="form-group"><input name="searchText" type="text" class="form-control" size="50"
-                                       placeholder="Buscar por nombre, apellidos o email del usuario" th:value="${searchText}"></div>
-        <button type="submit" class="btn btn-primary">Buscar</button>
+                                       th:text="#{admin.search.user}" th:value="${searchText}"></div>
+        <button type="submit" class="btn btn-primary" th:text="#{post.search}"></button>
     </form>
     <div class="table-responsive">
             <table class="table table-hover" th:fragment="administrateUsersTable" id="administrateUsersTable" th:replace="fragments/administrateUsers_table" />

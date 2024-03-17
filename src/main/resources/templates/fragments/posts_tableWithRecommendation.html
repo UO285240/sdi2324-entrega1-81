@@ -4,7 +4,7 @@
      class="alert">
 </div>
 
-<div th:if="${#lists.isEmpty(postsList)}"> No hay publicaciones :(</div>
+<div th:if="${#lists.isEmpty(postsList)}" th:text="#{postList.noposts}"></div>
 
 <div class="row">
     <div th:each="post : ${postsList}" class="col-md-4">
@@ -12,10 +12,10 @@
             <!-- Puedes agregar una imagen para representar la publicación aquí -->
             <div class="card-body">
                 <img th:src="@{'/' + ${post.imagePath}}" class="card-img-top square-image" alt="Imagen de la publicación"/>
-                <h5 class="card-title" th:text="${post.title}">Título de la publicación</h5>
-                <p class="card-text" th:text="${post.text}">Texto de la publicación</p>
-                <p class="card-text" th:text="#{post.author}+' '+ ${post.user.email}">Autor de la publicación</p>
-                <p class="card-text" th:text="#{post.date}+' '+${post.date}">Fecha de la publicación</p>
+                <h5 class="card-title" th:text="${post.title}"></h5>
+                <p class="card-text" th:text="${post.text}"></p>
+                <p class="card-text" th:text="#{post.author}+' '+ ${post.user.email}"></p>
+                <p class="card-text" th:text="#{post.date}+' '+${post.date}"></p>
                 <p class="card-text" th:text="#{post.recommended}+' '+${recommendationsNumber.get(post)}+ ' '+#{post.person}"></p>
                 <p th:if="${recommendedPosts.contains(post.id)}" class="card-text" th:text="#{recommendation.already}"></p>
                 <form th:if="${!recommendedPosts.contains(post.id)}" action="/recommendation/add" method="post">
