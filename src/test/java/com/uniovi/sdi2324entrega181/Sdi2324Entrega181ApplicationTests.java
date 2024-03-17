@@ -817,7 +817,53 @@ void PR40() {
         Assertions.assertEquals(0, posts);
     }
 
+    /**
+     * Mostrar el listado de invitaciones de amistad recibidas. Comprobar con un listado que
+     * contenga varias invitaciones recibidas.
+     * Se han enviado varias solicitudes de amistad a nunez@icloud.com, deberían de aparecer 5 en la
+     * primera página.
+     */
+    @Test
+    @Order(21)
+    void Prueba23() {
+        // Iniciamos sesión como nunez@icloud.com
+        PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW");
+        // Accedemos a la vista de peticiones recibidas
+        driver.findElement(By.id("listPetitions")).click();
+        // Deberían de salir 5 peticiones
+        List<WebElement> petitions = SeleniumUtils.waitLoadElementsBy(driver, "free", "//tbody/tr",
+                PO_View.getTimeout());
+        // Comprobamos que salen 5 peticiones
+        Assertions.assertEquals(5, petitions.size());
 
+        //Ahora nos desconectamos y comprobamos que aparece el menú de identificarse
+        PO_PrivateView.doLogout(driver);
+    }
+
+    /**
+     * Sobre el listado de invitaciones recibidas. Hacer clic en el botón/enlace de una de ellas y
+     * comprobar que dicha solicitud desaparece del listado de invitaciones.
+     * Volvemos a iniciar sesión con nunez@icloud.com, y aceptamos una petición de la primera página;
+     * no debería de aparecer tras aceptarla.
+     */
+    @Test
+    @Order(22)
+    void Prueba24() {
+        // Iniciamos sesión como nunez@icloud.com
+        PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW");
+        // Accedemos a la vista de peticiones recibidas
+        driver.findElement(By.id("listPetitions")).click();
+        // Comprobamos que aparece una única invitación de María Rodríguez
+        List<WebElement> petitions = PO_View.checkElementBy(driver, "text", "María Rodríguez");
+        Assertions.assertEquals(1, petitions.size());
+        // Aceptamos la petición de user02@email.com, tras aceptarla no debería de aparecer
+        driver.findElement(By.id("user02@email.com")).click();
+        // Comprobamos que no aparece ninguna solicitud de María Rodríguez
+        SeleniumUtils.textIsNotPresentOnPage(driver, "María Rodríguez");
+
+        //Ahora nos desconectamos y comprobamos que aparece el menú de identificarse
+        PO_PrivateView.doLogout(driver);
+    }
 
 }
 
