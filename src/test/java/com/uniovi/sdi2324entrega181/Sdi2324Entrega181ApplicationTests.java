@@ -910,6 +910,38 @@ void PR40() {
         Assertions.assertEquals(checkText, result.get(0).getText());
     }
 
+    @Test
+    @Order(12)
+    void Prueba12(){
+        //login - inicio sesión con un usuario admin
+        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
+        PO_PrivateView.clickAdminUserList(driver);
+
+        PO_EditView.fillForm(driver, "pedro@gmail.com.es", "Pedrox", "Zapico");
+
+
+        //Iniciamos sesión con el usuario que hemos modificado
+        PO_PrivateView.doLogin(driver,"pedro@gmail.com","Us3r@1-PASSW");
+        PO_PrivateView.clickAdminUserList(driver);
+        String checkText = "Usuarios";
+        List<WebElement> result = PO_View.checkElementBy(driver, "id", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+    }
+
+    @Test
+    @Order(13)
+    void Prueba13(){
+        //login - inicio sesión con un usuario admin
+        PO_PrivateView.doLogin(driver, "admin@email.com", "@Dm1n1str@D0r");
+        PO_PrivateView.clickAdminUserList(driver);
+        PO_EditView.fillForm(driver, "pedrogmail.com.es", " ", " ");
+        String checkText = "El email no cumple el formato estandar: xxx@xxx.xxx .";
+        List<WebElement> result = PO_View.checkElementBy(driver, "id", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+    }
+
 
 }
 
