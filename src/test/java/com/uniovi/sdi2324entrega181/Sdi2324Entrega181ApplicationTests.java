@@ -425,13 +425,13 @@ void PR26(){
     @Test
     @Order(13)
     void PR29() {
-        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
+        PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW");
 
         // ir a la sección de añadir post
         PO_PrivateView.doClickListPosts(driver);
 
 
-        int posts = PO_PrivateView.getPostsOfUser(driver, 3, "pedro@example.com");
+        int posts = PO_PrivateView.getPostsOfUser(driver, 3, "user02@email.com");
 
         Assertions.assertEquals(15, posts);
 
