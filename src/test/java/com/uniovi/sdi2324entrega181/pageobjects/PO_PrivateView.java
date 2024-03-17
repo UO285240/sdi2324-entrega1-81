@@ -76,7 +76,7 @@ public class PO_PrivateView extends PO_NavView {
 
         //Pinchamos en la opción de menú de publicaciones: //li[contains(@id, 'post-menu')]/a
         List<WebElement> elements = PO_View.checkElementBy(driver, "free",
-                "//*[@id='my-navbarColor02']/ul[1]/li[4]");
+                "//*[@id='my-navbarColor02']/ul[1]/li[5]");
         elements.get(0).click();
 
         //Pinchamos en la opción de lista de publicaciones

@@ -119,7 +119,7 @@ public class UsersController {
         usersService.addUser(user);
         securityService.autoLogin(user.getEmail(), user.getPasswordConfirm());
         logService.logALTA("New User: " + user);
-        return "redirect:index";
+        return "redirect:/home";
     }
 
     /**
@@ -172,7 +172,11 @@ public class UsersController {
         Page<User> users = usersService.getUsersForUser(pageable, user);
 
         if (searchText != null && !searchText.isEmpty()){
-            users = usersService.searchByEmailNameAndSurname(searchText, pageable);
+            // comprobar si es admin
+            if (user.getRole().equals(rolesService.getRoles()[0]))
+                users = usersService.searchByEmailNameAndSurnameStandardUser(searchText, pageable, rolesService.getRoles()[0]);
+            else
+                users = usersService.searchByEmailNameAndSurname(searchText, pageable);
         }
 
         model.addAttribute("sendFriendshipList", users.getContent());

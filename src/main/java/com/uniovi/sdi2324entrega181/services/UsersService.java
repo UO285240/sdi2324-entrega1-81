@@ -117,4 +117,12 @@ public class UsersService {
                 usersRepository.deleteAllById(usuariosABorrar);
         }
 
+    public Page<User> searchByEmailNameAndSurnameStandardUser(String text, Pageable pageable, String role){
+
+        System.out.println("BUSCANDO CON ROL " + role);
+        String searchTest = "%"+text+"%";
+        Page<User> users = usersRepository.searchByEmailNameAndSurnameStandardUser(searchTest, pageable, role);
+
+        return users;
+    }
 }

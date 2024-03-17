@@ -20,6 +20,16 @@ import java.util.List;
 
 public interface UsersRepository extends CrudRepository<User, Long> {
 
+    /**
+
+     Método que devuelve a todos los usuarios de la aplicación cuyo email, nombre o apellidos coinciden con el texto (excepto Administrador y el usuario autenticado)
+     @param searchtext
+     @param pageable
+     @return
+     */
+    @Query("SELECT u FROM User u WHERE ((LOWER(u.name) LIKE LOWER(?1) OR LOWER(u.lastName) LIKE LOWER(?1) OR LOWER(u.email) LIKE LOWER(?1)) AND u.role = ?2)")
+    Page<User> searchByEmailNameAndSurnameStandardUser(String searchtext, Pageable pageable, String role);
+
 
     /**
      * Método que devuelve a todos los usuarios de la aplicación (excepto Administrador y el usuario autenticado)
