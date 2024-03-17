@@ -865,6 +865,52 @@ void PR40() {
         PO_PrivateView.doLogout(driver);
     }
 
+    // Intentar acceder sin estar autenticado a la opción de listado de usuarios. Se deberá volver al
+    // formulario de login.
+    @Test
+    @Order(34)
+    void Prueba34() {
+        // Intentamos navegar a listado de usuarios
+        String url = driver.getCurrentUrl() + "userList";
+        driver.navigate().to(url);
+        // Comprobamos que nos devuelve al login
+        String checkText = "Identifícate";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals("Identifícate", result.get(0).getText());
+    }
+
+    // Intentar acceder sin estar autenticado a la opción de listado de invitaciones de amistad recibida
+    // de un usuario estándar. Se deberá volver al formulario de login.
+    @Test
+    @Order(35)
+    void Prueba35() {
+        // Intentamos navegar a listado de usuarios
+        String url = driver.getCurrentUrl() + "list";
+        driver.navigate().to(url);
+        // Comprobamos que nos devuelve al login
+        String checkText = "Identifícate";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals("Identifícate", result.get(0).getText());
+    }
+
+    // Estando autenticado como usuario estándar intentar acceder a una opción disponible solo
+    // para usuarios administradores (Añadir menú de auditoria (visualizar logs)). Se deberá indicar un mensaje
+    // de acción prohibida.
+    @Test
+    @Order(36)
+    void Prueba36() {
+        //Vamos al formulario de logueo.
+        PO_HomeView.clickOption(driver, "login", "id", "password");
+        //Rellenamos el formulario
+        PO_LoginView.fillLoginForm(driver, "user01@email.com", "Us3r@1-PASSW");
+        //Comprobamos que nos da error forbidden
+        driver.navigate().to(driver.getCurrentUrl().substring(0, driver.getCurrentUrl().length() - 5) + "/log");
+        String checkText = "There was an unexpected error (type=Forbidden, status=403).";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
+
+
 }
 
 
