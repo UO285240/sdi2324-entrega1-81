@@ -79,7 +79,7 @@ public class UsersController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
         User activeUser = usersService.getUserByEmail(email);
-        return "home";
+        return "index";
     }
 
     /**
@@ -107,7 +107,7 @@ public class UsersController {
         user.setRole(rolesService.getRoles()[0]);
         usersService.addUser(user);
         securityService.autoLogin(user.getEmail(), user.getPasswordConfirm());
-        return "redirect:home";
+        return "redirect:index";
     }
 
     /**
