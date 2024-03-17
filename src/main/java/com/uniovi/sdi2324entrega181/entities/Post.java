@@ -15,6 +15,7 @@ public class Post {
     private String title;
     private String text;
     private LocalDate date;
+    private String imagePath;
 
     @ManyToOne
     @JoinColumn(name= "user_id")
@@ -42,6 +43,15 @@ public class Post {
         this.text = text;
         this.date = date;
         this.state = PostState.ACEPTADA;
+        this.imagePath = "images/posts/default-image-SDI.png";
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public Set<Recommendation> getRecommendations() {
@@ -101,6 +111,7 @@ public class Post {
                 "title='" + title + '\'' +
                 ", text='" + text + '\'' +
                 ", date=" + date +
+                ", imagePath='" + imagePath + '\'' +
                 ", user=" + user +
                 ", recommendations=" + recommendations +
                 ", state=" + state +

@@ -18,9 +18,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -53,13 +59,12 @@ public class PostController {
     }
 
     @RequestMapping(value = "/post/add", method = RequestMethod.POST)
-    public String createPost(@Validated Post post, BindingResult result, @RequestParam String title, @RequestParam String text, Principal principal) {
+    public String createPost(@Validated Post post, BindingResult result, @RequestParam String title, @RequestParam String text, @RequestParam(name = "image", required = false) MultipartFile image, Principal principal) {
+
 
         post.setTitle(title);
         post.setText(text);
         createPostFormValidator.validate(post,result);
-
-        System.out.println("POST --> " + post);
 
         if (result.hasErrors()){
             return "post/add";
@@ -69,11 +74,30 @@ public class PostController {
         User user = usersService.getUserByEmail(email);
         LocalDate date = LocalDate.now();
 
+
+        // comprobar si tiene imagen
+        if (image != null && !image.isEmpty()){
+            try{
+                String fileName = post.getId() + ".png";
+                InputStream is = image.getInputStream();
+                Files.copy(is, Paths.get("src/main/resources/static/images/posts/" + fileName), StandardCopyOption.REPLACE_EXISTING);
+                // añadir imagen al post
+                post.setImagePath("images/posts/" + fileName);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "redirect:/home";
+            }
+        }
+        // si no tiene imagen, poner una por defecto
+        else{
+            post.setImagePath("images/posts/default-image-SDI.png");
+        }
+
+
         post.setUser(user);
         post.setDate(date);
         post.setState(Post.PostState.ACEPTADA);
         postsService.addPost(post);
-        System.out.println("POST creado --> " + post);
 
         return "redirect:/post/list";
     }
