@@ -25,9 +25,10 @@ public class FriendshipsController {
 
     LogService logService;
 
-    public FriendshipsController(UsersService usersService, FriendshipsService friendshipsService){
+    public FriendshipsController(UsersService usersService, FriendshipsService friendshipsService, LogService logService){
         this.usersService = usersService;
         this.friendshipsService = friendshipsService;
+        this.logService = logService;
     }
 
 

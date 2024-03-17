@@ -1,6 +1,7 @@
 package com.uniovi.sdi2324entrega181.handlers;
 
 import com.uniovi.sdi2324entrega181.services.LogService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
+    @Autowired
     private LogService logService;
 
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
@@ -43,8 +45,8 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
     protected String determineTargetUrl(final Authentication authentication) {
 
         Map<String, String> roleTargetUrlMap = new HashMap<>();
-        roleTargetUrlMap.put("ROLE_USER", "/user/list");
-        roleTargetUrlMap.put("ROLE_ADMIN", "/user/administratorList");
+        roleTargetUrlMap.put("ROLE_USER", "/user/sendFriendshipList");
+        roleTargetUrlMap.put("ROLE_ADMIN", "/user/sendFriendshipList");
 
         final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (final GrantedAuthority grantedAuthority : authorities) {

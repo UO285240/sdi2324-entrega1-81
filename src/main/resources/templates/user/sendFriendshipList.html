@@ -14,7 +14,7 @@
         /*<![CDATA[*/
         $( "#updateButton" ).click(function() {
             let numberPage = [[${param.page}]];
-            let urlUpdate = '/user/list/update';
+            let urlUpdate = 'user/sendFriendshipList/update';
             if (numberPage != null ){
                 urlUpdate += "?page="+numberPage[0];
             }
@@ -24,7 +24,7 @@
     </script>
 
 
-    <form class="form-inline" action="/user/list">
+    <form class="form-inline" action="/user/sendFriendshipList">
         <div class="form-group"><input name="searchText" type="text" class="form-control" size="50" th:placeholder="#{admin.search.user}"
                                        th:value="${searchText}"></div>
         <button type="submit" class="btn btn-primary" th:text="#{post.search}"></button>

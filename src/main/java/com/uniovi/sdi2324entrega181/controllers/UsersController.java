@@ -4,6 +4,7 @@ import com.uniovi.sdi2324entrega181.entities.Post;
 import com.uniovi.sdi2324entrega181.entities.User;
 import com.uniovi.sdi2324entrega181.services.*;
 import com.uniovi.sdi2324entrega181.services.SecurityService;
+import com.uniovi.sdi2324entrega181.validators.EditUserValidator;
 import com.uniovi.sdi2324entrega181.validators.SignUpFormValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -44,11 +45,14 @@ public class UsersController {
     private LogService logService;
 
     private final RecommendationService recommendationService;
+    private final EditUserValidator editUserValidator;
+
+
 
 
     public UsersController(UsersService usersService, SignUpFormValidator signUpFormValidator, SecurityService securityService,
                            RolesService rolesService, FriendshipsService friendshipsService, PostsService postsService,
-                           RecommendationService recommendationService) {
+                           RecommendationService recommendationService, EditUserValidator editUserValidator, LogService logService) {
         this.usersService = usersService;
         this.securityService = securityService;
         this.signUpFormValidator = signUpFormValidator;
@@ -56,6 +60,8 @@ public class UsersController {
         this.friendshipsService = friendshipsService;
         this.postsService = postsService;
         this.recommendationService = recommendationService;
+        this.editUserValidator = editUserValidator;
+        this.logService = logService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -197,7 +203,7 @@ public class UsersController {
         Page<User> users = usersService.getUsersForUser(pageable, user);
 
         model.addAttribute("usersList", users.getContent());
-        return "user/list :: usersTable";
+        return "/user/sendFriendshipList :: usersTable";
     }
 
     /**
@@ -232,10 +238,15 @@ public class UsersController {
     public String setEdit(@PathVariable Long id, @ModelAttribute User user,BindingResult result) {
         User originalUser = usersService.getUser(id);
         // modificar solo Email, nombre , apellidos y role
-        //signUpFormValidator.validate(user,result);
+        /*
+
+        // TODO: RODRIGO REVISAR VALIDAR DATOS
+        editUserValidator.validate(user,result);
         if(result.hasErrors()){
             return "user/edit";
         }
+
+         */
         originalUser.setEmail(user.getEmail());
         originalUser.setName(user.getName());
         originalUser.setLastName(user.getLastName());

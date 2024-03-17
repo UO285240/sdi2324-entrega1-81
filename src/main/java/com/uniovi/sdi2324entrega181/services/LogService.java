@@ -11,6 +11,10 @@ import org.springframework.stereotype.Service;
 public class LogService {
     private LogRepository logRepository;
 
+    public LogService(LogRepository logRepository) {
+        this.logRepository = logRepository;
+    }
+
     /**
      * Logs a PET type log
      * @param desc String description
