@@ -111,41 +111,6 @@ public class UsersController {
     }
 
     /**
-     * Método para listar a todos los usuarios del sistema. Dependiendo de si el usuario es adminsitrador o no,
-     * devuelve distintas listas de usuario.
-     * @param model modelo para añadir datos a la vista
-     * @param pageable objeto para llevar a cabo la paginación
-     * @param principal usuario registrado en la aplicación
-     * @param searchText texto opcional para el buscador
-     * @return la vista con la lista de usuarios
-     */
-    @RequestMapping("/user/list")
-    public String getList(Model model, Pageable pageable, Principal principal, @RequestParam(value="", required=false) String searchText){
-        String email = principal.getName(); // email del usuario autenticado
-        User user = usersService.getUserByEmail(email);
-
-        // devuelve la lista de usuarios en función del rol del usuario autentificado
-        Page<User> users = usersService.getUsersForUser(pageable, user);
-
-        if (searchText != null && !searchText.isEmpty()){
-            users = usersService.searchByEmailNameAndSurname(searchText, pageable);
-        }
-
-        model.addAttribute("usersList", users.getContent());
-        model.addAttribute("page", users);
-        if (searchText != null)
-            model.addAttribute("searchText", searchText);
-        else
-            model.addAttribute("searchText","");
-
-        // friendships
-        model.addAttribute("friendRequests", friendshipsService.getFriendRequests(user));
-        model.addAttribute("friends", friendshipsService.getFriends(user));
-
-        return "user/list";
-    }
-
-    /**
      * Método que devuelve la vista con la lista de usuarios del administrador para poder manejar usuarios
      * @param model modelo para añadir datos a la vista
      * @param pageable objeto para llevar a cabo la paginación
@@ -191,7 +156,7 @@ public class UsersController {
         User user = usersService.getUserByEmail(email);
 
         // devuelve la lista de usuarios en función del rol del usuario autentificado
-        Page<User> users = usersService.getNormalUsers(pageable, user);
+        Page<User> users = usersService.getUsersForUser(pageable, user);
 
         if (searchText != null && !searchText.isEmpty()){
             users = usersService.searchByEmailNameAndSurname(searchText, pageable);
@@ -199,6 +164,7 @@ public class UsersController {
 
         model.addAttribute("sendFriendshipList", users.getContent());
         model.addAttribute("page", users);
+        model.addAttribute("email", principal.getName());
         if (searchText != null)
             model.addAttribute("searchText", searchText);
         else

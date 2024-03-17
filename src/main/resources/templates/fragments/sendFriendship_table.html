@@ -24,8 +24,17 @@
 
             <!-------- Solicitud de amistad ------->
 
+            <!-------- Asministradores ------->
+            <!-------- Administradores ------->
+            <td th:if="${!friendRequests.contains(user.email) && !friends.contains(user.email) && user.email == email}">
+                <a th:href="@{/friendship/send/{id}(id=${user.id})}">
+                    <button type="button" th:id="${user.email}" class="btn btn-success" th:text="#{usersTable.sendFriendshipRequest}" disabled></button>
+                </a>
+            </td>
+
+
             <!-- No son amigos-->
-            <td th:if="${!friendRequests.contains(user.email) && !friends.contains(user.email)}">
+            <td th:if="${!friendRequests.contains(user.email) && !friends.contains(user.email) && user.email != email}">
                 <a th:href="${'/friendship/send/' + user.id}">
                     <button type="button" th:id="${user.email}"
                             class="btn btn-success" th:text="#{usersTable.sendFriendshipRequest}"></button>
