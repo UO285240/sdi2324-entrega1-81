@@ -24,6 +24,15 @@ public interface UsersRepository extends CrudRepository<User, Long> {
     // todos los usuarios de la aplicación (excepto Administrador y el usuario autenticado)
     @Query("SELECT u FROM User u WHERE u.id != ?1 AND u.role = ?2 ORDER BY u.id ASC")
     Page<User> findAllByStandardUser(Pageable pageable, Long userId, String role);
+
+    /**
+     * Devuelve una lista con todos los usuarios menos el propio usuario
+     * @param pageable objeto necesario para la paginación
+     * @param userId id del usuario que se va a excluir del listado
+     * @return un objeto Page con el listado de usuarios menos el excluido
+     */
+    @Query("SELECT u FROM User u WHERE u.id != ?1 ORDER BY u.id ASC")
+    Page<User> findOtherUsers(Pageable pageable, Long userId);
     User findByEmail(String email);
 
     Page<User> findAll(Pageable pageable);
