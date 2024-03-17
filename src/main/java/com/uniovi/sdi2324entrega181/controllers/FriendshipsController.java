@@ -3,6 +3,7 @@ package com.uniovi.sdi2324entrega181.controllers;
 import com.uniovi.sdi2324entrega181.entities.Friendship;
 import com.uniovi.sdi2324entrega181.entities.User;
 import com.uniovi.sdi2324entrega181.services.FriendshipsService;
+import com.uniovi.sdi2324entrega181.services.LogService;
 import com.uniovi.sdi2324entrega181.services.UsersService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,8 @@ public class FriendshipsController {
 
     private final UsersService usersService;
     private final FriendshipsService friendshipsService;
+
+    LogService logService;
 
     public FriendshipsController(UsersService usersService, FriendshipsService friendshipsService){
         this.usersService = usersService;
@@ -59,6 +62,7 @@ public class FriendshipsController {
      */
     @RequestMapping("/friendship/list")
     public String getList(Model model, Pageable pageable, Principal principal){
+        logService.logPET("Mapping: /friendship/list Method: GET Page: " + pageable.getPageNumber() );
         String email = principal.getName();
         User user = usersService.getUserByEmail(email);
         Page<Friendship> friendships = friendshipsService.getFriendsUser(pageable,user);
@@ -78,6 +82,7 @@ public class FriendshipsController {
      */
     @RequestMapping(value="/friendship/requestlist")
     public String getReceivedPetitions(Model model, Pageable pageable, Principal principal){
+        logService.logPET("Mapping: /friendship/requestlist Method: GET Page: " + pageable.getPageNumber() );
         String email = principal.getName();
         User user = usersService.getUserByEmail(email);
         Page<Friendship> friendships = friendshipsService.getMyReceivedPetitions(pageable, email);
