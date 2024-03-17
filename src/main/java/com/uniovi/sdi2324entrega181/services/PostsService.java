@@ -56,9 +56,12 @@ public class PostsService {
         postsRepository.save(post);
     }
 
-
     /**
-     * Buscar por email, título, texto o estado de la publicación
+     * Método para buscar publicaciones cuyo email, título, texto o estado de la publicación coinciden con el texto
+     * insertado
+     * @param searchText el texto a buscar
+     * @param pageable objeto necesario para la paginación
+     * @return las publicaciones  cuyo email, título, texto o estado de la publicación coinciden con el texto
      */
     public Page<Post> searchByPostFields(String searchText, Pageable pageable) {
         String searchTest = "%" + searchText + "%";

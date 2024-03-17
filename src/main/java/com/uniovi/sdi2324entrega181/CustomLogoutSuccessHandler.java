@@ -13,6 +13,9 @@ import java.io.IOException;
  */
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
+    /**
+     * Método para conseguir mostrar un mensaje personalizado cuando un usuario autenticado cierra la sesión
+     */
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {

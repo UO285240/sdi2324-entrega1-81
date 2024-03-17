@@ -74,6 +74,12 @@ public class FriendshipsService {
         return friendshipsRepository.getFriendsPageable(pageable,user.getEmail());
     }
 
+    /**
+     * Método para saber si existe una amistad entre dos usuarios
+     * @param sender el que envia la solicitud de amistad
+     * @param receiver el que recibe la solicitud de amistad
+     * @return true si existe la amistad, false si no existe.
+     */
     public boolean existsFriendship(User sender, User receiver) {
          Optional<Friendship> friendship = friendshipsRepository.findBySenderAndReceiver(sender.getEmail(), receiver.getEmail());
          return friendship.isPresent();

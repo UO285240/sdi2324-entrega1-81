@@ -172,9 +172,9 @@ public class PostController {
     }
 
     /**
-     * Updates the state of the post
-     * @param id the id of the post
-     * @param newState the new state to be changed
+     * Actualiza el estado de la publicación
+     * @param id la id del post a actualizar
+     * @param newState el nuevo estado para la publicación
      */
     @RequestMapping(value = "/post/updateState/{id}", method = RequestMethod.POST)
     public String updatePostState(HttpServletRequest request, HttpServletResponse response, Principal principal, @PathVariable Long id, @RequestParam("state") Post.PostState newState) {
