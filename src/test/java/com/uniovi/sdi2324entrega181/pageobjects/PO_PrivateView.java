@@ -85,6 +85,19 @@ public class PO_PrivateView extends PO_NavView {
     }
 
     /**
+     * Método para listar las solicitudes de amistad
+     */
+    static public void doClickListFriendsRequests(WebDriver driver){
+
+        //Pinchamos en la opción de menú de usuarios: //li[contains(@id, 'users-menu')]/a
+        doClickMenuUsers(driver);
+
+        //Pinchamos en la opción de lista de usuarios
+        List<WebElement> elements = PO_View.checkElementBy(driver, "free", "//a[contains(@href, 'friendship/requestlist')]");
+        elements.get(0).click();
+    }
+
+    /**
      * Método para cambiar el estado de una publicación a censurada
      *
      */

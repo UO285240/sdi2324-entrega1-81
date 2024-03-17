@@ -25,9 +25,9 @@ class Sdi2324Entrega181ApplicationTests {
     //static String Geckodriver = "C:\\Path\\geckodriver-v0.30.0-win64.exe";
     //static String Geckodriver = "C:\\Users\\Rita Catucho\\Desktop\\segundo cuatri\\SDI\\laboratorios\\semana06\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
 
-    static String Geckodriver = "C:\\Users\\coral\\IdeaProjects\\SeleniumMaterial\\geckodriver-v0.30.0-win64.exe";
+    //static String Geckodriver = "C:\\Users\\coral\\IdeaProjects\\SeleniumMaterial\\geckodriver-v0.30.0-win64.exe";
 
-    //static String Geckodriver = "C:\\Users\\javie\\OneDrive\\Escritorio\\Tercero\\SDI\\L5\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+    static String Geckodriver = "C:\\Users\\javie\\OneDrive\\Escritorio\\Tercero\\SDI\\L5\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
 
 
     static WebDriver driver = getDriver(PathFirefox, Geckodriver);
@@ -203,21 +203,29 @@ class Sdi2324Entrega181ApplicationTests {
     }
 
 
-
-
-
-
-    // [Prueba21] Desde el listado de usuarios de la aplicación, enviar una invitación de amistad a un usuario.
-    // Comprobar que la solicitud de amistad aparece en el listado de invitaciones (punto siguiente).
+    /**
+     * [Prueba21] Desde el listado de usuarios de la aplicación, enviar una invitación de amistad a un usuario.
+     * Comprobar que la solicitud de amistad aparece en el listado de invitaciones
+     */
     @Test
     @Order(7)
     void PR21() {
-        //login - inicio sesión con un usuario estándar (pedro@example.com) que no es admin
-        PO_PrivateView.doLogin(driver, "pedro@example.com", "123456");
-
+        //login y manda una invitación de amistad un usuario del que no es amigo
+        PO_PrivateView.doLogin(driver, "user03@email.com", "Us3r@3-PASSW");
         // listamos las usuarios
         PO_PrivateView.doClickListUsers(driver);
+        PO_PrivateView.sendFriendshipRequest(driver, "user02@email.com");
+        PO_PrivateView.doLogout(driver);
 
+        // login con user02 y  comprobar que tiene la solicitud
+        PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW");
+        // listar solicitudes de amistad
+        PO_PrivateView.doClickListFriendsRequests(driver);
+
+        // comprobar que aparece la invitación
+        String checkText = "user03@email.com";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
     }
 
     /**
