@@ -3,7 +3,7 @@
      class="alert">
 </div>
 
-<div th:if="${#lists.isEmpty(postsList)} th:text="#{postList.noposts}""></div>
+<div th:if="${#lists.isEmpty(postsList)}" th:text="#{postList.noposts}"></div>
 
 <div class="row">
     <div th:each="post : ${postsList}" class="col-md-4">
