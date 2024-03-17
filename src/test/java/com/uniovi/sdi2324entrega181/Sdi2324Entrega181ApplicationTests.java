@@ -956,7 +956,7 @@ void PR40() {
         // Iniciamos sesión como user02@email.com
         PO_PrivateView.doLogin(driver, "user02@email.com", "Us3r@2-PASSW");
         // Accedemos a la vista de peticiones recibidas
-        driver.findElement(By.id("listPetitions")).click();
+        PO_PrivateView.doClickPetitionsList(driver);
         // Comprobamos que aparece una única invitación de María Rodríguez
         List<WebElement> petitions = PO_View.checkElementBy(driver, "text", "María Rodríguez");
         Assertions.assertEquals(1, petitions.size());

@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class LogController {
 
-    @Autowired
     private LogService logService;
+
+    public LogController( LogService logService){
+        this.logService = logService;
+    }
 
     @RequestMapping(value = "/log/log")
     public String showAll(Model model, Pageable pageable) {

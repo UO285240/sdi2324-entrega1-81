@@ -207,8 +207,7 @@ public class InsertSampleDataService {
 
 
         // Peticiones de amistad
-        Friendship f1 = new Friendship(user3, user1, true,LocalDate.of(2024, 2, 3));
-        Friendship f3 = new Friendship(user4, user1, false,LocalDate.now());
+        Friendship f3 = new Friendship(user4, user1, false,LocalDate.of(2024, 2, 3));
         Friendship f4 = new Friendship(user5, user1, false,LocalDate.now());
         Friendship f5 = new Friendship(user6, user1, false,LocalDate.now());
         Friendship f6 = new Friendship(user7, user1, false,LocalDate.now());
@@ -218,6 +217,7 @@ public class InsertSampleDataService {
         Friendship f10 = new Friendship(user11, user1, false,LocalDate.now());
 
         // Solicitudes de amistad
+        friendshipsService.add(f3);
         friendshipsService.add(f4);
         friendshipsService.add(f5);
         friendshipsService.add(f6);
