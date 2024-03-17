@@ -18,13 +18,25 @@ import java.util.Optional;
 
 public interface FriendshipsRepository extends CrudRepository<Friendship, Long> {
 
+    /**
+     * @param email el correo del usuario autenticado (el que envía las soliciudes)
+     * @return los emails de los usuarios que han recibido solicitudes de amistad enviadas por el usuario autenticado
+     */
     @Query("SELECT f.receiver.email FROM Friendship f WHERE f.sender.email LIKE ?1 AND f.isAccepted = false")
     List<String> getSentRequests(String email);
 
+    /**
+     * @param email el correo del usuario auteticado (el que recibe las solicitudes)
+     * @return los emails de los usuarios que han enviado solicitudes de amistad al usuario autenticado
+     */
     @Query("SELECT f.sender.email FROM Friendship f WHERE f.receiver.email LIKE ?1 AND f.isAccepted = false")
     List<String> getReceivedRequests(String email);
 
 
+    /**
+     * @param email el correo del usuario autenticado
+     * @return la lista de amistades que tiene el usuario autenticado
+     */
     @Query("SELECT f FROM Friendship f " +
             "WHERE (f.sender.email LIKE ?1 OR f.receiver.email LIKE ?1 )" +
             "AND f.isAccepted = true")

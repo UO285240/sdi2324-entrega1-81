@@ -110,7 +110,15 @@ public class UsersController {
         return "redirect:home";
     }
 
-
+    /**
+     * Método para listar a todos los usuarios del sistema. Dependiendo de si el usuario es adminsitrador o no,
+     * devuelve distintas listas de usuario.
+     * @param model modelo para añadir datos a la vista
+     * @param pageable objeto para llevar a cabo la paginación
+     * @param principal usuario registrado en la aplicación
+     * @param searchText texto opcional para el buscador
+     * @return la vista con la lista de usuarios
+     */
     @RequestMapping("/user/list")
     public String getList(Model model, Pageable pageable, Principal principal, @RequestParam(value="", required=false) String searchText){
         String email = principal.getName(); // email del usuario autenticado
@@ -145,7 +153,6 @@ public class UsersController {
      * @param searchText texto opcional para el buscador
      * @return la vista con la lista de usuarios
      */
-
     @RequestMapping("/user/administratorList")
     public String getAdministratorList(Model model, Pageable pageable, Principal principal, @RequestParam(value="", required=false) String searchText){
         String email = principal.getName(); // email del usuario autenticado

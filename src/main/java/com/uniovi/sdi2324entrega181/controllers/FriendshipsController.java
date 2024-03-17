@@ -27,6 +27,13 @@ public class FriendshipsController {
     }
 
 
+    /**
+     * Método que envía una solicitud de amistad a otro usuario en la red social
+     * @param id la id del usuario que recibe la solicitud
+     * @param principal para obtener el usuario autenticado
+     * @param redirectAttrs para poder enviar un mensaje a la vista
+     * @return devuelve la lista con el listado de usuarios y la solicitud mandada
+     */
     @RequestMapping("/friendship/send/{id}")
     public String sendFriendship(@PathVariable Long id, Principal principal, RedirectAttributes redirectAttrs) {
 
