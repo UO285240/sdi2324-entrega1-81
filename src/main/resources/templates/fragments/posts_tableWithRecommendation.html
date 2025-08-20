@@ -1,0 +1,29 @@
+
+<div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
+     th:text="${mensaje}"
+     class="alert">
+</div>
+
+<div th:if="${#lists.isEmpty(postsList)}" th:text="#{postList.noposts}"></div>
+
+<div class="row">
+    <div th:each="post : ${postsList}" class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <!-- Puedes agregar una imagen para representar la publicación aquí -->
+            <div class="card-body">
+                <img th:src="@{'/' + ${post.imagePath}}" class="card-img-top square-image" alt="Imagen de la publicación"/>
+                <h5 class="card-title" th:text="${post.title}"></h5>
+                <p class="card-text" th:text="${post.text}"></p>
+                <p class="card-text" th:text="#{post.author}+' '+ ${post.user.email}"></p>
+                <p class="card-text" th:text="#{post.date}+' '+${post.date}"></p>
+                <p class="card-text" th:text="#{post.recommended}+' '+${recommendationsNumber.get(post)}+ ' '+#{post.person}"></p>
+                <p th:if="${recommendedPosts.contains(post.id)}" class="card-text" th:text="#{recommendation.already}"></p>
+                <form th:if="${!recommendedPosts.contains(post.id)}" action="/recommendation/add" method="post">
+                    <input type="hidden" name="post_id" th:value="${post.id}">
+                    <input type="hidden" name="user_id" th:value="${user.id}">
+                    <button type="submit" class="btn btn-primary" th:text="#{recommendation.recommend}" ></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

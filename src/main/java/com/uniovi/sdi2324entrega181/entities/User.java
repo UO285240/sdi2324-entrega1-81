@@ -1,6 +1,8 @@
 package com.uniovi.sdi2324entrega181.entities;
 
 import javax.persistence.*;
+import java.util.Set;
+
 @Entity
 @Table(name = "user")
 public class User {
@@ -18,6 +20,14 @@ public class User {
 
     private String role;
 
+    private Boolean borrado=false;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Post> posts;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Recommendation> recommendations;
+
     public User(String email, String name, String lastName) {
         super();
         this.email = email;
@@ -26,6 +36,22 @@ public class User {
     }
 
     public User() { }
+
+    public Set<Recommendation> getRecommendations() {
+        return recommendations;
+    }
+
+    public void setRecommendations(Set<Recommendation> recommendations) {
+        this.recommendations = recommendations;
+    }
+
+    public boolean getBorrado(){
+        return this.borrado;
+    }
+
+    public void setBorrado(boolean borrado){
+        this.borrado=borrado;
+    }
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
@@ -65,6 +91,26 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
+
+    public Set<Post> getPosts() {
+
+
+        return posts;
+    }
+
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
+    }
+
+
+    public String toString(){
+        return getFullName();
+    }
+
+
+
+
+
 
 
 }

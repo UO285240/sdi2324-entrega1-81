@@ -1,0 +1,40 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"></head>
+<body>
+<nav th:replace="fragments/nav"></nav>
+
+
+
+<div class="container" id="main-container">
+    <h2 th:text="#{postDetails.message}"></h2>
+    <br>
+    <img th:src="@{'/' + ${post.imagePath}}" class="card-img-top square-image" alt="Imagen de la publicación"/>
+    <br>
+    <div class="card">
+        <div class="card-header" th:text="#{postDetails.title}"></div>
+        <div class="card-body">
+            <p class="card-text"th:text="${post.title}"> Foto </p>
+        </div>
+    </div>
+    <br>
+    <div class="card">
+        <div class="card-header" th:text="#{postDetails.content}"></div>
+        <div class="card-body">
+            <p class="card-text" th:text="${post.text}"></p>
+        </div>
+    </div>
+    <br>
+    <div class="card">
+        <div class="card-header" th:text="#{postDetails.date}"></div>
+        <div class="card-body">
+            <p class="card-text" th:text="${post.date}">2024-03-09</p>
+        </div>
+    </div>
+    <br>
+</div>
+
+
+<footer th:replace="fragments/footer"></footer>
+</body>
+</html>

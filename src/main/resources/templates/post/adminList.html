@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<head th:replace="fragments/head"/>
+<body>
+<!-- Barra de Navegación superior -->
+<nav th:replace="fragments/nav"/>
+<div class="container">
+    <h2 th:text="#{post.myposts}"></h2>
+    <p th:text="#{post.myposts.text}"></p>
+
+    <!--cuadro de búsqueda-->
+    <form class="form-inline" action="/post/adminList" style="margin-bottom: 20px;">
+        <div class="form-group"><input name="searchText" type="text" class="form-control" size="50"
+                                       th:placeholder="#{post.search.placeholder}" th:value="${searchText}"></div>
+        <button type="submit" class="btn btn-primary" th:text="#{post.search}"></button>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <table class="table table-hover" th:fragment="postsTable" id="postsTable" th:replace="fragments/adminPosts_table" />
+
+        </table>
+        <footer th:replace="fragments/pagination"/>
+    </div>
+
+
+
+</div>
+</div>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>

@@ -5,34 +5,42 @@
 <!-- Barra de Navegación superior -->
 <nav th:replace="fragments/nav"/>
 <div class="container">
-    <h2>Usuarios</h2>
-    <p>Los usuarios que actualmente figuran en el sistema son los
-        siguientes:</p>
+    <h2 th:text="#{usersList.title}"></h2>
+    <p th:text="#{usersList.subtitle}"></p>
+
+    <!-- botón para actualizar -->
+    <button type="button" id="updateButton" class="btn btn-primary" th:text="#{button.update}"></button>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        $( "#updateButton" ).click(function() {
+            let numberPage = [[${param.page}]];
+            let urlUpdate = '/user/list/update';
+            if (numberPage != null ){
+                urlUpdate += "?page="+numberPage[0];
+            }
+            $("#usersTable").load(urlUpdate);
+        });
+        /*]]>*/
+    </script>
+
+
+    <form class="form-inline" action="/user/list">
+        <div class="form-group"><input name="searchText" type="text" class="form-control" size="50"
+                                       th:placeholder="#{admin.search.user}" th:value="${searchText}"></div>
+        <button type="submit" class="btn btn-primary" th:text="#{post.search}"></button>
+    </form>
     <div class="table-responsive">
         <table class="table table-hover">
-            <thead>
-            <tr>
-                <th scope="col">Email</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Apellidos</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="user : ${usersList}">
-                <td th:text="${user.email}">71888888X</td>
-                <td th:text="${user.name}">Nombre del alumno</td>
-                <td th:text="${user.lastName}">Apellidos del alumno</td>
-                <td><a th:href="${'/user/details/' + user.id}">detalles</a></td>
-                <td><a th:href="${'/user/edit/' + user.id}">modificar</a></td>
-                <td><a th:href="${'/user/delete/' + user.id}">eliminar</a></td>
-            </tr>
-            </tbody>
+            <table class="table table-hover" th:fragment="usersTable" id="usersTable" th:replace="fragments/users_table" />
+            <footer th:replace="fragments/pagination"/>
         </table>
     </div>
+
+    <div th:if="${#lists.isEmpty(usersList)}" th:text="#{usersList.noUsers}"></div>
+
+</div>
 </div>
 <footer th:replace="fragments/footer"/>
 </body>
 </html>
+

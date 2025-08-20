@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="fragments/head"/>
+<body>
+<nav th:replace="fragments/nav"/>
+<div class="container" style="text-align: center">
+    <h2 th:text="#{index.welcome}"></h2>
+    <p th:text="#{index.text}">
+    </p>
+    <div class="container" style="text-align: left">
+        <p th:text="#{index.dev}"></p>
+        <ul>
+            <li>Rita Fernández-Catuxo Ortíz (UO284185)</li>
+            <li>Javier Monteserín Rodríguez (UO288524)</li>
+            <li>Rodrigo García Iglesias (UO276396)</li>
+            <li>Coral Izquierdo Muñiz (UO285240)</li>
+        </ul>
+    </div>
+
+
+</div>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>
